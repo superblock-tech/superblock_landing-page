@@ -1,0 +1,271 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.container {
+  @apply max-w-[1920px] xl:px-[78px] px-[22px] sm:px-[48px] mx-auto;
+}
+
+/* font */
+/* Futura PT Bold */
+@font-face {
+  font-family: "Futura PT";
+  src: url("../public/font/FuturaPT-Bold.eot");
+  src:
+    local("Futura PT Bold"),
+    local("FuturaPT-Bold"),
+    url("../public/font/FuturaPT-Bold.eot?#iefix") format("embedded-opentype"),
+    url("../public/font/FuturaPT-Bold.woff2") format("woff2"),
+    url("../public/font/FuturaPT-Bold.woff") format("woff"),
+    url("../public/font/FuturaPT-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+.font-futura-bold {
+  font-family: "Futura PT";
+  font-weight: bold;
+}
+
+/* Futura PT Heavy */
+@font-face {
+  font-family: "Futura PT";
+  src:
+    url("../public/font/FuturaPT-Heavy.eot?#iefix") format("embedded-opentype"),
+    url("../public/font/FuturaPT-Heavy.woff2") format("woff2"),
+    url("../public/font/FuturaPT-Heavy.woff") format("woff"),
+    url("../public/font/FuturaPT-Heavy.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+.font-futura-900 {
+  font-family: "Futura PT";
+  font-weight: 900;
+}
+
+/* Futura PT Cond Book */
+@font-face {
+  font-family: "Futura PT Cond Book";
+  src: url("../public/font/FuturaPTCond-Book.eot");
+  src:
+    local("Futura PT Cond Book"),
+    local("FuturaPTCond-Book"),
+    url("../public/font/FuturaPTCond-Book.eot?#iefix") format("embedded-opentype"),
+    url("../public/font/FuturaPTCond-Book.woff2") format("woff2"),
+    url("../public/font/FuturaPTCond-Book.woff") format("woff"),
+    url("../public/font/FuturaPTCond-Book.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-futura-cond-book {
+  font-family: "Futura PT Cond Book";
+  font-weight: normal;
+}
+
+/* Futura PT Demi */
+@font-face {
+  font-family: "Futura PT Demi";
+  src: url("../public/font/FuturaPT-Demi.eot");
+  src:
+    local("Futura PT Demi"),
+    local("FuturaPT-Demi"),
+    url("../public/font/FuturaPT-Demi.eot?#iefix") format("embedded-opentype"),
+    url("../public/font/FuturaPT-Demi.woff2") format("woff2"),
+    url("../public/font/FuturaPT-Demi.woff") format("woff"),
+    url("../public/font/FuturaPT-Demi.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+.font-futura-600 {
+  font-family: "Futura PT Demi";
+  font-weight: 600;
+}
+
+/* Futura PT Extra Bold */
+@font-face {
+  font-family: "Futura PT Extra";
+  src: url("../public/font/FuturaPT-ExtraBold.eot");
+  src:
+    local("Futura PT Extra Bold"),
+    local("FuturaPT-ExtraBold"),
+    url("../public/font/FuturaPT-ExtraBold.eot?#iefix") format("embedded-opentype"),
+    url("../public/font/FuturaPT-ExtraBold.woff2") format("woff2"),
+    url("../public/font/FuturaPT-ExtraBold.woff") format("woff"),
+    url("../public/font/FuturaPT-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+.font-futura-800 {
+  font-family: "Futura PT Extra";
+  font-weight: 800;
+}
+
+/* Futura PT Cond Medium */
+@font-face {
+  font-family: "Futura PT Cond";
+  src: url("../public/font/FuturaPTCond-Medium.eot");
+  src:
+    local("Futura PT Cond Medium"),
+    local("FuturaPTCond-Medium"),
+    url("../public/font/FuturaPTCond-Medium.eot?#iefix") format("embedded-opentype"),
+    url("../public/font/FuturaPTCond-Medium.woff2") format("woff2"),
+    url("../public/font/FuturaPTCond-Medium.woff") format("woff"),
+    url("../public/font/FuturaPTCond-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+.font-futura-cond-medium {
+  font-family: "Futura PT Cond";
+  font-weight: 500;
+}
+
+/* Futura PT Medium */
+@font-face {
+  font-family: "Futura PT";
+  src: url("../public/font/FuturaPT-Medium.eot");
+  src:
+    local("Futura PT Medium"),
+    local("FuturaPT-Medium"),
+    url("../public/font/FuturaPT-Medium.eot?#iefix") format("embedded-opentype"),
+    url("../public/font/FuturaPT-Medium.woff2") format("woff2"),
+    url("../public/font/FuturaPT-Medium.woff") format("woff"),
+    url("../public/font/FuturaPT-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+.font-futura-500 {
+  font-family: "Futura PT";
+  font-weight: 500;
+}
+
+/* Futura PT Cond Extra Bold */
+@font-face {
+  font-family: "Futura PT Cond Extra";
+  src: url("../public/font/FuturaPTCond-ExtraBold.eot");
+  src:
+    local("Futura PT Cond Extra Bold"),
+    local("FuturaPTCond-ExtraBold"),
+    url("../public/font/FuturaPTCond-ExtraBold.eot?#iefix") format("embedded-opentype"),
+    url("../public/font/FuturaPTCond-ExtraBold.woff2") format("woff2"),
+    url("../public/font/FuturaPTCond-ExtraBold.woff") format("woff"),
+    url("../public/font/FuturaPTCond-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+.font-futura-cond-extra {
+  font-family: "Futura PT Cond Extra";
+  font-weight: 800;
+}
+
+/* Futura PT Cond Bold */
+@font-face {
+  font-family: "Futura PT Cond";
+  src: url("../public/font/FuturaPTCond-Bold.eot");
+  src:
+    local("Futura PT Cond Bold"),
+    local("FuturaPTCond-Bold"),
+    url("../public/font/FuturaPTCond-Bold.eot?#iefix") format("embedded-opentype"),
+    url("../public/font/FuturaPTCond-Bold.woff2") format("woff2"),
+    url("../public/font/FuturaPTCond-Bold.woff") format("woff"),
+    url("../public/font/FuturaPTCond-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+.font-futura-cond-bold {
+  font-family: "Futura PT Cond";
+  font-weight: bold;
+}
+
+/* Futura PT Book */
+@font-face {
+  font-family: "Futura PT Book";
+  src: url("../public/font/FuturaPT-Book.eot");
+  src:
+    local("Futura PT Book"),
+    local("FuturaPT-Book"),
+    url("../public/font/FuturaPT-Book.eot?#iefix") format("embedded-opentype"),
+    url("../public/font/FuturaPT-Book.woff2") format("woff2"),
+    url("../public/font/FuturaPT-Book.woff") format("woff"),
+    url("../public/font/FuturaPT-Book.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-futura-normal {
+  font-family: "Futura PT Book";
+  font-weight: normal;
+}
+
+/* Futura PT Light */
+@font-face {
+  font-family: "Futura PT";
+  src: url("../public/font/FuturaPT-Light.eot");
+  src:
+    local("Futura PT Light"),
+    local("FuturaPT-Light"),
+    url("../public/font/FuturaPT-Light.eot?#iefix") format("embedded-opentype"),
+    url("../public/font/FuturaPT-Light.woff2") format("woff2"),
+    url("../public/font/FuturaPT-Light.woff") format("woff"),
+    url("../public/font/FuturaPT-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+.font-futura-300 {
+  font-family: "Futura PT";
+  font-weight: 300;
+}
+
+.font-inter {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+}
+
+body {
+  scroll-behavior: smooth;
+  font-family: "Futura PT Book";
+  font-weight: normal;
+}
+
+input[type="checkbox"]::after {
+  content: "✓";
+  font-size: 16px;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+input[type="checkbox"]:checked::after {
+  opacity: 1;
+}
+
+/* Hide the number input spinners in WebKit browsers (Chrome, Safari) */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide the number input spinners in Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Hide the number input spinners in Internet Explorer */
+input[type="number"] {
+  -ms-appearance: none;
+}
