@@ -1,5 +1,8 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { DownloadIcon, RightArrow } from "../Icons";
+import { Canvas } from "@react-three/fiber";
+import { Environment } from "@react-three/drei";
+import SpinningModel from "./SpinningModel";
 
 export default function Hero() {
   return (
@@ -43,7 +46,26 @@ export default function Hero() {
             </div>
 
             <div className=" flex justify-end items-end relative -right-[32px] sm:right-0 z-10">
-              <img src="assets/images/hero.svg" className="w-full " alt="" />
+              <div className="w-full ">
+                <img
+                  src="assets/images/lens-overlay.svg"
+                  className="absolute top-0 left-0 w-full h-full z-10 pointer-events-none"
+                  alt=""
+                />
+                <img
+                  src="assets/images/hero_1.svg"
+                  className="w-full "
+                  alt=""
+                />
+              </div>
+              <div className="absolute top-[-10%] left-[-26%] w-full h-full">
+                <Canvas camera={{ position: [0, 0, 530] }}>
+                  <Environment preset="studio" />
+                  <Suspense fallback={null}>
+                    <SpinningModel />
+                  </Suspense>
+                </Canvas>
+              </div>
             </div>
           </div>
         </div>
