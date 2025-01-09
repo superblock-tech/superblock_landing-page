@@ -8,6 +8,7 @@ import Products from "./components/Products";
 import Section3 from "./components/Section3";
 import Unloacking from "./components/Unloacking";
 import WhySuperblock from "./components/WhySuperblock";
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       className="bg-cover bg-no-repeat"
       style={{ backgroundImage: "url('assets/images/bg.png')" }}
     >
+      <Toaster/>
       <Header />
       <Hero />
       <CuttingEdge />
