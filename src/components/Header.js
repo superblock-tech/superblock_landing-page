@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AroundIcon, ArrowBottom, RightArrow } from "../Icons";
+import { useLoginDialog } from "../contexts/LoginDialogContext";
 
 export default function Header() {
+  const { openLoginDialog } = useLoginDialog();
   const [isOpen, setIsOpen] = useState(false);
 
   //scroll event
@@ -65,7 +67,7 @@ export default function Header() {
               ))}
             </nav>
 
-            <button className="hidden  rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px] bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6] hover:from-[#7B36B6] hover:to-[#1BA3FF] transition-all duration-300">
+            <button onClick={openLoginDialog} className="hidden  rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px] bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6] hover:from-[#7B36B6] hover:to-[#1BA3FF] transition-all duration-300">
               <span className="text-white text-[16px] leading-[29.87px] font-[450]">
                 Join Presale
               </span>{" "}
@@ -88,6 +90,9 @@ export default function Header() {
 }
 
 const MobileMenu = ({ setIsOpen, isOpen }) => {
+
+  const { openLoginDialog } = useLoginDialog();
+
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
@@ -121,7 +126,7 @@ const MobileMenu = ({ setIsOpen, isOpen }) => {
             ))}
           </nav>
 
-          <button className="  rounded-[12px] flex items-center py-[6.58px] px-[20px] gap-[24px] bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6] hover:from-[#7B36B6] hover:to-[#1BA3FF] transition-all duration-300">
+          <button onClick={openLoginDialog} className="rounded-[12px] flex items-center py-[6.58px] px-[20px] gap-[24px] bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6] hover:from-[#7B36B6] hover:to-[#1BA3FF] transition-all duration-300">
             <span className="text-white text-[16px] leading-[29.87px] font-[450]">
               Join Presale
             </span>{" "}

@@ -3,8 +3,11 @@ import { DownloadIcon, RightArrow } from "../Icons";
 import { Canvas } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import SpinningModel from "./SpinningModel";
+import { useLoginDialog } from "../contexts/LoginDialogContext";
 
 export default function Hero() {
+  const { openLoginDialog } = useLoginDialog(); 
+
   return (
     <section className="overflow-hidden">
       <div className="max-w-[1920px] mx-auto">
@@ -23,10 +26,16 @@ export default function Hero() {
               </p>
 
               <div className="flex items-center gap-[26px] sm:gap-[33px] overflow-x-scroll pr-[22px] scrollbar-hide">
-                <button className=" rounded-[12px] flex items-center py-[6.58px] px-[20px] gap-[21px] bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6] hover:from-[#7B36B6] hover:to-[#1BA3FF] transition-all duration-300">
-                  <span className="text-white text-[16px] leading-[29.87px] font-[450] whitespace-nowrap">
+                <button
+                  className="hidden rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px]
+                  bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6]
+                  hover:from-[#7B36B6] hover:to-[#1BA3FF]
+                  transition-all duration-300"
+                  onClick={openLoginDialog}
+                >
+                  <span className="text-white text-[16px] leading-[29.87px] font-[450]">
                     Join Presale
-                  </span>{" "}
+                  </span>
                   <RightArrow />
                 </button>
 

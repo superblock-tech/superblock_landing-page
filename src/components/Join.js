@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 export default function Join() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState(""); // <-- NEW
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
 
@@ -20,7 +20,7 @@ export default function Join() {
     if (!loading) {
       setLoading(true);
       try {
-        const response = await fetch("https://nomad-parners.online/api/contact", {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/contact`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -56,8 +56,20 @@ export default function Join() {
           }}
         >
           <div className="grid 2xl:grid-cols-10 grid-cols-1 md:gap-[62px] gap-[18px] relative">
-            {/* Background circles */}
-            {/* ... existing background circles ... */}
+            <div
+              className="absolute bg-[rgba(255, 255, 255, 0.04)] lg:w-[873px] lg:h-[873px] w-[514px] h-[619px] rounded-full lg:border-[111px] 2xl:-top-[174px] border-[78px] 2xl:-left-[35%] sm:-top-[30%] sm:-left-[30%] -top-[40%] -left-[70%]  "
+              style={{
+                background: "rgba(255, 255, 255, 0.04)",
+                borderColor: "rgba(255, 255, 255, 0.04)",
+              }}
+            ></div>
+            <div
+              className="absolute bg-[rgba(255, 255, 255, 0.04)] lg:w-[873px] lg:h-[873px] w-[514px] h-[619px] rounded-full lg:border-[111px] 2xl:-top-[80%] border-[78px] 2xl:-right-[30%] -bottom-[20%] md:-bottom-[50%] -right-[20%] rotate-90 xl:rotate-0 "
+              style={{
+                background: "rgba(255, 255, 255, 0.04)",
+                borderColor: "rgba(255, 255, 255, 0.04)",
+              }}
+            ></div>
 
             {/* Left section */}
             <div className="w-full 2xl:col-span-4 gri bg-white/40 min-h-[282px] sm:min-h-[462px] lg:rounded-[50px] rounded-[20px] flex justify-center items-center flex-col">

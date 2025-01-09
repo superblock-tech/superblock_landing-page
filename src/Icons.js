@@ -341,3 +341,43 @@ export const PaginationStyle = () => {
     </svg>
   );
 };
+
+export const CloseIcon
+ = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="inherit"
+      height="inherit"
+      viewBox="0 0 20 20"
+      fill="inherit"
+    >
+      <path
+        d="M4.64645 4.64645C4.84171 4.45118 5.15829 4.45118 5.35355 4.64645L10 9.29289L14.6464 4.64645C14.8417 4.45118 15.1583 4.45118 15.3536 4.64645C15.5488 4.84171 15.5488 5.15829 15.3536 5.35355L10.7071 10L15.3536 14.6464C15.5488 14.8417 15.5488 15.1583 15.3536 15.3536C15.1583 15.5488 14.8417 15.5488 14.6464 15.3536L10 10.7071L5.35355 15.3536C5.15829 15.5488 4.84171 15.5488 4.64645 15.3536C4.45118 15.1583 4.45118 14.8417 4.64645 14.6464L9.29289 10L4.64645 5.35355C4.45118 5.15829 4.45118 4.84171 4.64645 4.64645Z"
+        fill="inherit"
+      />
+    </svg>
+  );
+};
+
+
+
+export function CopyIcon(props) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      width={props.width || "24"}
+      height={props.height || "24"}
+      className={props.className}
+      {...props}
+    >
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+    </svg>
+  );
+}
