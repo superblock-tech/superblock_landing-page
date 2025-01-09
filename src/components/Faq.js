@@ -23,7 +23,7 @@ export default function Faq() {
               </h1>
               <img
                 className="sm:max-w-full max-w-[286px]"
-                src="/assets/images/faq.svg"
+                src="/assets/gifs/faq.gif"
                 alt=""
               />
             </div>

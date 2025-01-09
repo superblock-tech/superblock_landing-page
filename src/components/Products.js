@@ -40,27 +40,27 @@ export default function Products() {
 const data = [
   {
     title: "Asset Tokenization Platform",
-    icon: "/assets/images/products/img1.svg",
+    icon: "/assets/gifs/products/gif1.gif",
     text: "Superblock's core product is its asset tokenization platform, which allows users to tokenize real-world assets such as real estate, art, and commodities. This platform enables fractional ownership, making it easier for users to diversify their portfolios and access high-value markets.",
   },
   {
     title: "Superblock DeFi Suite",
-    icon: "/assets/images/products/img2.svg",
+    icon: "/assets/gifs/products/gif2.gif",
     text: "Superblock's core product is its asset tokenization platform, which allows users to tokenize real-world assets such as real estate, art, and commodities. This platform enables fractional ownership, making it easier for users to diversify their portfolios and access high-value markets.",
   },
   {
     title: "DAO Governance Tools",
-    icon: "/assets/images/products/img3.svg",
+    icon: "/assets/gifs/products/gif3.gif",
     text: "Superblock's core product is its asset tokenization platform, which allows users to tokenize real-world assets such as real estate, art, and commodities. This platform enables fractional ownership, making it easier for users to diversify their portfolios and access high-value markets.",
   },
   {
     title: "Al-Powered Analytics and Modular Development:",
-    icon: "/assets/images/products/img4.svg",
+    icon: "/assets/gifs/products/gif4.gif",
     text: "Superblock's core product is its asset tokenization platform, which allows users to tokenize real-world assets such as real estate, art, and commodities. This platform enables fractional ownership, making it easier for users to diversify their portfolios and access high-value markets.",
   },
   {
     title: "Marketplace",
-    icon: "/assets/images/products/img5.svg",
+    icon: "/assets/gifs/products/gif5.gif",
     text: "The Superblock Marketplace is a dynamic platform where users can buy, sell, and trade tokenized assets and NFTs. It offers real-time market data, secure transactions, and a user-friendly interface, making it easy to navigate and manage investments.",
   },
 ];

@@ -27,7 +27,7 @@ export default function CuttingEdge() {
 
             <div className="lg:w-[357px] w-full">
               <img
-                src="assets/images/img1.svg"
+                src="assets/gifs/gif1.gif"
                 className="lg:w-full w-[292px] mx-auto"
                 alt=""
               />

@@ -83,7 +83,7 @@ export default function WhySuperblock() {
 
             <div className="sm:max-w-[364px] w-full flex justify-center items-center">
               <img
-                src="/assets/images/why-super-block.svg"
+                src="/assets/gifs/why-super-block.gif"
                 className="max-w-full"
                 alt=""
               />
