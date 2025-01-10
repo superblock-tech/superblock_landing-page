@@ -4,8 +4,24 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        "custom-gradient1":
-          "linear-gradient(93deg, #1BA3FF 0.28%, #FFF 72.42%)",
+        "multi-color-gradient":
+          "linear-gradient(93deg, #51B5FF 0%, #FFFFFF 16%, #9657E1 33%, #9657E1 66%, #FFFFFF 83%, #51B5FF 100%)",
+      },
+      backgroundSize: {
+        "size-800": "800%",
+      },
+      keyframes: {
+        colorCycle: {
+          "0%": {
+            backgroundPosition: "0% 50%",
+          },
+          "100%": {
+            backgroundPosition: "120% 50%",
+          },
+        },
+      },
+      animation: {
+        colorCycle: "colorCycle 16s ease-in-out infinite alternate",
       },
     },
   },

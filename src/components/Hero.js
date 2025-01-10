@@ -6,7 +6,7 @@ import SpinningModel from "./SpinningModel";
 import { useLoginDialog } from "../contexts/LoginDialogContext";
 
 export default function Hero() {
-  const { openLoginDialog } = useLoginDialog(); 
+  const { openLoginDialog } = useLoginDialog();
 
   return (
     <section className="overflow-hidden">
@@ -14,9 +14,25 @@ export default function Hero() {
         <div className="pl-[22px] sm:pl-[48px] xl:pl-[78px]">
           <div className="flex flex-col-reverse xl:flex-row xl:gap-x-[20px] justify-between xl:items-center">
             <div className="xl:max-w-[657px]  w-full">
-              <h1 className="bg-custom-gradient1  text-transparent bg-clip-text w-fit text-[42.219px] sm:text-[73.974px] font-futura-bold font-bold sm:leading-[79.974px] leading-[42.219px]">
-                Unlock the Future <br className="xl:block hidden" /> of
-                Investment with Superblock
+            <h1
+                className="
+                  bg-multi-color-gradient
+                  bg-size-800           /* ensures the gradient is 200% wide */
+                  animate-colorCycle     /* smoothly slides the gradient */
+                  text-transparent
+                  bg-clip-text
+                  w-fit
+                  text-[42.219px]
+                  sm:text-[73.974px]
+                  font-futura-bold
+                  font-bold
+                  sm:leading-[79.974px]
+                  leading-[42.219px]
+                "
+              >
+                Unlock the Future
+                <br className="xl:block hidden" />
+                of Investment with Superblock
               </h1>
 
               <p className="text-[#414141] lg:text-[31.383px] text-[22.598px]  lg:leading-[39.6px] leading-[28.514px] font-normal sm:mt-[33px] mt-[27px] sm:mb-[38px] mb-[25px] font-futura-normal">
