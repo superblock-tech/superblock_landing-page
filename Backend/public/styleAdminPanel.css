@@ -1,0 +1,164 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+/* Main container with flexbox for side-by-side layout */
+.mainContainer {
+    display: flex;
+    height: 100vh;
+    flex-direction: row;
+}
+
+/* Sidebar styling */
+.sideBar {
+    width: 20%;
+    background-color: #343a40;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+/* Sidebar header */
+.sideBar .sidebar-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sideBar .sidebar-header h4 {
+    color: white;
+    font-size: 24px;
+}
+
+/* Sidebar links styling */
+.sideBar .nav {
+    list-style: none;
+    padding: 0;
+}
+
+.sideBar .nav-item {
+    margin: 15px 0;
+}
+
+.sideBar .nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sideBar .nav-link:hover {
+    background-color: #495057;
+}
+
+/* Sidebar icons */
+.sideBar .nav-link i {
+    margin-right: 10px;
+}
+
+/* Content area styling */
+.content {
+    width: 80%;
+    padding: 20px;
+    margin-left: 20%;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    overflow-y: auto;
+    transition: margin-left 0.3s ease;
+}
+
+/* Make sure the content area takes full height and has scroll if needed */
+.content {
+    height: 100vh;
+    overflow-y: auto;
+}
+
+/* Adding a background gradient for the content */
+.content {
+    background: linear-gradient(to right, #ffffff, #f0f0f0);
+}
+
+/* Hamburger button */
+.hamburger-btn {
+    border: none;
+    font-size: 25px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 1000;
+    display: none; /* Hidden by default */
+    border-radius: 5px;
+    background-color: black;
+    color: black;
+}
+
+.hamburger-btn i {
+    color: #fff; /* Ensure the icon is white */
+}
+.logo{
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .sideBar {
+        width: 100%;
+        position: absolute;
+        transform: translateX(-100%);
+    }
+
+    .content {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .mainContainer {
+        flex-direction: column;
+    }
+
+    .sideBar.active {
+        transform: translateX(0);
+    }
+
+    .hamburger-btn {
+        display: block!important;
+    }
+}
+
+@media (max-width: 768px) {
+    .sideBar {
+        width: 100%;
+        position: absolute;
+        transform: translateX(-100%);
+    }
+
+    .content {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .mainContainer {
+        flex-direction: column;
+    }
+
+    .sideBar.active {
+        transform: translateX(0);
+    }
+
+    .hamburger-btn {
+        display: block; /* Show hamburger on small screens */
+    }
+}
