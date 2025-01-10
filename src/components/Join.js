@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ArrowRightBlack, EmailIcon, FlagIcon } from "../Icons";
 import toast from "react-hot-toast";
+import { useLoginDialog } from "../contexts/LoginDialogContext";
 
 export default function Join() {
   const [fullName, setFullName] = useState("");
@@ -8,6 +9,7 @@ export default function Join() {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
+  const { openLoginDialog } = useLoginDialog();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -86,6 +88,7 @@ export default function Join() {
                     "linear-gradient(136deg, rgba(249, 250, 251, 0.87) 66.43%, rgba(227, 231, 249, 0.87) 97.11%)",
                 }}
                 disabled={loading}
+                onClick={openLoginDialog}
               >
                 click here
               </button>
