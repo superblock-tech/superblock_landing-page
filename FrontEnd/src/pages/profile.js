@@ -3,6 +3,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { RightArrow, CopyIcon } from "../Icons";
 import toast from "react-hot-toast";
+import { ConnectKitButton } from "connectkit";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -105,6 +106,8 @@ export default function ProfilePage() {
         )}
       </div>
 
+      {/* Connect Wallet Button */}
+      <ConnectKitButton />
 
       {/* Logout Button */}
       <button
