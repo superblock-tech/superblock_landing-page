@@ -12,16 +12,18 @@ class ContactFormController extends Controller
      */
     public function index()
     {
-        $contacts = ContactForm::all();
+        $contacts = ContactForm::where('joinWhitelist', false)->get();
         return view('Contact.contacts', compact('contacts'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      */
-    public function create()
+    
+    public function joinUs()
     {
-        //
+        $contacts = ContactForm::where('joinWhitelist', true)->get();
+        return view('Contact.joinUs', compact('contacts'));
     }
 
     /**
@@ -45,30 +47,6 @@ class ContactFormController extends Controller
         } else {
             return response()->json(['message' => 'Failed to submit contact form']);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(ContactForm $contactForm)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ContactForm $contactForm)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ContactForm $contactForm)
-    {
-        //
     }
 
     /**

@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CodeForLoginController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\ContactFormController;
+use App\Http\Controllers\CryptoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,7 +35,14 @@ Route::middleware(['admin'])->group(function () {
     Route::delete('wallets/{wallet}', [WalletController::class, 'destroy'])->name('wallets.destroy');
 
     Route::get('/contactForm', [ContactFormController::class, 'index'])->name('contactForm');
+    Route::get('/joinUs', [ContactFormController::class, 'joinUs'])->name('joinUs');
 
     Route::delete('contacts/{contact}', [ContactFormController::class, 'destroy'])->name('contacts.destroy');
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+
+    Route::get('/cryptos', [CryptoController::class, 'index'])->name('cryptos');
+    Route::put('/cryptos/{id}', [CryptoController::class, 'update'])->name('cryptos.update');
+
+    Route::get('/whitelist', [\App\Http\Controllers\WhitelistController::class, 'index'])->name('whitelist');
+    Route::put('/whitelist/{id}', [\App\Http\Controllers\WhitelistController::class, 'update'])->name('whitelist.update');
 });

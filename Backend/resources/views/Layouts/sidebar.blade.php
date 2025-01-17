@@ -14,8 +14,23 @@
             </a>
         </li>
         <li class="nav-item ">
+            <a class="nav-link" href="{{ route('whitelist') }}">
+                White List (Content)
+            </a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" href="{{ route('cryptos') }}">
+                Crypto Currency
+            </a>
+        </li>
+        <li class="nav-item ">
             <a class="nav-link" href="{{ route('contactForm') }}">
                 Contact Form
+            </a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" href="{{ route('joinUs') }}">
+                Join Whitelist
             </a>
         </li>
         <li class="nav-item ">

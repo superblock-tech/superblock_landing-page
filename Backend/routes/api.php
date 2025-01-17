@@ -21,5 +21,7 @@ Route::post('/login', [UserController::class, 'loginForUser']);
 Route::post('/contact', [ContactFormController::class, 'store']);
 
 Route::middleware(['check.token'])->group(function () {
-    Route::get('/wallet', [WalletController::class, 'getWallets']);
+    Route::get('wallet', [WalletController::class, 'getWallets']);
+    Route::get('getPriceForCrypto', [\App\Http\Controllers\CryptoController::class, 'getPriceForCrypto']);
 });
+Route::get('getWhitelistContent', [\App\Http\Controllers\WhitelistController::class, 'getWhitelistContent']);
