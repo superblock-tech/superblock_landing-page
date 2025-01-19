@@ -19,7 +19,7 @@ class ContactFormController extends Controller
     /**
      * Display a listing of the resource.
      */
-    
+
     public function joinUs()
     {
         $contacts = ContactForm::where('joinWhitelist', true)->get();
@@ -41,6 +41,7 @@ class ContactFormController extends Controller
         $form->fullName = $request->fullName;
         $form->email = $request->email;
         $form->phone = $request->phone;
+        $form->joinWhitelist = $request->joinWhitelist ?? 0;
 
         if($form->save()) {
             return response()->json(['message' => 'Contact form submitted successfully']);

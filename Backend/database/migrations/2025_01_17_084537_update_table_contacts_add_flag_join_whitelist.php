@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('contact_forms', function (Blueprint $table) {
-            $table->boolean('joinWhitelist')->default(false);
+            $table->boolean('joinWhitelist')->default(0);
         });
     }
 
