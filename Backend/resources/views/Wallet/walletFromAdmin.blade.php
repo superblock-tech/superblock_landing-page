@@ -39,6 +39,7 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Address</th>
+                            <th>Crypto currency</th>
                             <th>Icon</th>
                             <th>Actions</th>
                         </tr>
@@ -49,6 +50,7 @@
                                 <td>{{ $wallet->id }}</td>
                                 <td>{{ $wallet->name }}</td>
                                 <td>{{ $wallet->address }}</td>
+                                <td>{{ $wallet->crypto->name }}</td>
                                 <td>
                                     @if($wallet->icon)
                                         <img src="{{ asset('storage/' . $wallet->icon) }}" alt="Icon" width="50">
@@ -93,6 +95,15 @@
                         <div class="mb-3">
                             <label for="address" class="form-label">Wallet Address</label>
                             <input type="text" name="address" id="address" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="crypto_id" class="form-label">Crypto Currency</label>
+                            <select name="cryptos_id" id="crypto_id" class="form-control" required>
+                                <option value="">Select Crypto Currency</option>
+                                @foreach($cryptos as $crypto)
+                                    <option value="{{ $crypto->id }}">{{ $crypto->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="icon" class="form-label">Wallet Icon (optional)</label>

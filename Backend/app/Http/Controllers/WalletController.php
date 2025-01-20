@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Crypto;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -14,8 +15,9 @@ class WalletController extends Controller
      */
     public function index()
     {
-        $wallets = Wallet::all();
-        return view('Wallet.walletFromAdmin', compact('wallets'));
+        $wallets = Wallet::with('crypto')->get();
+        $cryptos = Crypto::all();
+        return view('Wallet.walletFromAdmin', compact(['wallets', 'cryptos']));
     }
 
     /**
@@ -23,7 +25,7 @@ class WalletController extends Controller
      */
     public function getWallets()
     {
-        $wallets = Wallet::all();
+        $wallets = Wallet::with('crypto')->get();
         return response()->json($wallets);
     }
 
@@ -36,6 +38,7 @@ class WalletController extends Controller
             $wallet = new Wallet();
             $wallet->name = $request->name;
             $wallet->address = $request->address;
+            $wallet->cryptos_id = $request->cryptos_id;
 
             if($request->hasFile('icon')) {
                $icon = Storage::disk('public')->put('wallets', $request->icon);
