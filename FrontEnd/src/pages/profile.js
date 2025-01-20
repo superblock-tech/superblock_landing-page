@@ -1,110 +1,30 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { RightArrow, CopyIcon } from "../Icons";
-import toast from "react-hot-toast";
+import { RightArrow } from "../Icons";
 import { ConnectKitButton } from "connectkit";
+import TokenPurchase from "../components/TokenPurchase";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
   const { logout } = useContext(AuthContext);
 
-  const [wallets, setWallets] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const handleLogout = () => {
     logout();
     navigate("/");
   };
 
-  const fetchWallets = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/wallet`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      // Check if user is unauthorized
-      if (response.status === 401) {
-        handleLogout()
-        return;
-      }
-
-      const data = await response.json();
-      setWallets(data);
-
-    } catch (error) {
-      toast.error("Error fetching wallets.");
-      console.error("Error fetching wallets:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCopy = (text) => {
-    navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard!");
-  };
-
-  useEffect(() => {
-    fetchWallets();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div
       className="bg-cover bg-no-repeat min-h-screen flex flex-col items-center mt-10"
       style={{ backgroundImage: "url('assets/images/bg.png')" }}
     >
-      <h1 className="text-4xl text-black mb-6">Superblock Wallets</h1>
-
       {/* Wallets List */}
-      <div className="mt-10 w-full max-w-2xl mx-auto px-4">
-        {/* Loading animation */}
-        {loading ? (
-          <div className="flex items-center justify-center mt-6">
-            {/* Simple Tailwind spinner */}
-            <div className="w-8 h-8 border-4 border-blue-400 border-t-transparent border-solid rounded-full animate-spin"></div>
-          </div>
-        ) : wallets.length === 0 ? (
-          /* If no wallets found after loading */
-          <p className="text-center text-gray-700">No wallets found.</p>
-        ) : (
-          /* Render wallets */
-          wallets.map((wallet) => (
-            <div
-              key={wallet.id}
-              className="bg-white rounded-lg shadow-lg p-4 mb-6 flex items-center"
-            >
-              {/* Wallet icon */}
-              <img
-                src={`https://nomad-parners.online/storage/${wallet.icon}`}
-                alt="wallet icon"
-                className="w-12 h-12 rounded-full mr-4 object-cover"
-                onError={(e) => {
-                  // fallback if icon doesn't load
-                  e.target.src = "assets/images/crypto-wallet.png";
-                }}
-              />
+      <TokenPurchase/>
 
-              {/* Wallet info */}
-              <div className="flex-1">
-                <h2 className="font-bold text-xl">{wallet.name}</h2>
-                <p className="text-gray-600 text-sm break-all">{wallet.address}</p>
-              </div>
-
-              {/* Copy to clipboard button */}
-              <button
-                onClick={() => handleCopy(wallet.address)}
-                className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-2 rounded-full"
-              >
-                <CopyIcon className="w-5 h-5" />
-              </button>
-            </div>
-          ))
-        )}
-      </div>
+      <br/>
 
       {/* Connect Wallet Button */}
       <ConnectKitButton />

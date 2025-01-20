@@ -59,7 +59,6 @@ export function PresaleContextProvider({ children }) {
         if (!response.ok) {
           throw new Error("Network response was not OK");
         }
-        console.log(response)
         setFullName("");
         setEmail("");
         setPhone("");
