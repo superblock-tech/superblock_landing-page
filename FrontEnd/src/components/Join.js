@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ArrowRightBlack, EmailIcon, FlagIcon } from "../Icons";
 import toast from "react-hot-toast";
-import { useLoginDialog } from "../contexts/LoginDialogContext";
+import { usePresaleContext } from "../contexts/PresaleContext";
 
 export default function Join() {
   const [fullName, setFullName] = useState("");
@@ -9,7 +9,7 @@ export default function Join() {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
-  const { openLoginDialog } = useLoginDialog();
+  const { openLoginDialog } = usePresaleContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();

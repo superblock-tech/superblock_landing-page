@@ -5,7 +5,7 @@ import HomePage from "./pages";
 import PrivateRoute from "./components/PrivateRoute";
 import ProfilePage from "./pages/profile";
 import Header from "./components/Header";
-import { LoginDialogProvider } from "./contexts/LoginDialogContext";
+import { PresaleContextProvider } from "./contexts/PresaleContext";
 import { WagmiConfig, createClient, chain } from "wagmi";
 import { ConnectKitProvider, getDefaultClient } from "connectkit";
 
@@ -23,7 +23,7 @@ function App() {
     <AuthProvider>
       <WagmiConfig client={client}>
         <ConnectKitProvider theme="auto">
-          <LoginDialogProvider>
+          <PresaleContextProvider>
             <Toaster />
             <Header />
             <Routes>
@@ -37,7 +37,7 @@ function App() {
                 }
               />
             </Routes>
-          </LoginDialogProvider>
+          </PresaleContextProvider>
           </ConnectKitProvider>
       </WagmiConfig>
     </AuthProvider>

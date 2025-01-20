@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AroundIcon, ArrowBottom, RightArrow } from "../Icons";
-import { useLoginDialog } from "../contexts/LoginDialogContext";
+import { usePresaleContext } from "../contexts/PresaleContext";
 
 export default function Header() {
-  const { openLoginDialog } = useLoginDialog();
+  const { openLoginDialog } = usePresaleContext();
   const [isOpen, setIsOpen] = useState(false);
 
   //scroll event
@@ -91,7 +91,7 @@ export default function Header() {
 
 const MobileMenu = ({ setIsOpen, isOpen }) => {
 
-  const { openLoginDialog } = useLoginDialog();
+  const { openLoginDialog } = usePresaleContext();
 
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
