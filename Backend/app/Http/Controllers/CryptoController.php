@@ -21,7 +21,7 @@ class CryptoController extends Controller
      */
     public function getPriceForCrypto()
     {
-        $cryptos = Crypto::all(['id','name', 'price']);
+        $cryptos = Crypto::with('wallets')->get();
         return response()->json($cryptos);
     }
 
