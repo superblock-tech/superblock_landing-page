@@ -6,23 +6,12 @@ import PrivateRoute from "./components/PrivateRoute";
 import ProfilePage from "./pages/profile";
 import Header from "./components/Header";
 import { PresaleContextProvider } from "./contexts/PresaleContext";
-import { WagmiConfig, createClient, chain } from "wagmi";
-import { ConnectKitProvider, getDefaultClient } from "connectkit";
+import { Web3Provider } from "./components/Web3Provider";
 
 function App() {
-  const client = createClient(
-    getDefaultClient({
-      appName: "ConnectKit Superblock",
-      alchemyId: process.env.REACT_APP_ALCHEMY_ID,
-      //infuraId: process.env.INFURA_ID,
-      chains: [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum]
-    })
-  );
-
   return (
     <AuthProvider>
-      <WagmiConfig client={client}>
-        <ConnectKitProvider theme="auto">
+        <Web3Provider>
           <PresaleContextProvider>
             <Toaster />
             <Header />
@@ -38,8 +27,7 @@ function App() {
               />
             </Routes>
           </PresaleContextProvider>
-          </ConnectKitProvider>
-      </WagmiConfig>
+          </Web3Provider>
     </AuthProvider>
   );
 }
