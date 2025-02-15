@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CodesForLoginExport;
+use App\Imports\CodesForLoginImport;
 use App\Models\CodeForLogin;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class CodeForLoginController extends Controller
 {
@@ -33,6 +38,7 @@ class CodeForLoginController extends Controller
             $code->code = $request->code;
             $code->nameOfPerson = $request->nameOfPerson;
             $code->email = $request->email;
+            $code->phone = $request->phone;
 
             $code->save();
 
@@ -80,5 +86,17 @@ class CodeForLoginController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('dashboard')->with('error', 'Failed to delete code. Please try again.');
         }
+    }
+
+    final public function import(Request $request): RedirectResponse
+    {
+        Excel::import(new CodesForLoginImport(), $request->file('file'));
+
+        return back()->with('success', 'Codes Imported Successfully!');
+    }
+
+    final public function export(): BinaryFileResponse
+    {
+        return Excel::download(new CodesForLoginExport(), 'codes_for_login.xlsx');
     }
 }
