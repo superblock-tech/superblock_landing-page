@@ -7,6 +7,8 @@ import Products from "../components/Products";
 import Section3 from "../components/Section3";
 import Unloacking from "../components/Unloacking";
 import WhySuperblock from "../components/WhySuperblock";
+import KeyFeatures from "../components/KeyFeatures";
+import Tokenomics from "../components/Tokenomics";
 
 export default function HomePage() {
   return (
@@ -20,6 +22,8 @@ export default function HomePage() {
         <Products />
         <Unloacking />
         <WhySuperblock />
+        <Tokenomics/>
+        <KeyFeatures/>
         <Faq />
         <Join />
         <Footer />
