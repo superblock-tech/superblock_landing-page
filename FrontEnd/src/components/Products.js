@@ -28,6 +28,7 @@ export default function Products() {
                 setActiveSlide={setActiveSlide}
                 activeSlide={activeSlide}
                 data={data}
+                numberStyle={{}}
               />
             ))}
           </div>

@@ -19,6 +19,9 @@ export default function ProductCard({
   setActiveSlide,
   data,
   activeSlide,
+  separator = '///',
+  numberPrefix = '',
+  numberStyle = ''
 }) {
   const width = useWindowWidth();
 
@@ -63,11 +66,11 @@ export default function ProductCard({
         <div className="flex flex-col lg:flex-row justify-between items-center gap-[24px]">
           <div className="max-w-[596px] ">
             <h1 className="">
-              <span className="text-[#7B36B6] text-[24px] leading-[29.3px] font-[450]">
-                {i < 8 ? "0" + (i + 1) : i + 1}
+              <span className="text-[#7B36B6] text-[24px] leading-[29.3px] font-[450]" style={numberStyle}>
+               {numberPrefix} {i < 8 ? "0" + (i + 1) : i + 1}
               </span>{" "}
               <span className="mx-[18px] text-[#CDCDCD] tracking-[-4.8px] text-[20px] font-[450]">
-                {"///"}
+                {separator}
               </span>
               <span className="text-black font-inter text-[20px] sm:text-[30px] leading-[19px] sm:leading-[29.3px] font-bold">
                 {" "}
