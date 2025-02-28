@@ -101,7 +101,7 @@ const Tokenomics = () => {
                                                 <div>
                                                     <div className="font-bold text-gray-800">Foundation/Treasury
                                                         (Un-minted
-                                                        Reserves): 56%
+                                                        Reserves): 65%
                                                     </div>
                                                 </div>
                                             </div>
