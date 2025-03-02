@@ -12,6 +12,7 @@ class ContactForm extends Model
     protected $fillable = [
         'fullName',
         'email',
-        'message'
+        'message',
+        'phone'
     ];
 }

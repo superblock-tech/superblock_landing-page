@@ -9,6 +9,8 @@ class Crypto extends Model
 {
     use HasFactory;
 
+    const FIAT = 'FIAT';
+
     protected $fillable = [
         'name',
         'price',
