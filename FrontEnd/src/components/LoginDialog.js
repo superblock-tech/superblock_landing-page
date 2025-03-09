@@ -43,11 +43,11 @@ export default function LoginDialog({ isOpen, onClose }) {
 
     setCode("");
 
-    onClose();
+    // onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-70">
+    <div className="">
       {/* Dialog Panel */}
       <div className="bg-[#7765CE] p-8 rounded-lg relative max-w-md w-full mx-2">
         <h2 className="text-[24px] text-white mb-4 font-bold">
@@ -85,12 +85,12 @@ export default function LoginDialog({ isOpen, onClose }) {
           </button>
         </form>
 
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 text-white fill-white w-7"
-        >
-          <CloseIcon />
-        </button>
+        {/*<button*/}
+        {/*  onClick={onClose}*/}
+        {/*  className="absolute top-2 right-2 text-white fill-white w-7"*/}
+        {/*>*/}
+        {/*  <CloseIcon />*/}
+        {/*</button>*/}
       </div>
     </div>
   );
