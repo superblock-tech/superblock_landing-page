@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PresaleTransactionsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -22,6 +23,7 @@ Route::post('/contact', [ContactFormController::class, 'store']);
 
 Route::middleware(['check.token'])->group(function () {
     Route::get('wallet', [WalletController::class, 'getWallets']);
+    Route::get('transactions/{wallet}', [PresaleTransactionsController::class, 'findByAddress']);
     Route::get('getPriceForCrypto', [\App\Http\Controllers\CryptoController::class, 'getPriceForCrypto']);
 });
 Route::get('getWhitelistContent', [\App\Http\Controllers\WhitelistController::class, 'getWhitelistContent']);

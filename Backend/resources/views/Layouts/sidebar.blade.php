@@ -24,6 +24,11 @@
             </a>
         </li>
         <li class="nav-item ">
+            <a class="nav-link" href="{{ route('presale_transactions.list') }}">
+                Presale Transactions
+            </a>
+        </li>
+        <li class="nav-item ">
             <a class="nav-link" href="{{ route('contactForm') }}">
                 Contact Form
             </a>
@@ -31,6 +36,11 @@
         <li class="nav-item ">
             <a class="nav-link" href="{{ route('joinUs') }}">
                 Join Whitelist
+            </a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" href="{{ route('joinUs') }}">
+                User Registration
             </a>
         </li>
         <li class="nav-item ">
