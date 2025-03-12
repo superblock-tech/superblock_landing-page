@@ -9,6 +9,12 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="">View Contacts</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#importModal">Import Contacts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('contacts.export') }}">Export Contacts</a>
+                        </li>
                     </ul>
                 </nav>
 
@@ -49,6 +55,26 @@
                     </table>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="modal fade"  id="importModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Import</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="importForm" action="{{ route('contacts.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" id="fileInput" name="file">
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade show active">
         </div>
     </div>
 @endsection
