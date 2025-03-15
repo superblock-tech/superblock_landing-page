@@ -28,6 +28,13 @@
                             <!-- Trigger modal -->
                             <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#addCodeModal">Add Code</a>
                         </li>
+                        <li class="nav-item">
+
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#importModal">Import Codes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('code_logins.export') }}">Export Codes</a>
+                        </li>
                     </ul>
                 </nav>
 
@@ -40,6 +47,7 @@
                             <th>Code</th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Phone</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
@@ -50,6 +58,7 @@
                                 <td>{{ $code->code }}</td>
                                 <td>{{ $code->nameOfPerson }}</td>
                                 <td>{{ $code->email }}</td>
+                                <td>{{ $code->phone }}</td>
                                 <td>
                                     <!-- Delete Button Trigger -->
                                     <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCodeModal" data-id="{{ $code->id }}" data-name="{{ $code->code }}">Delete</a>
@@ -90,6 +99,10 @@
                             <label for="email" class="form-label">Email</label>
                             <input type="email" name="email" id="email" class="form-control">
                         </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="tel" name="phone" id="phone" class="form-control">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -123,6 +136,27 @@
         </div>
     </div>
 
+    <div class="modal fade"  id="importModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Import</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="importForm" action="{{ route('code_logins.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" id="fileInput" name="file">
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade show active">
+        </div>
+    </div>
+
 
     <script>
         document.getElementById('deleteCodeModal').addEventListener('show.bs.modal', function (event) {
@@ -140,7 +174,7 @@
 
         function generateRandomCode() {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let randomCode = 'VIP1192-';
+            let randomCode = '';
 
             for (let i = 0; i < 15; i++) {
                 const randomIndex = Math.floor(Math.random() * characters.length);

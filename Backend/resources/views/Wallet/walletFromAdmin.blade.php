@@ -28,6 +28,12 @@
                             <!-- Trigger Add Wallet modal -->
                             <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#addWalletModal">Add Wallet</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#importModal">Import Wallets</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('wallets.export') }}">Export Wallets</a>
+                        </li>
                     </ul>
                 </nav>
 
@@ -39,6 +45,7 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Address</th>
+                            <th>Crypto</th>
                             <th>Icon</th>
                             <th>Actions</th>
                         </tr>
@@ -49,9 +56,10 @@
                                 <td>{{ $wallet->id }}</td>
                                 <td>{{ $wallet->name }}</td>
                                 <td>{{ $wallet->address }}</td>
+                                <td>{{ $wallet->crypto?->name }}</td>
                                 <td>
                                     @if($wallet->icon)
-                                        <img src="{{ asset('storage/' . $wallet->icon) }}" alt="Icon" width="50">
+                                        <img src="{{ $wallet->icon }}" alt="Icon" width="50">
                                     @else
                                         No icon
                                     @endif
@@ -128,6 +136,26 @@
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+    <div class="modal fade"  id="importModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Import</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="importForm" action="{{ route('wallets.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" id="fileInput" name="file">
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade show active">
         </div>
     </div>
 @endsection
