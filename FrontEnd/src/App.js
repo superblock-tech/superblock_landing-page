@@ -36,6 +36,13 @@ function App() {
                   </PrivateRoute>
                 }
               />
+                <Route
+                    path="/dashboard"
+                    element={
+                        <ProfilePage />
+                    }
+                />
+
             </Routes>
           </LoginDialogProvider>
           </ConnectKitProvider>
