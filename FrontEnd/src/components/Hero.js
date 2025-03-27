@@ -3,10 +3,10 @@ import { DownloadIcon, RightArrow } from "../Icons";
 import { Canvas } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import SpinningModel from "./SpinningModel";
-import { useLoginDialog } from "../contexts/LoginDialogContext";
+import { usePresaleContext } from "../contexts/PresaleContext";
 
 export default function Hero() {
-  const { openLoginDialog } = useLoginDialog();
+  const { openLoginDialog } = usePresaleContext();
 
   return (
     <section className="overflow-hidden">

@@ -11,19 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('contact_forms', function (Blueprint $table) {
-            $table->boolean('joinWhitelist')->default(0);
+        Schema::table('wallets', function (Blueprint $table) {
+            $table->foreignId('cryptos_id')->constrained('cryptos')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
      */
-
     public function down(): void
     {
-        Schema::table('contact_forms', function (Blueprint $table) {
-            $table->dropColumn('joinWhitelist');
+        Schema::table('wallets', function (Blueprint $table) {
+            $table->dropForeign(['cryptos_id']);
+            $table->dropColumn('cryptos_id');
         });
     }
 };

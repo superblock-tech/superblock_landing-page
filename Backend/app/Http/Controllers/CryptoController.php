@@ -21,15 +21,21 @@ class CryptoController extends Controller
      */
     public function getPriceForCrypto()
     {
-        $cryptos = Crypto::all(['id','name', 'price']);
+        $cryptos = Crypto::with('wallets')->get();
         return response()->json($cryptos);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Crypto $crypto)
+    public function update($id)
     {
-        //
+        $crypto = Crypto::find($id);
+        $crypto->price = request('price');
+        if($crypto->save()){
+            return redirect()->route('cryptos')->with('success', 'Price updated successfully');
+        } else {
+            return redirect()->route('cryptos')->with('error', 'Price not updated');
+        }
     }
 }

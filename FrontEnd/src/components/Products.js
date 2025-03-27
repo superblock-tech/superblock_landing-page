@@ -4,7 +4,6 @@ import ProductCard from "./ProductCard";
 export default function Products() {
   const [activeSlide, setActiveSlide] = useState({ index: 0, position: 0 });
 
-  console.log(activeSlide);
   return (
     <section>
       <div className="container">
@@ -42,22 +41,22 @@ const data = [
   {
     title: "Asset Tokenization Platform",
     icon: "/assets/gifs/products/gif1.gif",
-    text: "Superblock's core product is its asset tokenization platform, which allows users to tokenize real-world assets such as real estate, art, and commodities. This platform enables fractional ownership, making it easier for users to diversify their portfolios and access high-value markets.",
+    text: "Superblock’s core product is its asset tokenization platform, which allows users to tokenize real-world assets such as real estate, art, and commodities. This platform enables fractional ownership, making it easier for users to diversify their portfolios and access high-value markets.",
   },
   {
     title: "Superblock DeFi Suite",
     icon: "/assets/gifs/products/gif2.gif",
-    text: "Superblock's core product is its asset tokenization platform, which allows users to tokenize real-world assets such as real estate, art, and commodities. This platform enables fractional ownership, making it easier for users to diversify their portfolios and access high-value markets.",
+    text: "Our DeFi suite provides a range of financial services, including lending, borrowing, staking, and trading, all powered by smart contracts. These services offer users more control, flexibility, and transparency compared to traditional financial systems.",
   },
   {
     title: "DAO Governance Tools",
     icon: "/assets/gifs/products/gif3.gif",
-    text: "Superblock's core product is its asset tokenization platform, which allows users to tokenize real-world assets such as real estate, art, and commodities. This platform enables fractional ownership, making it easier for users to diversify their portfolios and access high-value markets.",
+    text: "Superblock’s governance tools empower the community to participate in decision-making. Users can vote on proposals, submit ideas, and help steer the development of the platform, ensuring it meets the needs of all participants.",
   },
   {
     title: "Al-Powered Analytics and Modular Development:",
     icon: "/assets/gifs/products/gif4.gif",
-    text: "Superblock's core product is its asset tokenization platform, which allows users to tokenize real-world assets such as real estate, art, and commodities. This platform enables fractional ownership, making it easier for users to diversify their portfolios and access high-value markets.",
+    text: "For developers and enterprises, Superblock offers AI-driven analytics and modular development tools that simplify the creation and optimization of dApps. These resources help users build scalable and efficient applications quickly and easily.",
   },
   {
     title: "Marketplace",

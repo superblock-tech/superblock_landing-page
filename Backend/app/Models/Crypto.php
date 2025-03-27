@@ -16,4 +16,9 @@ class Crypto extends Model
         'price',
         'symbol',
     ];
+
+    public function wallets()
+    {
+        return $this->hasMany(Wallet::class, 'cryptos_id');
+    }
 }
