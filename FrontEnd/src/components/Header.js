@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { AroundIcon, ArrowBottom, RightArrow } from "../Icons";
 import { useLoginDialog } from "../contexts/LoginDialogContext";
+import {AuthContext} from "../contexts/AuthContext";
 
 export default function Header() {
   const { openLoginDialog } = useLoginDialog();
   const [isOpen, setIsOpen] = useState(false);
-
+  const { token } = useContext(AuthContext);
   //scroll event
   const [scrollPosition, setScrollPosition] = useState(0);
 
@@ -67,12 +68,13 @@ export default function Header() {
               ))}
             </nav>
 
-            <button onClick={openLoginDialog} className="hidden  rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px] bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6] hover:from-[#7B36B6] hover:to-[#1BA3FF] transition-all duration-300">
+
+            <a href="/profile" className="hidden  rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px] bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6] hover:from-[#7B36B6] hover:to-[#1BA3FF] transition-all duration-300">
               <span className="text-white text-[16px] leading-[29.87px] font-[450]">
-                Join Presale
+                {!token ? 'Join Presale' : 'Profile'}
               </span>{" "}
               <RightArrow />
-            </button>
+            </a>
           </div>
 
           <button className="xl:hidden" onClick={() => setIsOpen(true)}>
