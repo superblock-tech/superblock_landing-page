@@ -19,6 +19,6 @@ class Crypto extends Model
 
     public function wallets()
     {
-        return $this->hasMany(Wallet::class, 'cryptos_id');
+        return $this->hasMany(Wallet::class, 'crypto_id');
     }
 }
