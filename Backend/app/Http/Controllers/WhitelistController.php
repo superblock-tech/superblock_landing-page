@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PresaleTransaction;
 use App\Models\Whitelist;
 use Illuminate\Http\Request;
 
@@ -36,14 +37,32 @@ class WhitelistController extends Controller
     {
         $whiteListContent = Whitelist::first(['usdtRaised', 'sbxPrice', 'totalTokens', 'holders']);
 
-        $usdtRaised = $whiteListContent->usdtRaised;
+        $transactions = PresaleTransaction::all();
+
+        $usdtAmount = 0;
+        $sbxAmount = 0;
+
+        foreach ($transactions as $transaction) {
+            $usdtAmount += $transaction->usdt_amount;
+            $sbxAmount += $transaction->tokens_allocated;
+        }
+
+        $usdtRaised = $usdtAmount;
         $sbxPrice = $whiteListContent->sbxPrice;
-        $totalTokens = $whiteListContent->totalTokens;
+        $totalTokens = $sbxAmount;
         $totalBuyTokens = ($usdtRaised / $sbxPrice);
         $percentage = ($totalBuyTokens / $totalTokens) * 100;
 
         $whiteListContent->percentage = $percentage;
 
-        return response()->json($whiteListContent);
+        return response()->json(
+            [
+                'usdtRaised' => $usdtAmount,
+                'sbxPrice' => 0.001,
+                'totalTokens' => $sbxAmount,
+                'holders' => count($transactions),
+                'percentage' => $sbxAmount / count($transactions) * 100,
+            ]
+        );
     }
 }
