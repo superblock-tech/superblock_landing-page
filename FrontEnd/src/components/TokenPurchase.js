@@ -140,7 +140,7 @@ const TokenPurchase = () => {
     };
 
     return (
-        <div className="bg-[#1a1a1a] p-8 rounded-3xl mx-auto text-white w-[calc(100%-40px)] max-w-3xl border-2 shadow-2xl border-gray-400">
+        <div className="bg-[#1a1a1a] p-8 rounded-3xl mx-auto text-white w-[calc(100%-40px)] max-w-6xl border-2 shadow-2xl border-gray-400">
             {/* Header Stats */}
             {loading ? (
                 <LoadingSkeletons.Stats />
@@ -267,7 +267,7 @@ const TokenPurchase = () => {
                     {/* Step 1 - Token Selection */}
                     <div className="mb-8">
                         <h2 className="text-xl mb-4">Step 1 - Select the payment method</h2>
-                        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                             {loading ? <LoadingSkeletons.TokenSelection /> : (<>{tokens?.map((token) => (
                                 <button
                                     key={token.id}
@@ -339,7 +339,7 @@ const TokenPurchase = () => {
                     <button
                         onClick={handleBuyClick}
                         className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 transition-all font-bold text-lg mb-4"
-                        disabled={!selectedToken || !tokenAmount || !sbxAmount}
+                        disabled={!selectedToken || !tokenAmount || !sbxAmount || (sbxAmount <= 200000 || sbxAmount >= 1000000)}
                     >
                         Buy Now
                     </button>
