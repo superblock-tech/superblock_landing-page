@@ -3,12 +3,13 @@ import {AuthContext} from "../contexts/AuthContext";
 import {useNavigate} from "react-router-dom";
 import {CopyIcon, RightArrow} from "../Icons";
 import toast from "react-hot-toast";
-import {ConnectKitButton} from "connectkit";
+// import {ConnectKitButton} from "connectkit";
 import CryptoPurchaseSteps from "../components/CryptoPurchaseSteps";
 import Footer from "../components/Footer";
 import HowToBuy from "../components/HowToBuy";
 import Phace1 from "../components/Phace1";
 import LoginDialog from "../components/LoginDialog";
+import TokenPurchase from "../components/TokenPurchase";
 
 export default function ProfilePage() {
     const navigate = useNavigate();
@@ -31,11 +32,11 @@ export default function ProfilePage() {
                 },
             });
 
-            // Check if user is unauthorized
-            if (response.status === 401) {
-                // handleLogout()
-                return;
-            }
+            // // Check if user is unauthorized
+            // if (response.status === 401) {
+            //     // handleLogout()
+            //     return;
+            // }
 
             const data = await response.json();
             setWallets(data);
@@ -115,7 +116,7 @@ export default function ProfilePage() {
                                     ))
                                 )}
                             </div>
-                            <ConnectKitButton/>
+                            {/*<ConnectKitButton/>*/}
                             {/* Logout Button */}
                             <button
                                 onClick={handleLogout}
@@ -139,7 +140,7 @@ export default function ProfilePage() {
             >
 
                 {/* Connect Wallet Button */}
-
+                <TokenPurchase/>
                 <CryptoPurchaseSteps/>
                 <HowToBuy/>
                 <Footer/>
