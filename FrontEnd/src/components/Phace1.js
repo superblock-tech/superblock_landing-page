@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 export default function Phace1() {
     const calculateTimeLeft = () => {
-        const difference = +new Date("2025-03-05T12:00:00") - +new Date();
+        const difference = +new Date("2025-05-05T12:00:00") - +new Date();
         let timeLeft = {};
 
         if (difference > 0) {

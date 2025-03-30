@@ -1,11 +1,9 @@
 import React, {useContext, useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { AroundIcon, ArrowBottom, RightArrow } from "../Icons";
-import { useLoginDialog } from "../contexts/LoginDialogContext";
 import {AuthContext} from "../contexts/AuthContext";
 
 export default function Header() {
-  const { openLoginDialog } = useLoginDialog();
   const [isOpen, setIsOpen] = useState(false);
   const { token } = useContext(AuthContext);
   //scroll event
@@ -92,9 +90,7 @@ export default function Header() {
 }
 
 const MobileMenu = ({ setIsOpen, isOpen }) => {
-
-  const { openLoginDialog } = useLoginDialog();
-
+  const { token } = useContext(AuthContext);
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
@@ -117,32 +113,33 @@ const MobileMenu = ({ setIsOpen, isOpen }) => {
         <div className="flex items-center flex-col gap-[24px]">
           <nav className="flex items-center flex-col gap-[29.41px]">
             {navItems.map((it, i) => (
-              <Link
-                key={i}
-                to={it.to}
-                className="text-black text-[20.906px] font-normal leading-[39.199px] "
-                onClick={() => setIsOpen(false)}
-              >
-                {it.title}
-              </Link>
+                <Link
+                    key={i}
+                    to={it.to}
+                    className="text-black text-[20.906px] font-normal leading-[39.199px] "
+                    onClick={() => setIsOpen(false)}
+                >
+                  {it.title}
+                </Link>
             ))}
           </nav>
 
-          <button onClick={openLoginDialog} className="rounded-[12px] flex items-center py-[6.58px] px-[20px] gap-[24px] bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6] hover:from-[#7B36B6] hover:to-[#1BA3FF] transition-all duration-300">
-            <span className="text-white text-[16px] leading-[29.87px] font-[450]">
-              Join Presale
-            </span>{" "}
-            <RightArrow />
-          </button>
+          <a href="/profile"
+             className="hidden  rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px] bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6] hover:from-[#7B36B6] hover:to-[#1BA3FF] transition-all duration-300">
+              <span className="text-white text-[16px] leading-[29.87px] font-[450]">
+                {!token ? 'Join Presale' : 'Profile'}
+              </span>{" "}
+            <RightArrow/>
+          </a>
         </div>
       </div>
 
       {/* Background overlay when drawer is open */}
       {isOpen && (
-        <div
-          className="fixed inset-0 backdrop-blur-[5px]  z-[1001]"
-          onClick={toggleDrawer}
-        ></div>
+          <div
+              className="fixed inset-0 backdrop-blur-[5px]  z-[1001]"
+              onClick={toggleDrawer}
+          ></div>
       )}
     </div>
   );
