@@ -21,7 +21,6 @@ export default function ProfilePage() {
 
     const handleLogout = () => {
         logout();
-        navigate("/");
     };
 
     const fetchWallets = async () => {
@@ -42,6 +41,7 @@ export default function ProfilePage() {
             setWallets(data);
 
         } catch (error) {
+            navigate("/");
             toast.error("Error fetching wallets.");
             console.error("Error fetching wallets:", error);
         } finally {
@@ -55,7 +55,7 @@ export default function ProfilePage() {
     };
 
     useEffect(() => {
-        fetchWallets();
+          fetchWallets();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
