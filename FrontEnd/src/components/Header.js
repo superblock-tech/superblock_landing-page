@@ -67,7 +67,7 @@ export default function Header() {
             </nav>
 
 
-            <a href="/profile" className="hidden  rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px] bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6] hover:from-[#7B36B6] hover:to-[#1BA3FF] transition-all duration-300">
+            <a href="/dashboard" className="hidden  rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px] bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6] hover:from-[#7B36B6] hover:to-[#1BA3FF] transition-all duration-300">
               <span className="text-white text-[16px] leading-[29.87px] font-[450]">
                 {!token ? 'Join Presale' : 'Profile'}
               </span>{" "}
@@ -124,7 +124,7 @@ const MobileMenu = ({ setIsOpen, isOpen }) => {
             ))}
           </nav>
 
-          <a href="/profile"
+          <a href="/dashboard"
              className="hidden  rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px] bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6] hover:from-[#7B36B6] hover:to-[#1BA3FF] transition-all duration-300">
               <span className="text-white text-[16px] leading-[29.87px] font-[450]">
                 {!token ? 'Join Presale' : 'Profile'}

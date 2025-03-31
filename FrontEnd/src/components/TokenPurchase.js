@@ -1,5 +1,5 @@
 import { AuthContext } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import React, { useContext, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { CopyIcon } from "../Icons";
@@ -7,7 +7,7 @@ import CollapsibleQR from "./CollapsibleQR";
 import LoadingSkeletons from './LoadingSkeletons';
 
 const TokenPurchase = () => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const { logout } = useContext(AuthContext);
 
     const [whitelistContent, setWhitelistContent] = useState({});
@@ -34,7 +34,6 @@ const TokenPurchase = () => {
 
     const handleLogout = () => {
         logout();
-        navigate("/");
     };
 
     const fetchWhitelistContent = async () => {
@@ -49,7 +48,6 @@ const TokenPurchase = () => {
             );
 
             if (response.status === 401) {
-                handleLogout();
                 return;
             }
 
