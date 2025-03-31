@@ -21,7 +21,7 @@ class CryptoController extends Controller
      */
     public function getPriceForCrypto()
     {
-        $cryptos = Crypto::with('wallets')->get();
+        $cryptos = Crypto::query()->whereNotIn('symbol', [Crypto::FIAT])->with('wallets')->get();
         return response()->json($cryptos);
     }
 
