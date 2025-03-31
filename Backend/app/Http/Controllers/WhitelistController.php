@@ -51,7 +51,7 @@ class WhitelistController extends Controller
         $sbxPrice = $whiteListContent->sbxPrice;
         $totalTokens = $sbxAmount;
         $totalBuyTokens = ($usdtRaised / $sbxPrice);
-        $percentage = ($totalBuyTokens / ($totalTokens > 0 ? $totalTokens : 1) ) * 100;
+        $percentage = $totalTokens === 0 ? 0 : (($totalBuyTokens / $totalTokens ) * 100);
 
         $whiteListContent->percentage = $percentage;
 
