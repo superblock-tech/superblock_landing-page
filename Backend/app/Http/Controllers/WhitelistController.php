@@ -61,7 +61,7 @@ class WhitelistController extends Controller
                 'sbxPrice' => 0.001,
                 'totalTokens' => $sbxAmount,
                 'holders' => count($transactions),
-                'percentage' => $transactions === 0 ? 0 : ($sbxAmount / count($transactions) * 100),
+                'percentage' => count($transactions) === 0 ? 0 : ($sbxAmount / count($transactions) * 100),
             ]
         );
     }
