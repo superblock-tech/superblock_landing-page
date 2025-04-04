@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Crypto;
+use App\Models\CryptoNetwork;
 use Illuminate\Http\Request;
 
 class CryptoController extends Controller
@@ -21,7 +22,9 @@ class CryptoController extends Controller
      */
     public function getPriceForCrypto()
     {
-        $cryptos = Crypto::query()->whereNotIn('symbol', [Crypto::FIAT])->with('wallets')->get();
+        $cryptos = CryptoNetwork::query()
+            ->with(['cryptos', 'cryptos.wallets'])
+            ->get();
         return response()->json($cryptos);
     }
 
