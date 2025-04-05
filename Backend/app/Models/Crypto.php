@@ -21,4 +21,9 @@ class Crypto extends Model
     {
         return $this->hasMany(Wallet::class, 'crypto_id');
     }
+
+    public function networks()
+    {
+        return $this->belongsToMany(CryptoNetwork::class, 'crypto_networks_to_cryptos', 'network_id', 'crypto_id');
+    }
 }

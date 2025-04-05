@@ -22,7 +22,6 @@ class WalletController extends Controller
         $wallets = Wallet::all();
         return view('Wallet.walletFromAdmin', compact('wallets'));
     }
-
     /**
      * Show the form for creating a new resource.
      */
