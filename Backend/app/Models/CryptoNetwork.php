@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class CryptoNetwork extends Model
 {
     use HasFactory;
+
+    public function cryptos()
+    {
+        return $this->belongsToMany(Crypto::class, 'crypto_networks_to_cryptos', 'network_id', 'crypto_id');
+    }
 }
