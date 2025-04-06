@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('wallets', function (Blueprint $table) {
-            $table->foreignId('cryptos_id')->constrained('cryptos')->nullable();
-        });
+//        Schema::table('wallets', function (Blueprint $table) {
+//            $table->foreignId('crypto_id')->nullable();
+//        });
     }
 
     /**
@@ -21,9 +21,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('wallets', function (Blueprint $table) {
-            $table->dropForeign(['cryptos_id']);
-            $table->dropColumn('cryptos_id');
-        });
+//        Schema::table('wallets', function (Blueprint $table) {
+//            $table->dropForeign(['cryptos_id']);
+//            $table->dropColumn('cryptos_id');
+//        });
     }
 };
