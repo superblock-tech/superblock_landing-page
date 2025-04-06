@@ -3,7 +3,7 @@ import React from "react";
 export default function CuttingEdge() {
   return (
     <section className="mt-[67px] xl:mt-0 xl:mb-[80px] mb-[60px]">
-      <div className="container">
+      <div id="technology" className="container">
         <div className="max-w-[1596px] mx-auto">
           <div
             className="2xl:px-[84px] xl:px-[50px] px-[26px] lg:py-[52px] py-[45px] sm:rounded-[60px] rounded-[20px] flex flex-col xl:flex-row justify-between items-center gap-[34px]"
