@@ -3,7 +3,7 @@ import React from "react";
 export default function CryptoPurchaseSteps() {
     return (
         <section>
-            <h1 className="text-[#7B36B6] text-[30px] lg:text-[55px] font-futura-600 leading-[35px] lg:leading-[64px] text-center sm:max-w-[1047px] mx-auto max-w-[303px]">
+            <h1 className="mt-10 text-[#7B36B6] text-[30px] lg:text-[55px] font-futura-600 leading-[35px] lg:leading-[64px] text-center sm:max-w-[1047px] mx-auto max-w-[303px]">
                 How to Buy $SBX Tokens
             </h1>
             <h2 className=" text-[#686868] text-[20px] lg:text-[30px] font-futura-600 leading-[35px] lg:leading-[64px] text-center sm:max-w-[1047px] mx-auto max-w-[303px]">
@@ -16,7 +16,7 @@ export default function CryptoPurchaseSteps() {
                         {
                             title: "Step 1: Set Up Your Wallet",
                             description: "To get started, install MetaMask on your desktop browser or use a Wallet Connect-compatible option like Trust Wallet on mobile. For desktop transactions, MetaMask provides the smoothest experience. Mobile users can connect MetaMask or Trust Wallet through Wallet Connect.",
-                            icons: ["MetaMask", "Trust Wallet"],
+                            icons: ["MetaMask", "TrustWallet"],
                             image: null,
                             reverse: true
                         },
@@ -60,7 +60,7 @@ function Step({title, description, icons, image, reverse}) {
                 {!image && (
                     <div className="flex space-x-4">
                         {icons.includes("MetaMask") && <WalletButton name="MetaMask"/>}
-                        {icons.includes("Trust Wallet") && <WalletButton name="Trust Wallet"/>}
+                        {icons.includes("TrustWallet") && <WalletButton name="TrustWallet"/>}
                     </div>
                 )}
             </div>
@@ -74,8 +74,8 @@ function Step({title, description, icons, image, reverse}) {
 
 function WalletButton({name}) {
     return (
-        <button className="bg-blue-500 text-white px-4 py-2 rounded flex items-center space-x-2">
-            <span>{name}</span>
+        <button className=" rounded-[12px] bg-gradient-to-r from-[#FFFFFF] to-[#FFFFFF] hover:from-[#7B36B6] hover:to-[#1BA3FF] text-white px-4 py-2 rounded flex items-center space-x-2">
+            <img style={{width: '200px'}} src={'/assets/images/' + name +'.png'}></img>
         </button>
     );
 }
