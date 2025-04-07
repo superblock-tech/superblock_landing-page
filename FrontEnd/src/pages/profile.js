@@ -3,7 +3,10 @@ import {AuthContext} from "../contexts/AuthContext";
 import {useNavigate} from "react-router-dom";
 import {CopyIcon, RightArrow} from "../Icons";
 import toast from "react-hot-toast";
-// import {ConnectKitButton} from "connectkit";
+import {ConnectKitButton, ConnectKitProvider, getDefaultConfig} from "connectkit";
+import { WagmiConfig, configureChains, createConfig } from 'wagmi'
+import { mainnet, sepolia } from 'wagmi/chains'
+
 import CryptoPurchaseSteps from "../components/CryptoPurchaseSteps";
 import Footer from "../components/Footer";
 import HowToBuy from "../components/HowToBuy";
@@ -18,6 +21,14 @@ export default function ProfilePage() {
 
     const [wallets, setWallets] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const config = createConfig(
+        getDefaultConfig({
+            chains: [mainnet, sepolia], // можешь добавить нужные сети
+            walletConnectProjectId: 'ТУТ_ТВОЙ_PROJECT_ID', // получи на https://cloud.walletconnect.com/
+            appName: 'SBXToken',
+        })
+    )
 
     const handleLogout = () => {
         logout();
@@ -56,7 +67,6 @@ export default function ProfilePage() {
 
     useEffect(() => {
           fetchWallets();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -66,57 +76,59 @@ export default function ProfilePage() {
                     <Phace1/>
                     {!token ?
                         <LoginDialog isOpen={true}/> :
-                        <div className="w-full md:w-1/2 justify-center bg-gray-200 text-gray-500 rounded-lg p-10">
+                        <div className="justify-center bg-gray-200 text-gray-500 rounded-lg p-10">
                             {/*<h1 className="text-4xl text-black mb-6">Superblock Wallets</h1>*/}
 
                             {/* Wallets List */}
-                            <div className="mt-10 w-full max-w-2xl mx-auto px-4 justify-center">
-                                {/* Loading animation */}
-                                {loading ? (
-                                    <div className="flex items-center justify-center mt-6">
-                                        {/* Simple Tailwind spinner */}
-                                        <div
-                                            className="w-8 h-8 border-4 border-blue-400 border-t-transparent border-solid rounded-full animate-spin"></div>
+                            {/*<div className="mt-10 w-full max-w-2xl mx-auto px-4 justify-center">*/}
+                            {/*    {loading ? (*/}
+                            {/*        <div className="flex items-center justify-center mt-6">*/}
+                            {/*            <div*/}
+                            {/*                className="w-8 h-8 border-4 border-blue-400 border-t-transparent border-solid rounded-full animate-spin"></div>*/}
+                            {/*        </div>*/}
+                            {/*    ) : wallets.length === 0 ? (*/}
+                            {/*        <p className="text-center text-gray-700">No wallets found.</p>*/}
+                            {/*    ) : (*/}
+                            {/*        wallets.map((wallet) => (*/}
+                            {/*            <div*/}
+                            {/*                key={wallet.id}*/}
+                            {/*                className="bg-white rounded-lg shadow-lg p-4 mb-6 flex items-center"*/}
+                            {/*            >*/}
+                            {/*                <img*/}
+                            {/*                    src={`https://nomad-parners.online/storage/${wallet.icon}`}*/}
+                            {/*                    alt="wallet icon"*/}
+                            {/*                    className="w-12 h-12 rounded-full mr-4 object-cover"*/}
+                            {/*                    onError={(e) => {*/}
+                            {/*                        e.target.src = "assets/images/crypto-wallet.png";*/}
+                            {/*                    }}*/}
+                            {/*                />*/}
+                            {/*                <div className="flex-1">*/}
+                            {/*                    <h2 className="font-bold text-xl">{wallet.name}</h2>*/}
+                            {/*                    <p className="text-gray-600 text-sm break-all">{wallet.address}</p>*/}
+                            {/*                </div>*/}
+                            {/*                <button*/}
+                            {/*                    onClick={() => handleCopy(wallet.address)}*/}
+                            {/*                    className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-2 rounded-full"*/}
+                            {/*                >*/}
+                            {/*                    <CopyIcon className="w-5 h-5"/>*/}
+                            {/*                </button>*/}
+                            {/*            </div>*/}
+                            {/*        ))*/}
+                            {/*    )}*/}
+                            {/*</div>*/}
+
+                            {/* Header Stats */}
+                            {(
+                                <div className="flex justify-between mb-6">
+                                    <div>
+                                        <div className="text-gray-400 text-sm">USDT Raised</div>
+                                        <div className="text-2xl font-bold">18.92</div>
+                                        <div className="text-gray-400 text-sm">Transactions</div>
+                                        <div className="text-2xl font-bold">5</div>
                                     </div>
-                                ) : wallets.length === 0 ? (
-                                    /* If no wallets found after loading */
-                                    <p className="text-center text-gray-700">No wallets found.</p>
-                                ) : (
-                                    /* Render wallets */
-                                    wallets.map((wallet) => (
-                                        <div
-                                            key={wallet.id}
-                                            className="bg-white rounded-lg shadow-lg p-4 mb-6 flex items-center"
-                                        >
-                                            {/* Wallet icon */}
-                                            <img
-                                                src={`https://nomad-parners.online/storage/${wallet.icon}`}
-                                                alt="wallet icon"
-                                                className="w-12 h-12 rounded-full mr-4 object-cover"
-                                                onError={(e) => {
-                                                    // fallback if icon doesn't load
-                                                    e.target.src = "assets/images/crypto-wallet.png";
-                                                }}
-                                            />
-
-                                            {/* Wallet info */}
-                                            <div className="flex-1">
-                                                <h2 className="font-bold text-xl">{wallet.name}</h2>
-                                                <p className="text-gray-600 text-sm break-all">{wallet.address}</p>
-                                            </div>
-
-                                            {/* Copy to clipboard button */}
-                                            <button
-                                                onClick={() => handleCopy(wallet.address)}
-                                                className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-2 rounded-full"
-                                            >
-                                                <CopyIcon className="w-5 h-5"/>
-                                            </button>
-                                        </div>
-                                    ))
-                                )}
-                            </div>
-                            {/*<ConnectKitButton/>*/}
+                                </div>
+                            )}
+                            <ConnectKitButton/>
                             {/* Logout Button */}
                             <button
                                 onClick={handleLogout}
@@ -138,10 +150,9 @@ export default function ProfilePage() {
                 className="bg-cover bg-no-repeat min-h-screen flex flex-col items-center mt-10"
                 style={{backgroundImage: "url('assets/images/bg.png')"}}
             >
-
+                    <TokenPurchase/>
+                    <CryptoPurchaseSteps/>
                 {/* Connect Wallet Button */}
-                <TokenPurchase/>
-                <CryptoPurchaseSteps/>
                 <HowToBuy/>
                 <Footer/>
             </div>
