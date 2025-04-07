@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { AroundIcon, ArrowBottom, RightArrow } from "../Icons";
 import {AuthContext} from "../contexts/AuthContext";
+import {usePresaleContext} from "../contexts/PresaleContext";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -58,7 +59,11 @@ export default function Header() {
               {navItems.map((it, i) => (
                 <Link
                   key={i}
-                  to={it.to}
+                  onClick={() => {
+                    document.getElementById(it.to).scrollIntoView()
+                    window.scrollTo(0, window.scrollY - 150)
+                  }
+                }
                   className="text-black text-[20.906px] font-normal leading-[39.199px] "
                 >
                   {it.title}
@@ -91,6 +96,8 @@ export default function Header() {
 
 const MobileMenu = ({ setIsOpen, isOpen }) => {
   const { token } = useContext(AuthContext);
+  const { openLoginDialog } = usePresaleContext();
+
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
@@ -113,15 +120,32 @@ const MobileMenu = ({ setIsOpen, isOpen }) => {
         <div className="flex items-center flex-col gap-[24px]">
           <nav className="flex items-center flex-col gap-[29.41px]">
             {navItems.map((it, i) => (
-                <Link
+                <button
                     key={i}
-                    to={it.to}
                     className="text-black text-[20.906px] font-normal leading-[39.199px] "
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => {
+                      document.getElementById(it.to).scrollIntoView()
+                      window.scrollTo(0, window.scrollY - 80)
+                    }
+                    }
                 >
                   {it.title}
-                </Link>
+                </button>
             ))}
+            <button
+                className="rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px]
+                  bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6]
+                  hover:from-[#7B36B6] hover:to-[#1BA3FF]
+                  transition-all duration-300"
+                onClick={openLoginDialog}
+            >
+                  <span className="text-white text-[16px] leading-[29.87px] font-[450]">
+                    Apply For Presale
+                  </span>
+              <span className="hidden xl:flex">
+                    <RightArrow/>
+                  </span>
+            </button>
           </nav>
 
           <a href="/dashboard"
@@ -148,18 +172,18 @@ const MobileMenu = ({ setIsOpen, isOpen }) => {
 const navItems = [
   {
     title: "Technology",
-    to: "/",
+    to: "technology",
   },
   {
     title: "Ecosystem",
-    to: "/",
+    to: "ecosystem",
   },
   {
     title: "Benefits",
-    to: "/",
+    to: "benefits",
   },
   {
     title: "FAQ’s",
-    to: "/",
+    to: "faq",
   },
 ];
