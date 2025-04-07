@@ -1,19 +1,24 @@
-import { AuthContext } from "../contexts/AuthContext";
+import {AuthContext} from "../contexts/AuthContext";
 // import { useNavigate } from "react-router-dom";
-import React, { useContext, useState, useEffect } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import toast from "react-hot-toast";
-import { CopyIcon } from "../Icons";
+import {CopyIcon} from "../Icons";
 import CollapsibleQR from "./CollapsibleQR";
 import LoadingSkeletons from './LoadingSkeletons';
+import TokenDropdown from "./TokenDropdown";
+import SendEthButton from "./SendFromConnectKitButton";
+import {useAccount} from 'wagmi'
+
 
 const TokenPurchase = () => {
     // const navigate = useNavigate();
-    const { logout } = useContext(AuthContext);
-
+    const {logout} = useContext(AuthContext);
+    const {address} = useAccount()
     const [whitelistContent, setWhitelistContent] = useState({});
     const [tokens, setTokens] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedToken, setSelectedToken] = useState(null);
+    const [selectedNetwork, setSelectedNetwork] = useState(null);
     const [tokenAmount, setTokenAmount] = useState("");
     const [sbxAmount, setSbxAmount] = useState("");
     const [showWallets, setShowWallets] = useState(false);
@@ -90,16 +95,30 @@ const TokenPurchase = () => {
         }
     };
 
+    const setToken = ({token, network}) => {
+        setSelectedToken(token)
+        setSelectedNetwork(network)
+    };
+
     useEffect(() => {
         fetchWhitelistContent();
         fetchCryptoPrices();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
+        if (address) {
+            setSelectedToken(
+                {"id": 2, "name": "ETH", "symbol": "ETH", "price": 1812.79, "created_at": "", "wallets": []}
+            )
+            setSelectedNetwork(
+                {"id": 0, "name": "LocalChain"}
+            )
+        }
     }, []);
+
 
     // Calculate token to SBX conversion
     const calculateSbxAmount = (tokenAmt) => {
         if (!selectedToken || !whitelistContent.sbxPrice || !tokenAmt) return "";
-        const usdValue = tokenAmt * selectedToken.price;
+        const usdValue = tokenAmt * selectedToken?.price;
         return (usdValue / whitelistContent.sbxPrice).toFixed(6);
     };
 
@@ -107,14 +126,15 @@ const TokenPurchase = () => {
     const calculateTokenAmount = (sbxAmt) => {
         if (!selectedToken || !whitelistContent.sbxPrice || !sbxAmt) return "";
         const usdValue = sbxAmt * whitelistContent.sbxPrice;
-        return (usdValue / selectedToken.price).toFixed(6);
+        return (usdValue * selectedToken?.price).toFixed(6);
     };
 
     const handleTokenAmountChange = (e) => {
-        const value = e.target.value;
+        const value = e;
         if (value === "" || /^\d*\.?\d*$/.test(value)) {
             setTokenAmount(value);
-            setSbxAmount(calculateSbxAmount(parseFloat(value)));
+            // setSbxAmount(value);
+            setSbxAmount(calculateTokenAmount(parseFloat(value)));
         }
     };
 
@@ -138,63 +158,12 @@ const TokenPurchase = () => {
     };
 
     return (
-        <div className="bg-[#1a1a1a] p-8 rounded-3xl mx-auto text-white w-[calc(100%-40px)] max-w-6xl border-2 shadow-2xl border-gray-400">
-            {/* Header Stats */}
-            {loading ? (
-                <LoadingSkeletons.Stats />
-            ) : (
-                <div className="flex justify-between mb-12">
-                    <div>
-                        <div className="text-gray-400 text-sm">USDT Raised</div>
-                        <div className="text-2xl font-bold">${whitelistContent.usdtRaised}</div>
-                    </div>
-                    <div>
-                        <div className="text-gray-400 text-sm">Holders</div>
-                        <div className="text-2xl font-bold">{whitelistContent.holders}</div>
-                    </div>
-                </div>
-            )}
-
-
-            <div className="mb-8">
-                {/* Token Price Info */}
-                {loading ? (
-                    <LoadingSkeletons.TokenPrice />
-                ) : (
-                    <>
-                        <div className="flex items-center gap-2 mb-4">
-                            <div className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-full p-1 w-6 h-6"></div>
-                            <span>1 SBX = </span>
-                            <span className="text-blue-400">
-                                ${whitelistContent.sbxPrice} USD
-                            </span>
-                        </div>
-
-                        <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden mb-4">
-                            <div
-                                className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 to-purple-500"
-                                style={{ width: `${whitelistContent.percentage}%` }}
-                            ></div>
-                        </div>
-                        <div className="inline-block bg-[#2a2a2a] rounded-2xl p-4">
-                            <div className="flex items-center gap-2">
-                                <div className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-full p-1 w-6 h-6"></div>
-                                <span className="font-bold">
-                                    {(
-                                        whitelistContent.usdtRaised / whitelistContent.sbxPrice
-                                    ).toFixed(2)}{" "}
-                                    SBX
-                                </span>
-                            </div>
-                            <div className="text-sm text-purple-400 ml-8">Tokens Sold</div>
-                        </div>
-                    </>
-                )}
-            </div>
+        <div
+            className="bg-gradient-to-r from-purple-200 to-blue-200 p-8 rounded-3xl mx-auto text-black w-[calc(100%-40px)] max-w-6xl border-2 shadow-2xl border-gray-400">
 
             {/* Purchase Summary - Always visible when amounts are set */}
             {(tokenAmount || sbxAmount) && showWallets && (
-                <div className="mb-8 p-4 bg-[#2a2a2a] rounded-xl">
+                <div className="mb-8 p-4 bg-gradient-to-r from-purple-200 to-blue-200 rounded-xl">
                     <h3 className="text-lg mb-2">Purchase Summary</h3>
                     <div className="flex justify-between items-center">
                         <span>
@@ -220,7 +189,7 @@ const TokenPurchase = () => {
                     </div>
 
                     {loading ? (
-                        <LoadingSkeletons.Wallets />
+                        <LoadingSkeletons.Wallets/>
                     ) : selectedToken?.wallets.length === 0 ? (
                         <div className="text-center p-4 bg-[#2a2a2a] rounded-xl">
                             No wallets available for {selectedToken?.name}
@@ -251,9 +220,9 @@ const TokenPurchase = () => {
                                     onClick={() => handleCopy(wallet.address)}
                                     className="flex items-center justify-center bg-gray-700 hover:bg-gray-600 p-2 rounded-full mr-5"
                                 >
-                                    <CopyIcon className="w-5 h-5" />
+                                    <CopyIcon className="w-5 h-5"/>
                                 </button>
-                                <CollapsibleQR value={wallet.address} />
+                                <CollapsibleQR value={wallet.address}/>
                             </div>
                         ))
                     )}
@@ -266,81 +235,95 @@ const TokenPurchase = () => {
                     <div className="mb-8">
                         <h2 className="text-xl mb-4">Step 1 - Select the payment method</h2>
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                            {loading ? <LoadingSkeletons.TokenSelection /> : (<>{tokens?.map((token) => (
-                                <button
-                                    key={token.id}
-                                    onClick={() => {
-                                        setSelectedToken(token);
-                                        if (tokenAmount) {
-                                            setSbxAmount(calculateSbxAmount(parseFloat(tokenAmount)));
-                                        }
-                                    }}
-                                    className={`flex items-center gap-3 p-4 rounded-xl border transition-all ${selectedToken?.id === token.id
-                                        ? "border-purple-500 bg-gradient-to-r from-purple-900/50 to-blue-900/50"
-                                        : "border-gray-700 hover:border-gray-600"
-                                        }`}
-                                >
-                                    <span className="text-2xl">{getTokenEmoji(token.name)}</span>
-                                    <div className="text-left">
-                                        <div className="font-bold">{token.name}</div>
-                                        <div className="text-sm text-gray-400">${token.price}</div>
-                                    </div>
-                                </button>
-                            ))}</>)}
+                            {loading ? <LoadingSkeletons.TokenSelection/> :
+                                <TokenDropdown
+                                    networks={tokens}
+                                    setTokenData={setToken}
+                                    getTokenEmoji={getTokenEmoji}
+                                />
+                            }
                         </div>
                     </div>
 
-                    {/* Step 2 - Amount Input */}
-
+                    {/* Step 2 - Slider */}
                     <div className="mb-8">
                         <h2 className="text-xl mb-4">
-                            Step 2 - Enter the amount of tokens you would like to purchase
+                            Step 2 - Select the amount of tokens to purchase
                         </h2>
-                        <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 bg-[#2a2a2a] p-4 rounded-xl">
-                            {/* First Input Group */}
-                            <div className="flex items-center gap-2 w-full md:w-auto bg-[#222222] p-4 rounded-lg">
+                        {selectedNetwork && selectedToken ? (
+                            <div
+                                className="bg-gradient-to-r from-purple-200 to-blue-200 p-6 rounded-xl flex flex-col gap-6">
+                                <div className="flex items-center justify-between text-sm text-gray-600">
+                                    <span>{process.env.REACT_APP_MIN_TOKENS_AMOUNT} SBX</span>
+                                    <span>{process.env.REACT_APP_MAX_TOKENS_AMOUNT} SBX</span>
+                                </div>
                                 <input
-                                    type="text"
+                                    disabled={!selectedNetwork || !selectedToken}
+                                    type="range"
+                                    min={process.env.REACT_APP_MIN_TOKENS_AMOUNT}
+                                    max={process.env.REACT_APP_MAX_TOKENS_AMOUNT}
                                     value={tokenAmount}
-                                    onChange={handleTokenAmountChange}
-                                    placeholder="0.00"
-                                    className="bg-transparent border-none outline-none w-full md:w-32 text-xl"
+                                    onChange={(e) => handleTokenAmountChange(e.target.value)}
+                                    className="w-full"
                                 />
-                                <div className="flex items-center gap-2 min-w-fit">
-                                    <span className="text-2xl">
-                                        {selectedToken ? getTokenEmoji(selectedToken.name) : "🪙"}
-                                    </span>
-                                    <span>{selectedToken?.name || "Select Token"}</span>
+                                <div className="flex justify-between text-lg">
+                                    <div className="flex items-center gap-2">
+                                    <span
+                                        className="text-2xl">{selectedToken ? getTokenEmoji(selectedToken?.name) : "🪙"}</span>
+                                        <span>{tokenAmount}</span>
+                                        <span>{selectedNetwork && selectedToken ? selectedNetwork?.name + '-' + selectedToken?.name : ""}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div
+                                            className="w-5 h-5 rounded-full bg-gradient-to-r from-purple-500 to-blue-500"/>
+                                        <span>{sbxAmount} SBX</span>
+                                    </div>
                                 </div>
                             </div>
+                        ) : ''}
 
-                            {/* Equals Sign */}
-                            <div className="text-white text-3xl">=</div>
-
-                            {/* Second Input Group */}
-                            <div className="flex items-center gap-2 w-full md:w-auto bg-[#222222] p-4 rounded-lg">
-                                <input
-                                    type="text"
-                                    value={sbxAmount}
-                                    onChange={handleSbxAmountChange}
-                                    placeholder="0.00"
-                                    className="bg-transparent border-none outline-none w-full text-xl"
-                                />
-                                <div className="flex items-center gap-2 min-w-fit">
-                                    <div className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-full p-1 w-6 h-6"></div>
-                                    <span>SBX</span>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    {/* Buy Button */}
-                    <button
-                        onClick={handleBuyClick}
-                        className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 transition-all font-bold text-lg mb-4"
-                        disabled={!selectedToken || !tokenAmount || !sbxAmount || (sbxAmount <= 200000 || sbxAmount >= 1000000)}
-                    >
-                        Buy Now
-                    </button>
+
+                    {address ? (
+                        <SendEthButton>
+                        </SendEthButton>
+                    ) : (
+                        <button
+                            onClick={handleBuyClick}
+                            className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 transition-all font-bold text-lg mb-4"
+                            disabled={!selectedToken || !tokenAmount || !sbxAmount}
+                        >
+                            Buy Now
+                        </button>
+                    )
+
+                    }
+
+
+                    <h2 className="text-xl mb-4">
+                        Transactions List
+                    </h2>
+
+                    <div className="mt-10 w-full max-w-2xl mx-auto px-4 justify-center">
+                        {(
+                            [6.12, 2.1, 1, 4, 1.1, 0.6, 0.28].map((wallet) => (
+                                <div
+                                    key={wallet.id}
+                                    className="bg-white rounded-lg shadow-lg p-4 mb-6 flex items-center"
+                                >
+                                    <div className="flex-1">
+                                        <p className="text-gray-600 text-sm break-all">{wallet} USDT</p>
+                                    </div>
+                                    <button
+                                        onClick={() => handleCopy(wallet.address)}
+                                        className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-2 rounded-full"
+                                    >
+                                        <CopyIcon className="w-5 h-5"/>
+                                    </button>
+                                </div>
+                            ))
+                        )}
+                    </div>
                 </>
             )}
         </div>
