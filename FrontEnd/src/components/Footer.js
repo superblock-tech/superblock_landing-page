@@ -22,7 +22,8 @@ export default function Footer() {
           journey.
         </p>
 
-        <button
+        <a
+            href="https://x.com/superblockhq"
           className="text-black lg:text-[19px] text-[14px]  px-[24px] lg:py-[8px] py-[6px] rounded-[14px] flex justify-center items-center lg:gap-[13px] gap-[9px] w-fit mx-auto  font-semibold h-[48px]"
           style={{
             background:
@@ -30,56 +31,12 @@ export default function Footer() {
           }}
         >
           Follow Us Now <ArrowRightBlack />
-        </button>
+        </a>
 
         <div className="lg:mt-[96px] mt-[48px] sm:py-[21px] py-[14px] flex justify-between flex-col lg:flex-row border-t border-[#494949] items-center">
           <p className="text-[#424141] text-[16px] font-normal tracking-[0.16px] leading-[22px]">
-            © 2024 SuperBlock. All rights reserved.
+            © {new Date().getFullYear()} SuperBlock. All rights reserved.
           </p>
-          <div className="flex items-center gap-x-1 flex-wrap justify-center">
-            <Link
-              to="/"
-              className="text-[#424141] text-[16px] font-normal tracking-[0.16px] leading-[22px]"
-            >
-              Login
-            </Link>
-            <span className="text-[#424141] text-[16px] font-normal tracking-[0.16px] leading-[22px]">
-               — 
-            </span>
-            <Link
-              to="/"
-              className="text-[#424141] text-[16px] font-normal tracking-[0.16px] leading-[22px]"
-            >
-              Signup
-            </Link>
-            <span className="text-[#424141] text-[16px] font-normal tracking-[0.16px] leading-[22px]">
-               — 
-            </span>
-            <Link
-              to="/"
-              className="text-[#424141] text-[16px] font-normal tracking-[0.16px] leading-[22px]"
-            >
-              Pricing
-            </Link>
-            <span className="text-[#424141] text-[16px] font-normal tracking-[0.16p] leading-[22px]">
-              |
-            </span>
-            <Link
-              to="/"
-              className="text-[#424141] text-[16px] font-normal tracking-[0.16px] leading-[22px]"
-            >
-              Privacy
-            </Link>
-            <span className="text-[#424141] text-[18px] font-normal tracking-[0.16px] leading-[22px]">
-               — 
-            </span>
-            <Link
-              to="/"
-              className="text-[#424141] text-[16px] font-normal tracking-[0.16px] leading-[22px]"
-            >
-              Terms
-            </Link>
-          </div>
         </div>
       </div>
     </footer>
