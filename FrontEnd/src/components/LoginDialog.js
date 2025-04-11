@@ -4,10 +4,12 @@ import { AuthContext } from "../contexts/AuthContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import {usePresaleContext} from "../contexts/PresaleContext";
 
 export default function LoginDialog({ isOpen, onClose }) {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
+  const { openLoginDialog } = usePresaleContext();
 
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -56,32 +58,40 @@ export default function LoginDialog({ isOpen, onClose }) {
 
         <form onSubmit={handleSubmit}>
           {/* Reusing input styles from previous code */}
-          <div className="bg-gradient-to-b from-[#F2F2F2] to-[#c0c0e6] p-[1px] rounded-[10px] sm:h-[57px] h-[48px] mb-4">
+          <div
+              className="bg-gradient-to-b from-[#F2F2F2] to-[#c0c0e6] p-[1px] rounded-[10px] sm:h-[57px] h-[48px] mb-4">
             <div className="p-[13px] w-full h-full bg-[#b4b1e2] rounded-[10px]">
               <input
-                required
-                type="text"
-                placeholder="Enter your code"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                className="w-full h-full bg-transparent border-none outline-none text-white font-normal text-[18px] leading-[34px] placeholder:text-gray-200"
+                  required
+                  type="text"
+                  placeholder="Enter your code"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                  className="w-full h-full bg-transparent border-none outline-none text-white font-normal text-[18px] leading-[34px] placeholder:text-gray-200"
               />
             </div>
           </div>
 
           {/* Button with the provided styles */}
           <button
-            type="submit"
-            className="rounded-[12px] flex items-center py-[6.58px] px-[20px] gap-[24px]
+              type="submit"
+              className="w-full text-center rounded-[12px] flex items-center py-[6.58px] px-[20px] gap-[24px]
                        bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6]
                        hover:from-[#7B36B6] hover:to-[#1BA3FF]
                        transition-all duration-300"
-            disabled={loading}
+              disabled={loading}
           >
             <span className="text-white text-[16px] leading-[29.87px] font-[450]">
               {loading ? "Logging in..." : "Log in"}
             </span>
-            <RightArrow />
+            <RightArrow/>
+          </button>
+
+          <button onClick={openLoginDialog}
+             className=" w-full mt-5 hidden rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px] bg-gradient-to-r from-[#FFFFFF] to-[#AAA] hover:from-[#AAA] hover:to-[#FFFFFF] transition-all duration-300">
+              <span className="text-black text-[16px] leading-[29.87px] font-[450]">
+                Apply For Presale
+              </span>
           </button>
         </form>
 
