@@ -6,7 +6,7 @@ export default function Products() {
 
   return (
     <section>
-      <div className="container">
+      <div id="ecosystem" className="container">
         <h1 className=" text-[#353535] text-[30px] lg:text-[55px] font-futura-600   leading-[35px] lg:leading-[64px] text-center sm:max-w-[1047px] mx-auto max-w-[303px]">
           Products and Services of the Superblock Ecosystem
         </h1>

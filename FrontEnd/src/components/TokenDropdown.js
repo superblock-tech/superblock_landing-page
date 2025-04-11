@@ -22,15 +22,28 @@ const TokenDropdown = ({ networks,  getTokenEmoji, setTokenData }) => {
         (<>{networks?.map((network) => (
             <div className="relative inline-block text-left w-full">
                 <button
-                    onClick={() => setDropdownOpen(dropdownOpen ===  network.name ? false : network.name)}
+                    onClick={() =>
+                    {
+                        if (network.cryptos.length === 1) {
+                            handleSelect(network.cryptos[0], network)
+                        } else {
+                            setDropdownOpen(dropdownOpen ===  network.name ? false : network.name)
+                        }
+
+
+                    }
+                }
                     className={`w-full flex items-center justify-between gap-3 p-4 rounded-xl border transition-all border-gray-700 hover:border-gray-600`}>
                     <div className="flex items-center gap-3">
-                        <span className="text-2xl">{"🪙"}</span>
+                        <span className="text-2xl">{getTokenEmoji(network.cryptos.length === 1 ? network.cryptos[0].name : network.name )}</span>
                         <div className="text-left">
-                            <div className="font-bold">{network.name}</div>
+                            <div className="font-bold">{network.name} Tokens</div>
+                            <div className="text-sm">{network.address}</div>
                         </div>
                     </div>
-                    <ChevronDown className="w-5 h-5 text-gray-400"/>
+                    {network.cryptos.length > 1 &&
+                        <ChevronDown className="w-5 h-5 text-gray-400"/>
+                    }
                 </button>
 
                 {/* Dropdown menu */}
@@ -50,7 +63,7 @@ const TokenDropdown = ({ networks,  getTokenEmoji, setTokenData }) => {
                                 <span className="text-2xl">{getTokenEmoji(token.name)}</span>
                                 <div className="text-left">
                                     <div className="font-bold">{token.name}</div>
-                                    <div className="text-sm">${token.price}</div>
+                                    <div className="text-sm">{network.address}</div>
                                 </div>
                             </button>
                         ))}
