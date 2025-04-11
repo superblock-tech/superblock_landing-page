@@ -57,7 +57,7 @@ export default function WhySuperblock() {
   const [activeSection, setActiveSection] = useState("Developers");
 
   return (
-    <section className="lg:pt-[76px] pt-[48px] pb-[92px] lg:pb-[24px] relative overflow-hidden bg-gradient-to-r from-[#7B36B6] to-[#1BA3FF]">
+    <section id="benefits" className="lg:pt-[76px] pt-[48px] pb-[92px] lg:pb-[24px] relative overflow-hidden bg-gradient-to-r from-[#7B36B6] to-[#1BA3FF]">
       <img
         className="absolute lg:-top-[85px] top-[180px] lg:right-0 -right-[225px]"
         src="assets/images/bg-shape1.svg"
