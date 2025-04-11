@@ -31,7 +31,6 @@ export default function Hero() {
                 "
               >
                 Unlock the Future
-                <br className="xl:block hidden" />
                 of Investment with Superblock
               </h1>
 
@@ -43,30 +42,32 @@ export default function Hero() {
 
               <div className="flex items-center gap-[26px] sm:gap-[33px] overflow-x-scroll pr-[22px] scrollbar-hide">
                 <button
-                  className="hidden rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px]
+                  className="rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px]
                   bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6]
                   hover:from-[#7B36B6] hover:to-[#1BA3FF]
                   transition-all duration-300"
                   onClick={openLoginDialog}
                 >
                   <span className="text-white text-[16px] leading-[29.87px] font-[450]">
-                    Join Presale
+                    Apply For Presale
                   </span>
-                  <RightArrow />
+                  <span class="hidden xl:flex">
+                    <RightArrow />
+                  </span>
                 </button>
 
-                <button className="flex items-center gap-3">
+                <a href="/assets/documents/SUPERBLOCK%20-%20Whitepaper%20v2.6.pdf" target="_blank" className="flex items-center gap-3">
                   <DownloadIcon />{" "}
                   <span className="text-[#7B36B6] sm:text-[20px] text-[16px] font-[450] sm:leading-[33.479px] leading-[26.681px] underline whitespace-nowrap">
                     Download Whitepaper
                   </span>
-                </button>
-                <button className="flex items-center gap-3">
-                  <DownloadIcon />{" "}
-                  <span className="text-[#7B36B6] sm:text-[20px] text-[16px] font-[450] sm:leading-[33.479px] leading-[26.681px] underline whitespace-nowrap">
-                    Download Deck
-                  </span>
-                </button>
+                </a>
+                {/*<button className="flex items-center gap-3">*/}
+                {/*  <DownloadIcon />{" "}*/}
+                {/*  <span className="text-[#7B36B6] sm:text-[20px] text-[16px] font-[450] sm:leading-[33.479px] leading-[26.681px] underline whitespace-nowrap">*/}
+                {/*    Download Deck*/}
+                {/*  </span>*/}
+                {/*</button>*/}
               </div>
             </div>
 

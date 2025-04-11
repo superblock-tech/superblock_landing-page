@@ -46,7 +46,7 @@ export default function HowToBuy() {
 const data = [
     {
         title: "Prepare Your Wallet",
-        icon: "/assets/images/steps/2.png",
+        icon: "/assets/images/mm_download.png",
         text: "MetaMask is ideal for desktop users, while Trust Wallet or MetaMask via Wallet Connect works seamlessly on mobile.",
 
     },

@@ -14,7 +14,7 @@ export default function Faq() {
 
   return (
     <section className="lg:mb-[120px] mb-[79px] mt-[67px] xl:mt-[171px]">
-      <div className="container">
+      <div id="faq" className="container">
         <div className="flex  flex-col lg:flex-row  max-w-[1496px] lg:gap-[100px] gap-[35px] mx-auto">
           <div className="lg:w-[399px] w-full">
             <div className=" flex flex-col justify-between items-center gap-[47px] sm:gap-[58px] lg:mt-[30px]">

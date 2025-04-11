@@ -7,6 +7,7 @@ export default function Join() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [investmentInterest, setInvestmentInterest] = useState("");
   const [loading, setLoading] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
   const { openLoginDialog } = usePresaleContext();
@@ -27,7 +28,7 @@ export default function Join() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ fullName, email, phone }),
+          body: JSON.stringify({ fullName, email, phone, investmentInterest}),
         });
 
         if (!response.ok) {
@@ -37,7 +38,7 @@ export default function Join() {
         setEmail("");
         setPhone("");
         setIsAgreed(false);
-        toast.success("Thank you! Your information was submitted successfully.");
+        toast.success("Your application has been submitted, Thank you!");
       } catch (err) {
         console.error("Error:", err);
         toast.error("There was an error submitting the form.");
@@ -74,11 +75,8 @@ export default function Join() {
 
             {/* Left section */}
             <div className="w-full 2xl:col-span-4 gri bg-white/40 min-h-[282px] sm:min-h-[462px] lg:rounded-[50px] rounded-[20px] flex justify-center items-center flex-col">
-              <h1 className="text-center text-[#faf4ff] text-[42px] lg:text-[70px] font-bold lg:leading-[59px] leading-[36px] font-sans relative">
-                Join Presale
-              </h1>
               <h2 className="text-center text-[#faf4ff] text-[28px] lg:text-[47px] font-bold lg:leading-[59px] leading-[36px] font-sans relative">
-                link to presale website
+                Apply For Presale
               </h2>
               <button
                 className="text-[#7B36B6] text-[19px] sm:text-[31px] capitalize font-normal sm:leading-[51px] leading-[31px] sm:py-[15px] py-[10px] sm:px-[40px] px-[24px] rounded-[92px] border-[1.5px] border-[#C3C0C0] font-futura-500 mt-[18px] relative"
