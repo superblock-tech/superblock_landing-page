@@ -10,6 +10,7 @@ import SendEthButton from "./SendFromConnectKitButton";
 import {useAccount} from 'wagmi'
 
 
+
 const TokenPurchase = () => {
     // const navigate = useNavigate();
     const {logout} = useContext(AuthContext);
@@ -22,6 +23,7 @@ const TokenPurchase = () => {
     const [tokenAmount, setTokenAmount] = useState("");
     const [sbxAmount, setSbxAmount] = useState("");
     const [showWallets, setShowWallets] = useState(false);
+    const {token} = useContext(AuthContext);
 
 
     const handleCopy = (text) => {
@@ -159,7 +161,8 @@ const TokenPurchase = () => {
 
     return (
         <div
-            className="bg-gradient-to-r from-purple-200 to-blue-200 p-8 rounded-3xl mx-auto text-black w-[calc(100%-40px)] max-w-6xl border-2 shadow-2xl border-gray-400">
+            className="bg-gradient-to-r from-purple-200 to-blue-200 p-8 rounded-3xl mx-auto text-black w-[calc(100%-40px)] max-w-6xl border-2 shadow-2xl border-gray-400"
+        >
 
             {/* Purchase Summary - Always visible when amounts are set */}
             {(tokenAmount || sbxAmount) && showWallets && (
@@ -230,7 +233,11 @@ const TokenPurchase = () => {
 
                 </div>
             ) : (
-                <>
+                <div style={
+                    !token
+                        ? {pointerEvents: 'none', filter: 'blur(4px)'}
+                        : {}
+                }>
                     {/* Step 1 - Token Selection */}
                     <div className="mb-8">
                         <h2 className="text-xl mb-4">Step 1 - Select the payment method</h2>
@@ -266,25 +273,53 @@ const TokenPurchase = () => {
                                     onChange={(e) => handleTokenAmountChange(e.target.value)}
                                     className="w-full"
                                 />
-                                <div className="flex justify-between text-lg">
-                                    <div className="flex items-center gap-2">
-                                    <span
-                                        className="text-2xl">{selectedToken ? getTokenEmoji(selectedToken?.name) : "🪙"}</span>
-                                        <span>{tokenAmount}</span>
-                                        <span>{selectedNetwork && selectedToken ? selectedNetwork?.name + '-' + selectedToken?.name : ""}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <div
-                                            className="w-5 h-5 rounded-full bg-gradient-to-r from-purple-500 to-blue-500"/>
-                                        <span>{sbxAmount} SBX</span>
-                                    </div>
-                                </div>
+
                             </div>
                         ) : ''}
 
+                        <div
+                            className="flex flex-col md:flex-row items-center md:justify-between gap-4bg-gradient-to-r from-purple-200 to-blue-200 p-4 rounded-xl">
+                            {/* First Input Group */}
+                            <div className="flex items-center gap-2 w-full md:w-auto bg-[#FFFFFF] p-4 rounded-lg">
+                                <input
+                                    type="text"
+                                    value={tokenAmount}
+                                    onChange={handleTokenAmountChange}
+                                    placeholder="0.00"
+                                    className="bg-transparent border-none outline-none w-full md:w-32 text-xl"
+                                />
+                                <div className="flex items-center gap-2 min-w-fit">
+                                    <span className="text-2xl">
+                                        {selectedToken ? getTokenEmoji(selectedToken.name) : "🪙"}
+                                    </span>
+                                    <span>{selectedNetwork && selectedToken ? selectedNetwork?.name + ' - ' + selectedToken?.name : "Select Token"}</span>
+                                </div>
+                            </div>
+
+                            {/* Equals Sign */}
+                            <div className="text-black text-3xl">=</div>
+
+                            {/* Second Input Group */}
+                            <div className="flex items-center gap-2 w-full md:w-auto bg-[#FFFFFF] p-4 rounded-lg">
+                                <input
+                                    type="text"
+                                    value={sbxAmount}
+                                    onChange={handleSbxAmountChange}
+                                    placeholder="0.00"
+                                    className="bg-transparent border-none outline-none w-full text-xl"
+                                />
+                                <div className="flex items-center gap-2 min-w-fit">
+                                    <div
+                                        className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-full p-1 w-6 h-6"></div>
+                                    <span>SBX</span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
-                    {address ? (
+
+                    {address && selectedToken?.name === 'ETH' ? (
                         <SendEthButton>
                         </SendEthButton>
                     ) : (
@@ -296,7 +331,6 @@ const TokenPurchase = () => {
                             Buy Now
                         </button>
                     )
-
                     }
 
 
@@ -304,27 +338,27 @@ const TokenPurchase = () => {
                         Transactions List
                     </h2>
 
-                    <div className="mt-10 w-full max-w-2xl mx-auto px-4 justify-center">
-                        {(
-                            [6.12, 2.1, 1, 4, 1.1, 0.6, 0.28].map((wallet) => (
-                                <div
-                                    key={wallet.id}
-                                    className="bg-white rounded-lg shadow-lg p-4 mb-6 flex items-center"
-                                >
-                                    <div className="flex-1">
-                                        <p className="text-gray-600 text-sm break-all">{wallet} USDT</p>
-                                    </div>
-                                    <button
-                                        onClick={() => handleCopy(wallet.address)}
-                                        className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-2 rounded-full"
-                                    >
-                                        <CopyIcon className="w-5 h-5"/>
-                                    </button>
-                                </div>
-                            ))
-                        )}
-                    </div>
-                </>
+                    {/*<div className="mt-10 w-full max-w-2xl mx-auto px-4 justify-center">*/}
+                    {/*    {(*/}
+                    {/*        [6.12, 2.1, 1, 4, 1.1, 0.6, 0.28].map((wallet) => (*/}
+                    {/*            <div*/}
+                    {/*                key={wallet.id}*/}
+                    {/*                className="bg-white rounded-lg shadow-lg p-4 mb-6 flex items-center"*/}
+                    {/*            >*/}
+                    {/*                <div className="flex-1">*/}
+                    {/*                    <p className="text-gray-600 text-sm break-all">{wallet} USDT</p>*/}
+                    {/*                </div>*/}
+                    {/*                <button*/}
+                    {/*                    onClick={() => handleCopy(wallet.address)}*/}
+                    {/*                    className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-2 rounded-full"*/}
+                    {/*                >*/}
+                    {/*                    <CopyIcon className="w-5 h-5"/>*/}
+                    {/*                </button>*/}
+                    {/*            </div>*/}
+                    {/*        ))*/}
+                    {/*    )}*/}
+                    {/*</div>*/}
+                </div>
             )}
         </div>
     );
