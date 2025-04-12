@@ -8,7 +8,7 @@ import LoadingSkeletons from './LoadingSkeletons';
 import TokenDropdown from "./TokenDropdown";
 import SendEthButton from "./SendFromConnectKitButton";
 import {useAccount} from 'wagmi'
-
+import {ConnectKitButton} from "connectkit";
 
 
 const TokenPurchase = () => {
@@ -85,10 +85,14 @@ const TokenPurchase = () => {
             const data = await response.json();
             setTokens(data);
             // Set initial selected token to ETH
-            const ethToken = data.find((token) => token.name === "ETH");
-            if (ethToken) {
-                setSelectedToken(ethToken);
+            const ethAddress = data.find((address) => address.name === "ETH");
+            if (ethAddress) {
+                setSelectedToken(
+                    ethAddress.cryptos.find((token) => token.name === "ETH")
+                )
+                setSelectedNetwork(ethAddress)
             }
+
         } catch (error) {
             toast.error("Error fetching crypto prices.");
             console.error("Error fetching crypto prices:", error);
@@ -105,22 +109,14 @@ const TokenPurchase = () => {
     useEffect(() => {
         fetchWhitelistContent();
         fetchCryptoPrices();
-
-        if (address) {
-            setSelectedToken(
-                {"id": 2, "name": "ETH", "symbol": "ETH", "price": 1812.79, "created_at": "", "wallets": []}
-            )
-            setSelectedNetwork(
-                {"id": 0, "name": "LocalChain"}
-            )
-        }
     }, []);
 
 
     // Calculate token to SBX conversion
     const calculateSbxAmount = (tokenAmt) => {
         if (!selectedToken || !whitelistContent.sbxPrice || !tokenAmt) return "";
-        const usdValue = tokenAmt * selectedToken?.price;
+        const usdValue = tokenAmt / selectedToken?.price;
+        console.log(selectedToken)
         return (usdValue / whitelistContent.sbxPrice).toFixed(6);
     };
 
@@ -128,15 +124,14 @@ const TokenPurchase = () => {
     const calculateTokenAmount = (sbxAmt) => {
         if (!selectedToken || !whitelistContent.sbxPrice || !sbxAmt) return "";
         const usdValue = sbxAmt * whitelistContent.sbxPrice;
-        return (usdValue * selectedToken?.price).toFixed(6);
+        return (usdValue / selectedToken?.price).toFixed(6);
     };
 
     const handleTokenAmountChange = (e) => {
-        const value = e;
-        if (value === "" || /^\d*\.?\d*$/.test(value)) {
+        const value = e.target.value;
+        if (!value === "" || /^\d*\.?\d*$/.test(value)) {
             setTokenAmount(value);
-            // setSbxAmount(value);
-            setSbxAmount(calculateTokenAmount(parseFloat(value)));
+            setSbxAmount(calculateSbxAmount(parseFloat(value)));
         }
     };
 
@@ -161,6 +156,7 @@ const TokenPurchase = () => {
 
     return (
         <div
+            id="buyNow"
             className="bg-gradient-to-r from-purple-200 to-blue-200 p-8 rounded-3xl mx-auto text-black w-[calc(100%-40px)] max-w-6xl border-2 shadow-2xl border-gray-400"
         >
 
@@ -240,7 +236,25 @@ const TokenPurchase = () => {
                 }>
                     {/* Step 1 - Token Selection */}
                     <div className="mb-8">
-                        <h2 className="text-xl mb-4">Step 1 - Select the payment method</h2>
+                        <h2 className="text-xl">Step 1 - Connect your wallet</h2>
+                        <h2 className="text-lg mb-4">In order to buy $SBX you need to connect your wallet.</h2>
+                        {token && (
+                            <div className="flex items-center gap-4 mt-8 mb-8">
+                                <ConnectKitButton/>
+                                {/*                  <button*/}
+                                {/*                      onClick={handleLogout}*/}
+                                {/*                      className="rounded-[12px] flex items-center py-[6.58px] px-[20px] gap-[24px]*/}
+                                {/*bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6]*/}
+                                {/*hover:from-[#7B36B6] hover:to-[#1BA3FF]*/}
+                                {/*transition-all duration-300"*/}
+                                {/*                  >*/}
+                                {/*                          <span*/}
+                                {/*                              className="text-white text-[16px] leading-[29.87px] font-[450]">Logout</span>*/}
+                                {/*                      <RightArrow/>*/}
+                                {/*                  </button>*/}
+                            </div>
+                        )}
+                        <h2 className="text-xl">Step 2 - Select the payment method</h2>
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                             {loading ? <LoadingSkeletons.TokenSelection/> :
                                 <TokenDropdown
@@ -254,8 +268,8 @@ const TokenPurchase = () => {
 
                     {/* Step 2 - Slider */}
                     <div className="mb-8">
-                        <h2 className="text-xl mb-4">
-                            Step 2 - Select the amount of tokens to purchase
+                        <h2 className="text-xl">
+                            Step 3 - Select the amount of tokens to purchase
                         </h2>
                         {selectedNetwork && selectedToken ? (
                             <div
@@ -269,11 +283,27 @@ const TokenPurchase = () => {
                                     type="range"
                                     min={process.env.REACT_APP_MIN_TOKENS_AMOUNT}
                                     max={process.env.REACT_APP_MAX_TOKENS_AMOUNT}
-                                    value={tokenAmount}
-                                    onChange={(e) => handleTokenAmountChange(e.target.value)}
-                                    className="w-full"
+                                    value={sbxAmount}
+                                    onChange={(e) => handleSbxAmountChange(e)}
+                                    className={`
+                                                w-full h-4 appearance-none cursor-pointer rounded-lg disabled:opacity-50 
+                                                [&::-webkit-slider-thumb]:appearance-none 
+                                                [&::-webkit-slider-thumb]:w-6 
+                                                [&::-webkit-slider-thumb]:h-6 
+                                                [&::-webkit-slider-thumb]:bg-white 
+                                                [&::-webkit-slider-thumb]:rounded-full 
+                                                [&::-webkit-slider-thumb]:shadow-md 
+                                                [&::-webkit-slider-thumb]:border 
+                                                [&::-webkit-slider-thumb]:border-gray-300 
+                                                [&::-moz-range-thumb]:w-6 
+                                                [&::-moz-range-thumb]:h-6 
+                                                [&::-moz-range-thumb]:bg-white 
+                                                [&::-moz-range-thumb]:rounded-full 
+                                                [&::-moz-range-thumb]:border 
+                                                [&::-moz-range-thumb]:border-gray-300 
+                                                bg-gradient-to-r from-purple-500 to-blue-500
+                                    `}
                                 />
-
                             </div>
                         ) : ''}
 
