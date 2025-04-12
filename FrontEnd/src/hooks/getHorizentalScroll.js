@@ -1,12 +1,12 @@
-import { useRef, useEffect } from "react";
+import {useEffect, useRef} from "react";
 
-export function useHorizontalScroll() {
-  const elRef = useRef();
+export const useHorizontalScroll = () => {
+  const elRef = useRef(null);
   useEffect(() => {
     const el = elRef.current;
     if (el) {
       const onWheel = (e) => {
-        if (e.deltaY == 0) return;
+        if (e.deltaY === 0) return;
         e.preventDefault();
         el.scrollTo({
           left: el.scrollLeft + e.deltaY,
@@ -18,4 +18,4 @@ export function useHorizontalScroll() {
     }
   }, []);
   return elRef;
-}
+};
