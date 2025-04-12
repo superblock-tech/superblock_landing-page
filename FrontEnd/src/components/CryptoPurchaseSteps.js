@@ -24,7 +24,7 @@ export default function CryptoPurchaseSteps() {
                             title: "Step 2 - Purchase Process",
                             description: "Select your preferred cryptocurrency, specify the amount of $SBX tokens you'd like to buy, and click ‘Buy Now.’ Confirm the transaction through your wallet, where you’ll also see the associated gas fees. Note: For USDT/USDC purchases, you might need to complete two approvals: one to authorize the contract and another for the actual payment.",
                             image: <img
-                                className="sm:max-w-full max-w-[286px]"
+                                className="sm:max-w-full"
                                 src="/assets/images/steps/2.png"
                                 alt=""
                             />,
@@ -35,7 +35,7 @@ export default function CryptoPurchaseSteps() {
                             title: "Step 3: Token Distribution",
                             description: "After the presale concludes, you can claim your $SBX tokens on our website or wait for them to be airdropped directly to your wallet. Track your investment and token value in the dashboard by connecting your wallet.",
                             image: <img
-                                className="sm:max-w-full max-w-[286px]"
+                                className="sm:max-w-full"
                                 src="/assets/images/steps/3.png"
                                 alt=""
                             />,

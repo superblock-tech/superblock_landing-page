@@ -14,7 +14,7 @@ import TokenPurchase from "../components/TokenPurchase";
 import FlexStagesTable from "../components/FlexStagesTable";
 import "@fontsource/montserrat"; // Defaults to weight 400
 import "@fontsource/montserrat/400.css"; // Specify weight
-import "@fontsource/montserrat/400-italic.css"; // Specify weight and style
+import "@fontsource/montserrat/400-italic.css";
 
 export default function ProfilePage() {
     const navigate = useNavigate();
@@ -88,102 +88,86 @@ export default function ProfilePage() {
 
     return (<section>
         <div class="container">
-            <div className="p-6 flex flex-col md:flex-row justify-center items-center gap-8">
-                <Phace1/>
-                <div class=" w-full md:w-1/3 ">
-                    <div
-                        className=" bg-gradient-to-r from-purple-500  to-blue-400 text-white rounded-2xl p-4 py-3  mt-6"
-                    >
-                        <h2 style={{
-                            fontFamily: 'Montserrat',
-                            fontWeight: 700,
-                            textAlign: 'right',
-                            fontSize: '1.5rem'
-                        }}>Phase Ends In:</h2>
+            <div class="mx-auto">
+                <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 pb-8">
+                    <Phace1/>
+                    <div className="w-full md:w-1/3 flex">
                         <div
-                            className="flex justify-center bg-gradient-to-r from-purple-500  to-blue-400 text-white rounded-2xl p-4 py-8 mt-4">
-                            {Object.entries(timeLeft).map(([unit, value], index) => (
-                                <div key={unit} className="text-center px-5">
-                            <span className="text-5xl font-bold text-white"
-                                  style={{fontFamily: 'Montserrat', fontWeight: 700}}>
-                                {String(value).padStart(2, "0")}
-                                <span className=" uppercase text-white" style={{fontSize: '2rem'}}>{unit}</span>
-                            </span>
+                            className="bg-gradient-to-r from-purple-500 to-blue-400 text-white rounded-2xl p-4 py-3 mt-6 h-full w-full flex flex-col justify-between">
+                            <h2
+                                style={{
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: 700,
+                                    textAlign: 'right',
+                                    fontSize: '1.5rem',
+                                }}
+                            >
+                                Phase Ends In:
+                            </h2>
 
-                                </div>
-                            ))}
-                        </div>
-                        {/* Header Stats */}
-                        <div className={token ? 'flex justify-between mb-6' : 'flex justify-end mb-6'}>
-                            {token &&
-                                <div>
-                                    {/* Header Stats */}
-                                    {(<div>
-                                        <div>
-                                            <div className="text-xl">USDT Raised</div>
-                                            <div className="text-2xl font-bold">18.92</div>
-                                            <div className="text-xl">Transactions</div>
-                                            <div className="text-2xl font-bold">5</div>
-                                        </div>
-                                    </div>)}
-
-                                </div>
-                            }
-                            <div style={{fontFamily: 'Montserrat', fontWeight: 700, fontSize: '1.5rem'}}
-                                 className="text-right">
-                                <div className="text-xl">USD Raised:&nbsp;
-                                    <span className="text-2xl font-bold">44.91</span>
-                                </div>
-
-                                <div className="text-xl">$SBX Tokens Allocated:&nbsp;
-                                    <span className="text-2xl font-bold">14.67 / 10 000 000</span>
-                                </div>
-                                <div className="text-xl">Holders:&nbsp;
-                                    <span className="text-2xl font-bold">3</span>
-                                </div>
+                            <div className="flex justify-end">
+                                {Object.entries(timeLeft).map(([unit, value], index) => (
+                                    <div key={unit} className="text-center px-1 lg:px-5">
+                                        <span
+                                            className="text-2xl lg:text-5xl font-bold text-white"
+                                            style={{fontFamily: 'Montserrat', fontWeight: 700}}
+                                        >
+                                            {String(value).padStart(2, '0')}
+                                            <span className="uppercase text-white text-md lg:text-lg">
+                                                {unit}
+                                            </span>
+                                        </span>
+                                    </div>
+                                ))}
                             </div>
 
-
-                        </div>
-                        {token &&
-
-                            <div className="flex items-center gap-4 mt-8 mb-8">
-                                <ConnectKitButton/>
-
-                                <button
-                                    onClick={handleLogout}
-                                    className="rounded-[12px] flex items-center py-[6.58px] px-[20px] gap-[24px]
-                     bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6]
-                     hover:from-[#7B36B6] hover:to-[#1BA3FF]
-                     transition-all duration-300"
-                                >
-          <span className="text-white text-[16px] leading-[29.87px] font-[450]">
-            Logout
-          </span>
-                                    <RightArrow/>
-                                </button>
-
+                            {/* Header Stats */}
+                            <div
+                                style={{fontFamily: 'Montserrat', fontWeight: 700, fontSize: '1rem'}}
+                            >
+                                <div className="flex flex-col md:flex-row gap-8 pt-8">
+                                    <div className="flex-1 ">
+                                        <p className="text-xl md:text-2xl font-semibold">Phase 1 (Invite Only):</p>
+                                        <p className="text-xl md:text-2xl font-semibold">1 $SBX = $0.220</p>
+                                        <p className="text-xl text-right md:text-2xl font-semibold">Next: Phase 2
+                                            (Public
+                                            Presale)</p>
+                                        <p className="text-xl text-right md:text-2xl font-semibold">Public Presale
+                                            Launch Price
+                                            = $0.310</p>
+                                    </div>
+                                </div>
                             </div>
-                        }
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="container">
-                <div className="p-6 flex flex-col md:flex-row justify-center items-stretch gap-8">
-                    <div
-                        className="flex flex-col md:flex-row justify-between items-stretch md:items-stretch bg-gradient-to-r from-purple-500  to-blue-400 text-white p-6 rounded-2xl shadow-lg space-y-6 md:space-y-0 md:space-x-8">
-                        <div className="flex flex-col">
-                            <p className="text-xl md:text-2xl font-semibold">Phase 1 (Invite Only): </p>
-                            <p className="text-xl md:text-2xl font-semibold">1 $SBX = $0.220</p>
-                        </div>
-                        <div className="border-l md:border-l-2 border-gray-700 h-0 md:h-16 w-full md:w-auto"/>
-                        <div className="flex flex-col">
-                            <p className="text-xl md:text-2xl font-semibold">Next: Phase 2 (Public Presale)</p>
-                            <p className="text-xl md:text-2xl font-semibold">Public Presale Launch Price = $0.310</p>
-                        </div>
+            <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 pt-8">
+                <div
+                    className="flex flex-col md:flex-row justify-between items-stretch md:items-stretch bg-gradient-to-r from-purple-500  to-blue-400 text-white p-6 rounded-2xl shadow-lg space-y-6 md:space-y-0 md:space-x-8">
+                    <div className="flex flex-col">
+                        <p className="text-xl">
+                            USD Raised:&nbsp;
+                        </p>
+                        <p className="text-2xl font-bold">44.91</p>
+                    </div>
+                    <div className="border-l md:border-l-2 border-gray-700 h-0 md:h-16 w-full md:w-auto"/>
+                    <div className="flex flex-col">
+                        <p className="text-xl">
+                            $SBX Tokens Allocated:&nbsp;
+                        </p>
+                        <p className="text-2xl font-bold">
+                            14.67 / 10 000 000
+                        </p>
+                    </div>
+                    <div className="border-l md:border-l-2 border-gray-700 h-0 md:h-16 w-full md:w-auto"/>
+                    <div className="flex flex-col">
+                        <p className="text-xl">
+                            Holders:&nbsp;
+                        </p>
+                        <p className="text-2xl font-bold">3</p>
                     </div>
                 </div>
-
             </div>
         </div>
         <div
@@ -213,11 +197,11 @@ export default function ProfilePage() {
 
             </div>
 
-            <CryptoPurchaseSteps/>
             <FlexStagesTable/>
-            {/* Connect Wallet Button */}
+            <CryptoPurchaseSteps/>
             <HowToBuy/>
             <Footer/>
         </div>
-    </section>);
+    </section>)
+        ;
 }

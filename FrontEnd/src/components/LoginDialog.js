@@ -51,57 +51,62 @@ export default function LoginDialog({ isOpen, onClose }) {
   return (
     <div className="">
       {/* Dialog Panel */}
-      <div className="bg-[#7765CE] p-8 rounded-lg relative max-w-md w-full mx-2">
-        <h2 className="text-[24px] text-white mb-4 font-bold">
-          Log In With Code
-        </h2>
+        <div className="bg-[#7765CE] p-8 rounded-lg relative max-w-md w-full mx-2">
+            <h2 className="text-[24px] text-white mb-2 font-bold">
+                Founders Circle Presale Access Only
+            </h2>
+            <h4 className="text-[20px] text-white mb-4">
+                Enter your priory access code to gain entry to the the presale dashboard.
+            </h4>
 
-        <form onSubmit={handleSubmit}>
-          {/* Reusing input styles from previous code */}
-          <div
-              className="bg-gradient-to-b from-[#F2F2F2] to-[#c0c0e6] p-[1px] rounded-[10px] sm:h-[57px] h-[48px] mb-4">
-            <div className="p-[13px] w-full h-full bg-[#b4b1e2] rounded-[10px]">
-              <input
-                  required
-                  type="text"
-                  placeholder="Enter your code"
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  className="w-full h-full bg-transparent border-none outline-none text-white font-normal text-[18px] leading-[34px] placeholder:text-gray-200"
-              />
-            </div>
-          </div>
+            <form onSubmit={handleSubmit}>
+                {/* Reusing input styles from previous code */}
+                <div
+                    className="bg-gradient-to-b from-[#F2F2F2] to-[#c0c0e6] p-[1px] rounded-[10px] sm:h-[57px] h-[48px] mb-4">
+                    <div className="p-[13px] w-full h-full bg-[#b4b1e2] rounded-[10px]">
+                        <input
+                            required
+                            type="text"
+                            placeholder="Priority Access Code"
+                            value={code}
+                            onChange={(e) => setCode(e.target.value)}
+                            className="w-full h-full bg-transparent border-none outline-none text-white font-normal text-[18px] leading-[34px] placeholder:text-gray-200"
+                        />
+                    </div>
+                </div>
 
-          {/* Button with the provided styles */}
-          <button
-              type="submit"
-              className="w-full text-center rounded-[12px] flex items-center py-[6.58px] px-[20px] gap-[24px]
+                {/* Button with the provided styles */}
+                <button
+                    type="submit"
+                    className="w-full text-center rounded-[12px] flex items-center py-[6.58px] px-[20px] gap-[24px]
                        bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6]
                        hover:from-[#7B36B6] hover:to-[#1BA3FF]
                        transition-all duration-300"
-              disabled={loading}
-          >
-            <span className="text-white text-[16px] leading-[29.87px] font-[450]">
-              {loading ? "Logging in..." : "Log in"}
+                    disabled={loading}
+                >
+            <span className="mx-auto text-white text-[16px] leading-[29.87px] font-[450]">
+              {loading ? "Logging in..." : "Enter"}
             </span>
-            <RightArrow/>
-          </button>
+                </button>
 
-          <button onClick={openLoginDialog}
-             className=" w-full mt-5 hidden rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px] bg-gradient-to-r from-[#FFFFFF] to-[#AAA] hover:from-[#AAA] hover:to-[#FFFFFF] transition-all duration-300">
-              <span className="text-black text-[16px] leading-[29.87px] font-[450]">
-                Apply For Presale
-              </span>
-          </button>
-        </form>
+                <button
+                    className="text-center rounded-[12px] flex items-center py-[6.58px] gap-[24px]"
+                    onClick={openLoginDialog}
+                >
+                        <span
+                            className="text-white sm:text-[20px] text-[16px] font-[450] sm:leading-[33.479px] leading-[26.681px] underline whitespace-nowrap">
+                             Apply for Founders Circle Priority Access
+                        </span>
+                </button>
+            </form>
 
-        {/*<button*/}
-        {/*  onClick={onClose}*/}
-        {/*  className="absolute top-2 right-2 text-white fill-white w-7"*/}
-        {/*>*/}
-        {/*  <CloseIcon />*/}
-        {/*</button>*/}
-      </div>
+            {/*<button*/}
+            {/*  onClick={onClose}*/}
+            {/*  className="absolute top-2 right-2 text-white fill-white w-7"*/}
+            {/*>*/}
+            {/*  <CloseIcon />*/}
+            {/*</button>*/}
+        </div>
     </div>
   );
 }
