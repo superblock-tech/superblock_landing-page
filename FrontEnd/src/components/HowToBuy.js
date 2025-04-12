@@ -4,10 +4,9 @@ import ProductCard from "./ProductCard";
 export default function HowToBuy() {
     const [activeSlide, setActiveSlide] = useState({ index: 0, position: 0 });
 
-    console.log(activeSlide);
     return (
         <section>
-            <div className="container">
+            <div id="howToBuy" className="container">
                 <h1 className="text-[#7B36B6] text-[30px] lg:text-[55px] font-futura-600 leading-[35px] lg:leading-[64px] text-center sm:max-w-[1047px] mx-auto max-w-[303px]">
                     Using BTC, SOL, LTC, TRX, USDT-ERC20, and Other Cryptocurrencies
                 </h1>

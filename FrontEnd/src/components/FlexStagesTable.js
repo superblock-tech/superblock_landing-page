@@ -1,4 +1,5 @@
 import React from "react";
+import {useHorizontalScroll} from "../hooks/getHorizentalScroll";
 
 const tokenData = [
     {
@@ -62,36 +63,41 @@ const tokenData = [
 ];
 
 const FlexStagesTable = () => {
+    const scrollRef = useHorizontalScroll();
     return (
         <section>
+            <h1 id="tokenDistribution" className="mt-10 text-[#7B36B6] text-[30px] lg:text-[55px] font-futura-600 leading-[35px] lg:leading-[64px] text-center sm:max-w-[1047px] mx-auto max-w-[303px]">
+                $SBX Token Distribution
+            </h1>
             <div className="p-8 flex justify-center items-center">
                 <div
-                    className="bg-gradient-to-r from-purple-200 to-blue-200 max-w-6xl p-10 rounded-2xl space-y-12 bg-white bg-opacity-20 shadow-lg">
-                    <div className="p-4 max-w-6xl">
-                        <div className="flex font-bold border-b-2 border-purple-600 p-2 ">
-                            <div className="w-1/6">Stage</div>
-                            <div className="w-1/6 text-center">Distribution</div>
-                            <div className="w-1/6 text-center">$SBX Tokens</div>
-                            <div className="flex-[2]">Vesting Period</div>
-                        </div>
-                        {tokenData.map((row, index) => (
-                            <div
-                                key={index}
-                                className={`flex border-b border-purple-300 p-3`}
-                            >
-                                <div className="w-1/6">{row.stage}</div>
-                                <div className="w-1/6 text-center">{row.distribution}</div>
-                                <div className="w-1/6 text-center">{row.tokens}</div>
-                                <div className="flex-[2]">{row.vesting}</div>
+                    className="bg-gradient-to-r from-purple-200 to-blue-200 p-4 sm:p-6 lg:p-10 rounded-2xl shadow-lg w-full max-w-sm md:max-w-lg lg:max-w-6xl mx-auto space-y-12 bg-white bg-opacity-20">
+                    <div className="overflow-x-auto">
+                        <div className="min-w-[800px]">
+                            <div className="flex font-bold border-b-2 border-purple-600 p-2 whitespace-nowrap">
+                                <div className="w-1/6">Stage</div>
+                                <div className="w-1/6 text-center">Distribution</div>
+                                <div className="w-1/6 text-center">$SBX Tokens</div>
+                                <div className="w-1/2">Vesting Period</div>
                             </div>
-                        ))}
+                            {tokenData.map((row, index) => (
+                                <div
+                                    key={index}
+                                    className="flex border-b border-purple-300 p-3"
+                                >
+                                    <div className="w-1/6">{row.stage}</div>
+                                    <div className="w-1/6 text-center">{row.distribution}</div>
+                                    <div className="w-1/6 text-center">{row.tokens}</div>
+                                    <div className="w-1/2">{row.vesting}</div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
-                </div>
-        </section>
+            </div>
 
-)
-;
+        </section>
+    );
 };
 
 export default FlexStagesTable;
