@@ -88,7 +88,7 @@ export function PresaleContextProvider({children}) {
                 <Modal.Content className="max-w-3xl">
                     <Modal.Close onClick={() => setPresaleModalOpen(false)}/>
                     <Modal.Header>
-                        <Modal.Title className={"text-3xl"}>Join Presale</Modal.Title>
+                        <Modal.Title className={"text-3xl"}>Founders Circle Application</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className="p-8">
 
@@ -188,6 +188,7 @@ export function PresaleContextProvider({children}) {
                                     }}
                                 >
                                     <option value="0">-- Select --</option>
+                                    <option value="10000">Between $2,000 and $10,000</option>
                                     <option value="10000">Between $10,000 and $50,000</option>
                                     <option value="50000">Between $50,000 and $250,000</option>
                                     <option value="250000">More than $250,000</option>
