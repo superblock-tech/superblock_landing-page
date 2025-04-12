@@ -132,7 +132,7 @@ const MobileMenu = ({ setIsOpen, isOpen }) => {
                   {it.title}
                 </button>
             ))}
-            <button
+            <a href="/dashboard"
                 className="rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px]
                   bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6]
                   hover:from-[#7B36B6] hover:to-[#1BA3FF]
@@ -145,7 +145,7 @@ const MobileMenu = ({ setIsOpen, isOpen }) => {
               <span className="hidden xl:flex">
                     <RightArrow/>
                   </span>
-            </button>
+            </a>
           </nav>
 
           <a href="/dashboard"

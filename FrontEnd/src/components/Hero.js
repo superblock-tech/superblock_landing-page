@@ -41,20 +41,20 @@ export default function Hero() {
               </p>
 
               <div className="flex items-center gap-[26px] sm:gap-[33px] overflow-x-scroll pr-[22px] scrollbar-hide">
-                <button
+                <a href="/dashboard"
                   className="rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px]
                   bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6]
                   hover:from-[#7B36B6] hover:to-[#1BA3FF]
                   transition-all duration-300"
-                  onClick={openLoginDialog}
+
                 >
                   <span className="text-white text-[16px] leading-[29.87px] font-[450]">
-                    Apply For Presale
+                    Join Presale
                   </span>
                   <span class="hidden xl:flex">
                     <RightArrow />
                   </span>
-                </button>
+                </a>
 
                 <a href="/assets/documents/SUPERBLOCK%20-%20Whitepaper%20v2.6.pdf" target="_blank" className="flex items-center gap-3">
                   <DownloadIcon />{" "}
