@@ -85,7 +85,15 @@ export default function Hero() {
                 />
               </div>
               <div className="absolute top-[-10%] left-[-26%] w-full h-full">
-                <Canvas camera={{ position: [0, 0, 530] }}>
+                <Canvas
+                    gl={{ powerPreference: "high-performance", antialias: true }}
+                    onCreated={({ gl }) => {
+                      gl.getContext().canvas.addEventListener("webglcontextlost", (e) => {
+                        e.preventDefault();
+                        console.warn("WebGL context lost!");
+                      });
+                    }}
+                    camera={{ position: [0, 0, 530] }}>
                   <Environment preset="studio" />
                   <Suspense fallback={null}>
                     <SpinningModel />
