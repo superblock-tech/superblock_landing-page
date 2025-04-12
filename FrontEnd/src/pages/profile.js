@@ -87,8 +87,8 @@ export default function ProfilePage() {
     }, []);
 
     return (<section>
-        <div class="container">
-            <div class="mx-auto">
+        <div className="container">
+            <div className="mx-auto">
                 <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 pb-8">
                     <Phace1/>
                     <div className="w-full md:w-1/3 flex">

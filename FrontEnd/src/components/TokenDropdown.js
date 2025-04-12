@@ -20,7 +20,7 @@ const TokenDropdown = ({ networks,  getTokenEmoji, setTokenData }) => {
 
     return (
         (<>{networks?.map((network) => (
-            <div className="relative inline-block text-left w-full">
+            <div className="relative inline-block text-left w-full" key={network.id}>
                 <button
                     onClick={() =>
                     {

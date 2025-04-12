@@ -21,7 +21,7 @@ export default function ProductCard({
   activeSlide,
   separator = '///',
   numberPrefix = '',
-  numberStyle = ''
+  numberStyle = {}
 }) {
   const width = useWindowWidth();
 

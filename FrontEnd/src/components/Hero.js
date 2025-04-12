@@ -51,7 +51,7 @@ export default function Hero() {
                   <span className="text-white text-[16px] leading-[29.87px] font-[450]">
                     Join Presale
                   </span>
-                  <span class="hidden xl:flex">
+                  <span className="hidden xl:flex">
                     <RightArrow />
                   </span>
                 </a>
