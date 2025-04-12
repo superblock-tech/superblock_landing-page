@@ -1310,6 +1310,11 @@
     "ethereum-cryptography" "^2.0.0"
     "micro-ftch" "^0.3.1"
 
+"@fontsource/montserrat@^5.2.5":
+  "integrity" "sha512-/OA+bdg1yqUArDUnEeCqDwgTDiIpvED56TxYskje8UKpsvjl/0A9eNod7IcdHz6/Osi70vo7briRO3la8/u+5Q=="
+  "resolved" "https://registry.npmjs.org/@fontsource/montserrat/-/montserrat-5.2.5.tgz"
+  "version" "5.2.5"
+
 "@humanwhocodes/config-array@^0.11.13":
   "integrity" "sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg=="
   "resolved" "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.11.14.tgz"
