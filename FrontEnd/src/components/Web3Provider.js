@@ -1,13 +1,13 @@
 import React from 'react';
 import { WagmiProvider, createConfig,http } from 'wagmi';
-import { mainnet } from "wagmi/chains";
+import {mainnet, sepolia} from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
 
 const config = createConfig(
   getDefaultConfig({
     appName: 'Superblock',
-    chains: [mainnet],
+    chains: [mainnet, sepolia],
     [mainnet.id]: http(
       `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_ID}`,
     ),
