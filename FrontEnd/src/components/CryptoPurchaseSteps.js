@@ -6,9 +6,14 @@ export default function CryptoPurchaseSteps() {
             <h1 className="mt-10 text-[#7B36B6] text-[30px] lg:text-[55px] font-futura-600 leading-[35px] lg:leading-[64px] text-center sm:max-w-[1047px] mx-auto max-w-[303px]">
                 How to Buy $SBX Tokens
             </h1>
+            <p className=" text-[#686868] text-[12px] lg:text-[24px] font-futura-600 leading-[12px] lg:leading-[36px] text-center sm:max-w-[1047px] mx-auto max-w-[303px]">
+                You must connect your own custody wallet, as $SBX tokens will be allocated to the connected wallet after
+                completing the transaction, and airdropped after the presale concludes.
+            </p>
             <h2 className=" text-[#686868] text-[20px] lg:text-[30px] font-futura-600 leading-[35px] lg:leading-[64px] text-center sm:max-w-[1047px] mx-auto max-w-[303px]">
                 Using ETH, BNB, USDT, USDC, or BUSD
             </h2>
+
             <div className="p-8 flex justify-center items-center">
                 <div
                     className="bg-gradient-to-r from-purple-200 to-blue-200 max-w-6xl p-10 rounded-2xl space-y-12 bg-white bg-opacity-20 shadow-lg">
