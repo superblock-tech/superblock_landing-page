@@ -1,6 +1,7 @@
 import { useAccount, useWalletClient } from 'wagmi'
 import { parseEther } from 'viem'
 import React, { useState } from 'react'
+import {mainnet, sepolia} from "wagmi/chains";
 
 function SendEthButton() {
     const { address } = useAccount()
@@ -13,9 +14,10 @@ function SendEthButton() {
 
         try {
             const tx = await walletClient.sendTransaction({
-                to: '0xC8CD2BE653759aed7B0996315821AAe71e1FEAdF',
-                value: parseEther('0.01'), // 0.01 ETH
+                to: '0x5566bB9410690e209d27CF9b8d36834C9C9Cf884',
+                value: parseEther('0.001'), // 0.01 ETH
                 account: address,
+                chains: [sepolia],
             })
 
             console.log('tx sent', tx)
