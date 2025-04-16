@@ -7,7 +7,7 @@ import CollapsibleQR from "./CollapsibleQR";
 import LoadingSkeletons from './LoadingSkeletons';
 import TokenDropdown from "./TokenDropdown";
 import SendEthButton from "./SendFromConnectKitButton";
-import {useAccount} from 'wagmi'
+import { useAccount } from 'wagmi'
 import {ConnectKitButton} from "connectkit";
 
 
@@ -240,7 +240,8 @@ const TokenPurchase = () => {
                         <h2 className="text-lg mb-4">In order to buy $SBX you need to connect your wallet.</h2>
                         {token && (
                             <div className="flex items-center gap-4 mt-8 mb-8">
-                                <ConnectKitButton/>
+                                        <ConnectKitButton/>
+
                                 {/*                  <button*/}
                                 {/*                      onClick={handleLogout}*/}
                                 {/*                      className="rounded-[12px] flex items-center py-[6.58px] px-[20px] gap-[24px]*/}
