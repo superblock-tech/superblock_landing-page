@@ -1,9 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../contexts/AuthContext";
 import {useNavigate} from "react-router-dom";
-import {RightArrow} from "../Icons";
 import toast from "react-hot-toast";
-import {ConnectKitButton} from "connectkit";
 
 import CryptoPurchaseSteps from "../components/CryptoPurchaseSteps";
 import Footer from "../components/Footer";
@@ -21,12 +19,10 @@ export default function ProfilePage() {
     const {logout} = useContext(AuthContext);
     const {token} = useContext(AuthContext);
 
-    const [wallets, setWallets] = useState([]);
+    const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+    const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(true);
-
-    const handleLogout = () => {
-        logout();
-    };
+    const [wallets, setWallets] = useState([]);
 
     const fetchWallets = async () => {
         try {
@@ -35,12 +31,6 @@ export default function ProfilePage() {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             });
-
-            // // Check if user is unauthorized
-            // if (response.status === 401) {
-            //     // handleLogout()
-            //     return;
-            // }
 
             const data = await response.json();
             setWallets(data);
