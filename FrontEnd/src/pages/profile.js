@@ -44,27 +44,6 @@ export default function ProfilePage() {
         }
     };
 
-    const handleCopy = (text) => {
-        navigator.clipboard.writeText(text);
-        toast.success("Copied to clipboard!");
-    };
-    const calculateTimeLeft = () => {
-        const difference = +new Date("2025-06-01T01:00:00") - +new Date();
-        let timeLeft = {};
-
-        if (difference > 0) {
-            timeLeft = {
-                d: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                h: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                m: Math.floor((difference / 1000 / 60) % 60),
-                s: Math.floor((difference / 1000) % 60),
-            };
-        }
-        return timeLeft;
-    };
-
-    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-
     useEffect(() => {
         const timer = setInterval(() => {
             setTimeLeft(calculateTimeLeft());
