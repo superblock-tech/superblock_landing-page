@@ -68,43 +68,66 @@ export default function ProfilePage() {
         return () => clearInterval(interval);
     }, []);
 
+
     useEffect(() => {
         fetchWallets();
     }, []);
 
     return (<section>
-        <div className="container">
-            <div className="mx-auto">
-                <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 pb-8">
-                    <Phace1/>
-                    <div className="w-full md:w-1/3 flex">
-                        <div
-                            className="bg-gradient-to-r from-purple-500 to-blue-400 text-white rounded-2xl p-4 py-3 mt-6 h-full w-full flex flex-col justify-between">
-                            <h2
-                                style={{
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: 700,
-                                    textAlign: 'right',
-                                    fontSize: '1.5rem',
+        <div className="container mx-auto px-6 py-20">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                {/* Left Panel */}
+                <div
+                    className="bg-gradient-to-r from-purple-200 to-blue-200 text-white rounded-2xl p-10 flex flex-col justify-between">
+                    <h1 className="text-[30.219px] sm:text-[40.974px] leading-[42.219px] sm:leading-[79.974px] font-futura-bold font-bold text-transparent bg-clip-text bg-multi-color-gradient bg-size-800 animate-colorCycle text-left w-fit">
+                        $SBX Token Presale<br/>Phase 1
+                    </h1>
+                    <p className="text-2xl font-semibold mt-6 text-black">
+                        Founders Circle Presale. Invite only.
+                    </p>
+                    <div className="mt-10 flex flex-col gap-6">
+                        <button
+                            onClick={() => {
+                                document.getElementById('buyNow').scrollIntoView()
+                                window.scrollTo(0, window.scrollY - 80)
+                            }}
+                            className="w-full py-[8px] text-[24px] leading-[29.87px] font-[450] text-white bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6] hover:from-[#7B36B6] hover:to-[#1BA3FF] transition-all duration-300 rounded-[12px]">
+                            Access presale
+                        </button>
+                        <div className="flex flex-col sm:flex-row justify-center gap-4">
+                            <button
+                                onClick={() => {
+                                    document.getElementById('howToBuy').scrollIntoView()
+                                    window.scrollTo(0, window.scrollY - 80)
                                 }}
-                            >
-                                Phase Ends In:
-                            </h2>
+                                className="text-[#7B36B6] text-[16px] sm:text-[20px] font-[450] underline whitespace-nowrap">
+                                How To Buy
+                            </button>
+                            <button
+                                onClick={() => {
+                                    document.getElementById('tokenDistribution').scrollIntoView()
+                                    window.scrollTo(0, window.scrollY - 80)
+                                }}
+                                className="text-[#7B36B6] text-[16px] sm:text-[20px] font-[450] underline whitespace-nowrap">
+                                Token Distribution
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-                            <div className="flex justify-end">
-                                {Object.entries(timeLeft).map(([unit, value], index) => (
-                                    <div key={unit} className="text-center px-1 lg:px-5">
-                                        <span
-                                            className="text-2xl lg:text-5xl font-bold text-white"
-                                            style={{fontFamily: 'Montserrat', fontWeight: 700}}
-                                        >
-                                            {String(value).padStart(2, '0')}
-                                            <span className="uppercase text-white text-md lg:text-lg">
-                                                {unit}
-                                            </span>
-                                        </span>
-                                    </div>
-                                ))}
+                {/* Countdown */}
+                <div
+                    className="bg-gradient-to-r from-purple-500 to-blue-400 text-white rounded-2xl px-6 py-4 flex flex-col justify-between">
+                    <h2 className="text-3xl font-bold mb-4 text-right tracking-wide">
+                        Phase Ends In:
+                    </h2>
+                    <div className="grid grid-cols-4 gap-2 text-center mb-4">
+                        {Object.entries(timeLeft).map(([unit, value]) => (
+                            <div key={unit}>
+                                <div className="text-7xl font-bold">
+                                    {String(value).padStart(2, '0')}
+                                </div>
+                                <div className="text-xl uppercase mt-1 font-semibold">{unit}</div>
                             </div>
 
                             {/* Header Stats */}
