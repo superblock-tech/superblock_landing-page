@@ -129,29 +129,21 @@ export default function ProfilePage() {
                                 </div>
                                 <div className="text-xl uppercase mt-1 font-semibold">{unit}</div>
                             </div>
-
-                            {/* Header Stats */}
-                            <div
-                                style={{fontFamily: 'Montserrat', fontWeight: 700, fontSize: '1rem'}}
-                            >
-                                <div className="flex flex-col md:flex-row gap-8 pt-8">
-                                    <div className="flex-1 ">
-                                        <p className="text-xl md:text-2xl font-semibold">Phase 1 (Invite Only):</p>
-                                        <p className="text-xl md:text-2xl font-semibold">1 $SBX = $0.220</p>
-                                        <p className="text-xl text-right md:text-2xl font-semibold">Next: Phase 2
-                                            (Public
-                                            Presale)</p>
-                                        <p className="text-xl text-right md:text-2xl font-semibold">Public Presale
-                                            Launch Price
-                                            = $0.310</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
+                    </div>
+                    <div className="w-full h-3 bg-white bg-opacity-30 rounded-full overflow-hidden mb-3">
+                        <div className="h-full bg-white bg-opacity-80 transition-all duration-1000"
+                             style={{width: `${progress}%`}}></div>
+                    </div>
+                    <div className="text-xl font-medium space-y-1 text-right">
+                        <p className="text-left">Phase 1 (Invite Only): <span
+                            className="font-bold">1 $SBX = $0.220</span></p>
+                        <p>Next: <span className="font-semibold">Phase 2 (Public Presale)</span></p>
+                        <p>Launch Price: <span className="font-bold">$0.310</span></p>
                     </div>
                 </div>
-            </div>
-            <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 pt-8">
+
+                {/* Stats */}
                 <div
                     className="flex flex-col md:flex-row justify-between items-stretch md:items-stretch bg-gradient-to-r from-purple-500  to-blue-400 text-white p-6 rounded-2xl shadow-lg space-y-6 md:space-y-0 md:space-x-8">
                     <div className="flex flex-col">
