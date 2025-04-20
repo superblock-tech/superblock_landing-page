@@ -45,10 +45,27 @@ export default function ProfilePage() {
     };
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft(calculateTimeLeft());
-        }, 1000);
-        return () => clearInterval(timer);
+        const start = new Date("2025-04-01T00:00:00Z").getTime();
+        const end = new Date("2025-06-01T00:00:00Z").getTime();
+
+        const update = () => {
+            const now = new Date().getTime();
+            const diff = Math.max(0, end - now);
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / (1000 * 60)) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+            setTimeLeft({ days: d, hours: h, minutes: m, seconds: s });
+
+            const totalDuration = end - start;
+            const elapsed = now - start;
+            const percentage = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
+            setProgress(percentage);
+        };
+
+        update();
+        const interval = setInterval(update, 1000);
+        return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
