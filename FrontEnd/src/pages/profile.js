@@ -124,10 +124,10 @@ export default function ProfilePage() {
                     <div className="grid grid-cols-4 gap-2 text-center mb-4">
                         {Object.entries(timeLeft).map(([unit, value]) => (
                             <div key={unit}>
-                                <div className="text-7xl font-bold">
+                                <div className="text-2xl lg:text-7xl font-bold">
                                     {String(value).padStart(2, '0')}
                                 </div>
-                                <div className="text-xl uppercase mt-1 font-semibold">{unit}</div>
+                                <div className="text-sm lg:text-xl uppercase mt-1 font-semibold">{unit}</div>
                             </div>
                         ))}
                     </div>
