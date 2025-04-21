@@ -145,28 +145,24 @@ export default function ProfilePage() {
 
                 {/* Stats */}
                 <div
-                    className="flex flex-col md:flex-row justify-between items-stretch md:items-stretch bg-gradient-to-r from-purple-500  to-blue-400 text-white p-6 rounded-2xl shadow-lg space-y-6 md:space-y-0 md:space-x-8">
-                    <div className="flex flex-col">
-                        <p className="text-xl">
-                            USD Raised:&nbsp;
-                        </p>
-                        <p className="text-2xl font-bold">44.91</p>
-                    </div>
-                    <div className="border-l md:border-l-2 border-gray-700 h-0 md:h-16 w-full md:w-auto"/>
-                    <div className="flex flex-col">
-                        <p className="text-xl">
-                            $SBX Tokens Allocated:&nbsp;
-                        </p>
-                        <p className="text-2xl font-bold">
-                            14.67 / 10 000 000
-                        </p>
-                    </div>
-                    <div className="border-l md:border-l-2 border-gray-700 h-0 md:h-16 w-full md:w-auto"/>
-                    <div className="flex flex-col">
-                        <p className="text-xl">
-                            Holders:&nbsp;
-                        </p>
-                        <p className="text-2xl font-bold">3</p>
+                    className="bg-gradient-to-r from-purple-500 to-blue-400 text-white rounded-2xl px-6 py-6 flex flex-col justify-center">
+                    <div className="flex flex-col gap-3 text-center">
+                        <div>
+                            <p className="text-lg mb-1 tracking-wide">USD Raised</p>
+                            <p className="text-3xl font-extrabold text-white">44.91</p>
+                        </div>
+                        <div className="border-t border-white w-full mx-auto"></div>
+                        <div>
+                            <p className="text-lg mb-1 tracking-wide">$SBX Allocated</p>
+                            <p className="text-3xl font-extrabold text-white">14.67<span className="mx-2">—</span>
+                                10 000 000
+                            </p>
+                        </div>
+                        <div className="border-t border-white w-full mx-auto"></div>
+                        <div>
+                            <p className="text-lg mb-1 tracking-wide">Holders</p>
+                            <p className="text-3xl font-extrabold text-white">3</p>
+                        </div>
                     </div>
                 </div>
             </div>
