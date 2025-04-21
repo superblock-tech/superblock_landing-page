@@ -75,14 +75,16 @@ export default function ProfilePage() {
 
     return (<section>
         <div className="container mx-auto px-6 py-20">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                 {/* Left Panel */}
                 <div
-                    className="bg-gradient-to-r from-purple-200 to-blue-200 text-white rounded-2xl p-10 flex flex-col justify-between">
-                    <h1 className="text-[30.219px] sm:text-[40.974px] leading-[42.219px] sm:leading-[79.974px] font-futura-bold font-bold text-transparent bg-clip-text bg-multi-color-gradient bg-size-800 animate-colorCycle text-left w-fit">
-                        $SBX Token Presale<br/>Phase 1
+                    className="bg-gradient-to-r from-purple-200 to-blue-200 text-white rounded-3xl p-10 flex flex-col justify-between">
+                    <h1 className="text-[30.219px] sm:text-[40.974px] leading-[42.219px] sm:leading-[50px] font-futura-bold font-bold text-transparent bg-clip-text bg-multi-color-gradient bg-size-800 animate-colorCycle text-left w-fit">
+                        $SBX Token Presale
+                        <br/>
+                        Phase 1
                     </h1>
-                    <p className="text-2xl font-semibold mt-6 text-black">
+                    <p className="text-2xl font-semibold mt-3 text-[#7b36b6]">
                         Founders Circle Presale. Invite only.
                     </p>
                     <div className="mt-10 flex flex-col gap-6">
@@ -117,7 +119,7 @@ export default function ProfilePage() {
 
                 {/* Countdown */}
                 <div
-                    className="bg-gradient-to-r from-purple-500 to-blue-400 text-white rounded-2xl px-6 py-4 flex flex-col justify-between">
+                    className="bg-gradient-to-r from-purple-500 to-blue-400 text-white  rounded-3xl p-10 flex flex-col justify-between">
                     <h2 className="text-3xl font-bold mb-4 text-right tracking-wide">
                         Phase Ends In:
                     </h2>
@@ -131,12 +133,12 @@ export default function ProfilePage() {
                             </div>
                         ))}
                     </div>
-                    <div className="w-full h-3 bg-white bg-opacity-30 rounded-full overflow-hidden mb-3">
+                    <div className="w-full h-5 bg-white bg-opacity-30 rounded-full overflow-hidden mb-3 ">
                         <div className="h-full bg-white bg-opacity-80 transition-all duration-1000"
                              style={{width: `${progress}%`}}></div>
                     </div>
                     <div className="text-xl font-medium space-y-1 text-right">
-                        <p className="text-left">Phase 1 (Invite Only): <span
+                        <p>Phase 1 (Invite Only): <span
                             className="font-bold">1 $SBX = $0.220</span></p>
                         <p>Next: <span className="font-semibold">Phase 2 (Public Presale)</span></p>
                         <p>Launch Price: <span className="font-bold">$0.310</span></p>
@@ -145,23 +147,21 @@ export default function ProfilePage() {
 
                 {/* Stats */}
                 <div
-                    className="bg-gradient-to-r from-purple-500 to-blue-400 text-white rounded-2xl px-6 py-6 flex flex-col justify-center">
-                    <div className="flex flex-col gap-3 text-center">
+                    className="bg-gradient-to-r from-purple-200 to-blue-200 rounded-3xl p-10 flex flex-col justify-center text-[#7b36b6]">
+                    <div className="flex flex-col gap-10 text-center">
                         <div>
                             <p className="text-lg mb-1 tracking-wide">USD Raised</p>
-                            <p className="text-3xl font-extrabold text-white">44.91</p>
+                            <p className="text-3xl font-extrabold">44.91</p>
                         </div>
-                        <div className="border-t border-white w-full mx-auto"></div>
                         <div>
                             <p className="text-lg mb-1 tracking-wide">$SBX Allocated</p>
-                            <p className="text-3xl font-extrabold text-white">14.67<span className="mx-2">—</span>
+                            <p className="text-3xl font-extrabold">14.67<span className="mx-2">—</span>
                                 10 000 000
                             </p>
                         </div>
-                        <div className="border-t border-white w-full mx-auto"></div>
                         <div>
                             <p className="text-lg mb-1 tracking-wide">Holders</p>
-                            <p className="text-3xl font-extrabold text-white">3</p>
+                            <p className="text-3xl font-extrabold">3</p>
                         </div>
                     </div>
                 </div>
