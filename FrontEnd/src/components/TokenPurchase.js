@@ -348,7 +348,13 @@ const TokenPurchase = () => {
                                 />
                                 <div className="flex items-center gap-2 min-w-fit">
                                     <div
-                                        className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-full p-1 w-6 h-6"></div>
+                                        className="bg-gradient-to-r from-purple-100 to-purple-300 rounded-full p-1 w-6 h-6">
+                                        <img
+                                            className="w-fit"
+                                            src={`/favicon.ico`}
+                                            alt="sbxtoken"
+                                        />
+                                    </div>
                                     <span>SBX</span>
                                 </div>
                             </div>
