@@ -6,11 +6,9 @@ import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
 
 const config = createConfig(
   getDefaultConfig({
-    appName: 'Superblock',
+    appName: 'SuperBlock',
     chains: [mainnet, sepolia],
-    [mainnet.id]: http(
-      `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_ID}`,
-    ),
+    [mainnet.id]: http(),
     walletConnectProjectId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
   })
 );
