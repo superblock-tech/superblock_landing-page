@@ -28,4 +28,5 @@ Route::get('getPriceForCrypto', [CryptoController::class, 'getPriceForCrypto']);
 Route::middleware(['check.token'])->group(function () {
     Route::get('wallet', [WalletController::class, 'getWallets']);
     Route::get('transactions/{wallet}', [PresaleTransactionsController::class, 'findByAddress']);
+    Route::post('transactions', [PresaleTransactionsController::class, 'storeLocalTransaction']);
 });
