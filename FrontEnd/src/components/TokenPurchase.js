@@ -24,6 +24,7 @@ const TokenPurchase = () => {
     const [sbxAmount, setSbxAmount] = useState("");
     const [showWallets, setShowWallets] = useState(false);
     const {token} = useContext(AuthContext);
+    const [presaleTransactions, setPresaleTransactions] = useState([]);
 
 
     const handleCopy = (text) => {
@@ -65,6 +66,35 @@ const TokenPurchase = () => {
             console.error("Error fetching whitelist content:", error);
         }
     };
+
+    const fetchPresaleTransactionsByWallet = async (wallet) => {
+        if (wallet) {
+            try {
+                const response = await fetch(
+                    `${process.env.REACT_APP_API_URL}/transactions/${wallet}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        },
+                    }
+                );
+
+                if (response.status === 401) {
+                    return;
+                }
+
+                const data = await response.json();
+                setPresaleTransactions(data);
+            } catch (error) {
+                toast.error("Error fetching presale transactions content.");
+                console.error("Error fetching presale transactions content:", error);
+            }
+        } else {
+            console.log("No connected wallets.");
+        }
+
+    };
+
 
     const fetchCryptoPrices = async () => {
         try {
@@ -111,6 +141,9 @@ const TokenPurchase = () => {
         fetchCryptoPrices();
     }, []);
 
+    useEffect( () => {
+        fetchPresaleTransactionsByWallet(address);
+    }, [address])
 
     // Calculate token to SBX conversion
     const calculateSbxAmount = (tokenAmt) => {
@@ -357,7 +390,7 @@ const TokenPurchase = () => {
 
 
                     {address && selectedToken?.name === 'ETH' ? (
-                        <SendEthButton amount={tokenAmount} />
+                        <SendEthButton amount={tokenAmount} sbxAmount={sbxAmount} selectedNetwork={selectedNetwork} selectedToken={selectedToken} />
                     ) : (
                         <button
                             onClick={handleBuyClick}
@@ -374,26 +407,37 @@ const TokenPurchase = () => {
                         Transactions List
                     </h2>
 
-                    {/*<div className="mt-10 w-full max-w-2xl mx-auto px-4 justify-center">*/}
-                    {/*    {(*/}
-                    {/*        [6.12, 2.1, 1, 4, 1.1, 0.6, 0.28].map((wallet) => (*/}
-                    {/*            <div*/}
-                    {/*                key={wallet.id}*/}
-                    {/*                className="bg-white rounded-lg shadow-lg p-4 mb-6 flex items-center"*/}
-                    {/*            >*/}
-                    {/*                <div className="flex-1">*/}
-                    {/*                    <p className="text-gray-600 text-sm break-all">{wallet} USDT</p>*/}
-                    {/*                </div>*/}
-                    {/*                <button*/}
-                    {/*                    onClick={() => handleCopy(wallet.address)}*/}
-                    {/*                    className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-2 rounded-full"*/}
-                    {/*                >*/}
-                    {/*                    <CopyIcon className="w-5 h-5"/>*/}
-                    {/*                </button>*/}
-                    {/*            </div>*/}
-                    {/*        ))*/}
-                    {/*    )}*/}
-                    {/*</div>*/}
+                    <div className="mt-10 w-full max-w-2xl mx-auto px-4 justify-center">
+                        {(
+                            presaleTransactions.map((wallet) => (
+                                <div
+                                    key={wallet.id}
+                                    className="bg-white rounded-lg shadow-lg p-4 mb-6 flex items-center"
+                                >
+                                    <div className="flex-1">
+                                        <p className="text-gray-600 text-sm break-all">{wallet?.crypto_network?.description}</p>
+                                    </div>
+
+                                    <div className="flex-1">
+                                        <p className="text-gray-600 text-sm break-all">{wallet?.crypto?.name}</p>
+                                    </div>
+
+                                    <div className="flex-1">
+                                        <p className="text-gray-600 text-sm break-all">{wallet.sbx_price} SBX</p>
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-gray-600 text-sm break-all">{wallet.usdt_amount} USDT</p>
+                                    </div>
+                                    <button
+                                        onClick={() => handleCopy(wallet.txn_id)}
+                                        className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-2 rounded-full"
+                                    >
+                                        <CopyIcon className="w-5 h-5"/>
+                                    </button>
+                                </div>
+                            ))
+                        )}
+                    </div>
                 </div>
             )}
         </div>
