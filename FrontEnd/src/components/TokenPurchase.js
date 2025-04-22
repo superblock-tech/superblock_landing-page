@@ -115,7 +115,7 @@ const TokenPurchase = () => {
     // Calculate token to SBX conversion
     const calculateSbxAmount = (tokenAmt) => {
         if (!selectedToken || !whitelistContent.sbxPrice || !tokenAmt) return "";
-        const usdValue = tokenAmt / selectedToken?.price;
+        const usdValue = tokenAmt * selectedToken?.price;
         console.log(selectedToken)
         return (usdValue / whitelistContent.sbxPrice).toFixed(6);
     };
@@ -335,7 +335,7 @@ const TokenPurchase = () => {
                             </div>
 
                             {/* Equals Sign */}
-                            <div className="text-black text-3xl">=</div>
+                            <div className="text-black text-3xl"></div>
 
                             {/* Second Input Group */}
                             <div className="flex items-center gap-2 w-full md:w-auto bg-[#FFFFFF] p-4 rounded-lg">
