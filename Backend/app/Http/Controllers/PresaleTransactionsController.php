@@ -35,7 +35,7 @@ class PresaleTransactionsController extends Controller
     }
 
     public function findByAddress(string $address) {
-        $transactions = PresaleTransaction::query()->where('address', $address)->get();
+        $transactions = PresaleTransaction::query()->where('wallet_address', $address)->with(['crypto', 'cryptoNetwork'])->get();
 
         return response()->json($transactions);
     }
@@ -66,6 +66,17 @@ class PresaleTransactionsController extends Controller
             Log::info($e->getMessage());
             return redirect()->route('presale_transactions.list')->with('error', 'Failed to add Transaction. Please try again.');
         }
+    }
+
+    public function storeLocalTransaction(Request $request)
+    {
+        $request->request->set('transaction_confirmation', 'Local transaction. Chain ID: ' . $request->chain_id . ' Chain name: ' . $request->chain_name);
+
+        Log::debug($request->all());
+        $transaction = new PresaleTransaction();
+        $transaction->query()->create($request->all());
+
+        return response(null, 201);
     }
 
     /**
@@ -127,4 +138,5 @@ class PresaleTransactionsController extends Controller
 
         return $response['id'];
     }
+
 }
