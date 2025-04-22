@@ -71,7 +71,6 @@ const FlexStagesTable = () => {
                 $SBX Token Distribution
             </h1>
             <p className=" text-[#686868] text-[12px] lg:text-[24px] font-futura-600 leading-[12px] lg:leading-[36px] text-center sm:max-w-[1047px] mx-auto max-w-[303px]">
-                Tokenomics:
                 The total supply of $SBX tokens is capped at 1,000,000,000. Of this, 100,000,000 $SBX tokens are
                 allocated for the presale, split evenly across 10 phases with 10 million tokens per phase. Any unsold
                 tokens from a phase will be returned to the treasury to ensure that circulating supply reflects actual
