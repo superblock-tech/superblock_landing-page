@@ -200,7 +200,7 @@ const TokenPurchase = () => {
                                 className="bg-[#2a2a2a] rounded-lg p-4 mb-6 flex items-center"
                             >
                                 <img
-                                    src={`https://nomad-parners.online/storage/${wallet.icon}`}
+                                    src={`/assets/images/crypto/color/${wallet.icon}`}
                                     alt="wallet icon"
                                     className="w-12 h-12 rounded-full mr-4 object-cover"
                                     onError={(e) => {
@@ -261,7 +261,6 @@ const TokenPurchase = () => {
                                 <TokenDropdown
                                     networks={tokens}
                                     setTokenData={setToken}
-                                    getTokenEmoji={getTokenEmoji}
                                 />
                             }
                         </div>
@@ -320,10 +319,18 @@ const TokenPurchase = () => {
                                     className="bg-transparent border-none outline-none w-full md:w-32 text-xl"
                                 />
                                 <div className="flex items-center gap-2 min-w-fit">
-                                    <span className="text-2xl">
-                                        {selectedToken ? getTokenEmoji(selectedToken.name) : "🪙"}
-                                    </span>
-                                    <span>{selectedNetwork && selectedToken ? selectedNetwork?.name + ' - ' + selectedToken?.name : "Select Token"}</span>
+                                    {
+                                        selectedToken &&
+                                        (
+                                            <img
+                                                className="w-6"
+                                                src={`/assets/images/crypto/color/${selectedToken?.icon}.svg`}
+                                                alt={selectedToken?.icon}
+                                            />
+
+                                        )
+                                    }
+                                    <span>{selectedNetwork && selectedToken ? selectedNetwork?.name + ' ' + selectedToken?.name : "Select Token"}</span>
                                 </div>
                             </div>
 
