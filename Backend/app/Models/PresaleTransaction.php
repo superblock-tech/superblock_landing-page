@@ -36,6 +36,10 @@ class PresaleTransaction extends Model
 
     public function getTokensAllocatedAttribute($value)
     {
-        return round(($this->attributes['usdt_amount'] / $this->attributes['sbx_price']), 10);
+        if (isset($this->attributes['usdt_amount'])) {
+            return round(($this->attributes['usdt_amount'] / $this->attributes['sbx_price']), 10);
+        } else {
+            $this->attributes['sbx_price'];
+        }
     }
 }
