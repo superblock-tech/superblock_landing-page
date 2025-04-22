@@ -15,6 +15,7 @@ class Crypto extends Model
         'name',
         'price',
         'symbol',
+        'icon'
     ];
 
     public function wallets()
