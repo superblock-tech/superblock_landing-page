@@ -140,8 +140,7 @@ export default function ProfilePage() {
                     <div className="text-xl font-medium space-y-1 text-right">
                         <p>Phase 1 (Invite Only): <span
                             className="font-bold">1 $SBX = $0.220</span></p>
-                        <p>Next: <span className="font-semibold">Phase 2 (Public Presale)</span></p>
-                        <p>Launch Price: <span className="font-bold">$0.310</span></p>
+                        <p>Next: <span className="font-semibold">Phase 2 (Public Presale). </span>Launch Price: <span className="font-bold">$0.310</span></p>
                     </div>
                 </div>
 
