@@ -58,7 +58,7 @@ class WhitelistController extends Controller
         return response()->json(
             [
                 'usdtRaised' => $usdtAmount,
-                'sbxPrice' => 0.001,
+                'sbxPrice' => $sbxPrice,
                 'totalTokens' => $sbxAmount,
                 'holders' => count($transactions),
                 'percentage' => count($transactions) === 0 ? 0 : ($sbxAmount / count($transactions) * 100),
