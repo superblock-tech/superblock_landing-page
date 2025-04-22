@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
 
-const TokenDropdown = ({ networks,  getTokenEmoji, setTokenData }) => {
+const TokenDropdown = ({ networks, setTokenData, setTokenAmount, setSbxAmount }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [selectedToken, setSelectedToken] = useState({});
     const [selectedNetwork, setSelectedNetwork] = useState({});
@@ -15,6 +15,8 @@ const TokenDropdown = ({ networks,  getTokenEmoji, setTokenData }) => {
         }
         setSelectedToken(token);
         setSelectedNetwork(network);
+        setTokenAmount(0)
+        setSbxAmount(0)
         setDropdownOpen(false);
     };
 

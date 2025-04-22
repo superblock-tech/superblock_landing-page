@@ -143,17 +143,6 @@ const TokenPurchase = () => {
         }
     };
 
-    const getTokenEmoji = (tokenName) => {
-        const emojis = {
-            BTC: "₿",
-            ETH: "⟠",
-            BNB: "🟡",
-            SOL: "◎",
-            USDT: "💵",
-        };
-        return emojis[tokenName] || "🪙";
-    };
-
     return (
         <div
             id="buyNow"
@@ -261,6 +250,8 @@ const TokenPurchase = () => {
                                 <TokenDropdown
                                     networks={tokens}
                                     setTokenData={setToken}
+                                    setTokenAmount={setTokenAmount}
+                                    setSbxAmount={setSbxAmount}
                                 />
                             }
                         </div>
@@ -340,6 +331,8 @@ const TokenPurchase = () => {
                             {/* Second Input Group */}
                             <div className="flex items-center gap-2 w-full md:w-auto bg-[#FFFFFF] p-4 rounded-lg">
                                 <input
+                                    min={process.env.REACT_APP_MIN_TOKENS_AMOUNT}
+                                    max={process.env.REACT_APP_MAX_TOKENS_AMOUNT}
                                     type="text"
                                     value={sbxAmount}
                                     onChange={handleSbxAmountChange}
@@ -364,8 +357,7 @@ const TokenPurchase = () => {
 
 
                     {address && selectedToken?.name === 'ETH' ? (
-                        <SendEthButton>
-                        </SendEthButton>
+                        <SendEthButton amount={tokenAmount} />
                     ) : (
                         <button
                             onClick={handleBuyClick}
