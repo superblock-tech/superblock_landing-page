@@ -33,16 +33,25 @@ const TokenDropdown = ({ networks,  getTokenEmoji, setTokenData }) => {
 
                     }
                 }
-                    className={`w-full flex items-center justify-between gap-3 p-4 rounded-xl border transition-all border-gray-700 hover:border-gray-600`}>
+                    className={`w-full flex items-center justify-between gap-3 p-4 rounded-xl border transition-all border-gray-700 hover:border-gray-600
+                    ${
+                        selectedNetwork?.id === network.id
+                            ? "bg-purple-900/30"
+                            : "hover:bg-blue-50"
+                    }`}>
                     <div className="flex items-center gap-3">
-                        <span className="text-2xl">{getTokenEmoji(network.cryptos.length === 1 ? network.cryptos[0].name : network.name )}</span>
+                        <img
+                            className="w-12"
+                            src={`/assets/images/crypto/color/${selectedToken && selectedNetwork?.id === network.id ? selectedToken.icon : network.icon}.svg`}
+                            alt={selectedToken ? selectedToken.icon : network.icon}
+                        />
                         <div className="text-left">
-                            <div className="font-bold">{network.name} Tokens</div>
-                            <div className="text-sm">{network.address}</div>
+                            <div className="font-bold">{network.description}</div>
+                            <div className="text-md">{network.name} {selectedNetwork?.id === network.id && selectedToken?.name}</div>
                         </div>
                     </div>
                     {network.cryptos.length > 1 &&
-                        <ChevronDown className="w-5 h-5 text-gray-400"/>
+                        <ChevronDown className="w-5 h-5 text-black"/>
                     }
                 </button>
 
@@ -54,16 +63,20 @@ const TokenDropdown = ({ networks,  getTokenEmoji, setTokenData }) => {
                             <button
                                 key={token.id}
                                 onClick={() => handleSelect(token, network)}
-                                className={`w-full flex items-center gap-3 p-4 text-left rounded-xl transition-all ${
+                                className={`w-full flex items-center gap-3 p-4 text-left rounded-xl transition-all 
+                                ${
                                     selectedToken?.id === token.id && selectedNetwork?.id === network.id
                                         ? "bg-purple-900/30"
                                         : "hover:bg-blue-50"
                                 }`}
                             >
-                                <span className="text-2xl">{getTokenEmoji(token.name)}</span>
+                                <img
+                                    className="w-12"
+                                    src={`/assets/images/crypto/color/${token.icon}.svg`}
+                                    alt={token.icon}
+                                />
                                 <div className="text-left">
                                     <div className="font-bold">{token.name}</div>
-                                    <div className="text-sm">{network.address}</div>
                                 </div>
                             </button>
                         ))}
