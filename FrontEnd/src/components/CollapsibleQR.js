@@ -5,7 +5,7 @@ const CollapsibleQR = ({ value }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="flex flex-col items-center cursor-pointer text-gray-300 hover:text-white"   onClick={() => setIsExpanded(!isExpanded)}>
+    <div className="flex flex-col items-center cursor-pointer text-gray-700 hover:text-black"   onClick={() => setIsExpanded(!isExpanded)}>
       <span
         className="text-sm mb-2"
       >
