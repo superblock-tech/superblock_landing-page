@@ -71,13 +71,13 @@ const FlexStagesTable = () => {
                 $SBX Token Distribution
             </h1>
             <p className=" text-[#686868] text-[12px] lg:text-[24px] font-futura-600 leading-[12px] lg:leading-[36px] text-center sm:max-w-[1047px] mx-auto max-w-[303px]">
-                The total supply of $SBX tokens is capped at 1,000,000,000. Of this, 100,000,000 $SBX tokens are
-                allocated for the presale, split evenly across 10 phases with 10 million tokens per phase. Any unsold
-                tokens from a phase will be returned to the treasury to ensure that circulating supply reflects actual
-                market demand.
-                If the soft cap is not reached, participants will receive a full refund, excluding any network
-                transaction fees. After the presale and token airdrop, the community will vote through the DAO on
-                whether to retain or permanently burn any unsold tokens
+                The total supply of $SBX tokens is capped at 1,000,000,000. Of this, 100,000,000 $SBX tokens (10% of total supply) are allocated for the presale, split evenly across 10 phases with 10,000,000 tokens per phase (1% of total supply).
+                </p>
+            <p className=" text-[#686868] text-[12px] lg:text-[24px] font-futura-600 leading-[12px] lg:leading-[36px] text-center sm:max-w-[1047px] mx-auto max-w-[303px]">
+                Any unsold tokens from a phase will be returned to the treasury to ensure that circulating supply reflects actual market demand. If the soft cap is not reached, participants will receive a full refund, excluding any network transaction fees.
+            </p>
+            <p className=" text-[#686868] text-[12px] lg:text-[24px] font-futura-600 leading-[12px] lg:leading-[36px] text-center sm:max-w-[1047px] mx-auto max-w-[303px]">
+                After the presale and token airdrop, the community will vote through the DAO on whether to retain or permanently burn any unsold tokens.
             </p>
             <div className="p-8 flex justify-center items-center">
                 <div
