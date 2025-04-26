@@ -10,7 +10,7 @@ export default function Footer() {
         alt=""
         className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       />
-      <div className="container relative">
+      <div className="container relative mt-4">
         <img
           src="assets/images/x.svg"
           className="sm:w-fit mx-auto w-[72px]"
