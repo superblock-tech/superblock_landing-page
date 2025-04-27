@@ -137,10 +137,9 @@ const MobileMenu = ({ setIsOpen, isOpen }) => {
                   bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6]
                   hover:from-[#7B36B6] hover:to-[#1BA3FF]
                   transition-all duration-300"
-                onClick={openLoginDialog}
             >
                   <span className="text-white text-[16px] leading-[29.87px] font-[450]">
-                    Apply For Presale
+                    Join Presale
                   </span>
               <span className="hidden xl:flex">
                     <RightArrow/>
