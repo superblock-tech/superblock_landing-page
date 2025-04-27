@@ -35,7 +35,10 @@ class PresaleTransactionsController extends Controller
     }
 
     public function findByAddress(string $address) {
-        $transactions = PresaleTransaction::query()->where('wallet_address', $address)->with(['crypto', 'cryptoNetwork'])->get();
+        $transactions = PresaleTransaction::query()
+            ->where('wallet_address', $address)->with(['crypto', 'cryptoNetwork'])
+            ->orderByDesc('id')
+            ->get();
 
         return response()->json($transactions);
     }
