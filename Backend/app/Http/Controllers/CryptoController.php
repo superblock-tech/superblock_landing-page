@@ -23,7 +23,7 @@ class CryptoController extends Controller
     public function getPriceForCrypto()
     {
         $cryptos = CryptoNetwork::query()
-            ->with(['cryptos', 'cryptos.wallets'])
+            ->with(['cryptos', 'cryptos.wallets.crypto'])
             ->get();
         return response()->json($cryptos);
     }
