@@ -27,23 +27,6 @@ const TokenPurchase = () => {
     const [presaleTransactions, setPresaleTransactions] = useState([]);
 
 
-    const handleCopy = (text) => {
-        navigator.clipboard.writeText(text);
-        toast.success("Copied to clipboard!");
-    };
-
-    const handleBuyClick = () => {
-        setShowWallets(true);
-    };
-
-    const handleBackToTokens = () => {
-        setShowWallets(false);
-    };
-
-    const handleLogout = () => {
-        logout();
-    };
-
     const fetchWhitelistContent = async () => {
         try {
             const response = await fetch(
@@ -65,6 +48,22 @@ const TokenPurchase = () => {
             toast.error("Error fetching whitelist content.");
             console.error("Error fetching whitelist content:", error);
         }
+    };
+    const handleCopy = (text) => {
+        navigator.clipboard.writeText(text);
+        toast.success("Copied to clipboard!");
+    };
+
+    const handleBuyClick = () => {
+        setShowWallets(true);
+    };
+
+    const handleBackToTokens = () => {
+        setShowWallets(false);
+    };
+
+    const handleLogout = () => {
+        logout();
     };
 
     const fetchPresaleTransactionsByWallet = async (wallet) => {
@@ -155,6 +154,7 @@ const TokenPurchase = () => {
 
     // Calculate SBX to token conversion
     const calculateTokenAmount = (sbxAmt) => {
+        console.log(whitelistContent)
         if (!selectedToken || !whitelistContent.sbxPrice || !sbxAmt) return "";
         const usdValue = sbxAmt * whitelistContent.sbxPrice;
         return (usdValue / selectedToken?.price).toFixed(6);
@@ -167,6 +167,12 @@ const TokenPurchase = () => {
             setSbxAmount(calculateSbxAmount(parseFloat(value)));
         }
     };
+
+    const prepareQRLink = (wallet, amount) => {
+
+        console.log(wallet)
+        return wallet.crypto.prefix + ':' + wallet.address + '?amount=' + amount + '&label=' + wallet.name + '&message=Buy $SBX Tokens'
+    }
 
     const handleSbxAmountChange = (e) => {
         const value = e.target.value;
@@ -212,14 +218,14 @@ const TokenPurchase = () => {
                     {loading ? (
                         <LoadingSkeletons.Wallets/>
                     ) : selectedToken?.wallets.length === 0 ? (
-                        <div className="text-center p-4 bg-[#2a2a2a] rounded-xl">
+                        <div className="text-center p-4 bg-white rounded-xl">
                             No wallets available for {selectedToken?.name}
                         </div>
                     ) : (
                         selectedToken?.wallets.map((wallet) => (
                             <div
                                 key={wallet.id}
-                                className="bg-[#2a2a2a] rounded-lg p-4 mb-6 flex items-center"
+                                className="bg-white rounded-lg p-4 mb-6 flex items-center"
                             >
                                 <img
                                     src={`/assets/images/crypto/color/${wallet.icon}`}
@@ -239,11 +245,11 @@ const TokenPurchase = () => {
 
                                 <button
                                     onClick={() => handleCopy(wallet.address)}
-                                    className="flex items-center justify-center bg-gray-700 hover:bg-gray-600 p-2 rounded-full mr-5"
+                                    className="flex items-center justify-center bg-white hover:bg-gray-700 p-2 rounded-full mr-5"
                                 >
                                     <CopyIcon className="w-5 h-5"/>
                                 </button>
-                                <CollapsibleQR value={wallet.address}/>
+                                <CollapsibleQR value={prepareQRLink(wallet, tokenAmount)}/>
                             </div>
                         ))
                     )}
@@ -262,7 +268,7 @@ const TokenPurchase = () => {
                         <h2 className="text-lg mb-4">In order to buy $SBX you need to connect your wallet.</h2>
                         {token && (
                             <div className="flex items-center gap-4 mt-8 mb-8">
-                                        <ConnectKitButton/>
+                                <ConnectKitButton/>
 
                                 {/*                  <button*/}
                                 {/*                      onClick={handleLogout}*/}
@@ -299,8 +305,8 @@ const TokenPurchase = () => {
                             <div
                                 className="bg-gradient-to-r from-purple-200 to-blue-200 p-6 rounded-xl flex flex-col gap-6">
                                 <div className="flex items-center justify-between text-sm text-gray-600">
-                                    <span>{process.env.REACT_APP_MIN_TOKENS_AMOUNT} SBX</span>
-                                    <span>{process.env.REACT_APP_MAX_TOKENS_AMOUNT} SBX</span>
+                                    <span>Min {Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT).toLocaleString('en-US')} $SBX</span>
+                                    <span>Max {Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT).toLocaleString('en-US')} $SBX</span>
                                 </div>
                                 <input
                                     disabled={!selectedNetwork || !selectedToken}
@@ -390,7 +396,8 @@ const TokenPurchase = () => {
 
 
                     {address && selectedToken?.name === 'ETH' ? (
-                        <SendEthButton amount={tokenAmount} sbxAmount={sbxAmount} selectedNetwork={selectedNetwork} selectedToken={selectedToken} />
+                        <SendEthButton amount={tokenAmount} sbxAmount={sbxAmount} selectedNetwork={selectedNetwork}
+                                       selectedToken={selectedToken}/>
                     ) : (
                         <button
                             onClick={handleBuyClick}
@@ -407,37 +414,62 @@ const TokenPurchase = () => {
                         Transactions List
                     </h2>
 
-                    <div className="mt-10 w-full max-w-2xl mx-auto px-4 justify-center">
-                        {(
-                            presaleTransactions.map((wallet) => (
-                                <div
-                                    key={wallet.id}
-                                    className="bg-white rounded-lg shadow-lg p-4 mb-6 flex items-center"
-                                >
-                                    <div className="flex-1">
-                                        <p className="text-gray-600 text-sm break-all">{wallet?.crypto_network?.description}</p>
-                                    </div>
+                    <table className="min-w-full bg-white shadow-md rounded-lg overflow-x-auto">
+                        <thead className="hidden md:table-header-group">
+                        <tr className="bg-gray-100 text-gray-600 text-sm uppercase">
+                            <th className="px-4 py-2 text-left">Address</th>
+                            <th className="px-4 py-2 text-left">$SBX Allocated</th>
+                            <th className="px-4 py-2 text-left">USDT Amount</th>
+                            <th className="px-4 py-2 text-left">Payment Token</th>
+                            <th className="px-4 py-2 text-left">Network</th>
+                            <th className="px-4 py-2 text-left">Hash</th>
+                            <th className="px-4 py-2 text-left">Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {presaleTransactions.map(wallet => (
+                            <tr key={wallet.id} className="border-t border-gray-200 text-sm md:table-row">
+                                {/* Mobile Card Layout (each row displayed as a card) */}
+                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Address:</td>
+                                <td className="block md:table-cell px-4 py-2">{wallet.wallet_address}</td>
 
-                                    <div className="flex-1">
-                                        <p className="text-gray-600 text-sm break-all">{wallet?.crypto?.name}</p>
-                                    </div>
+                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">$SBX
+                                    Allocated:
+                                </td>
+                                <td className="block md:table-cell px-4 py-2 break-all">{parseFloat(wallet.sbx_price).toFixed(6)}</td>
 
-                                    <div className="flex-1">
-                                        <p className="text-gray-600 text-sm break-all">{wallet.sbx_price} SBX</p>
-                                    </div>
-                                    <div className="flex-1">
-                                        <p className="text-gray-600 text-sm break-all">{wallet.usdt_amount} USDT</p>
-                                    </div>
+                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">USDT
+                                    Amount:
+                                </td>
+                                <td className="block md:table-cell px-4 py-2 break-all">{parseFloat(wallet.usdt_amount).toFixed(6)}</td>
+
+                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Payment
+                                    Token:
+                                </td>
+                                <td className="block md:table-cell px-4 py-2">{wallet?.crypto?.name}</td>
+
+                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Network:</td>
+                                <td className="block md:table-cell px-4 py-2">{wallet?.crypto_network?.description}</td>
+
+                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Hash:</td>
+                                <td className="block md:table-cell px-4 py-2 break-all flex items-center gap-2">
+                                    <span>{wallet.txn_id}</span>
                                     <button
                                         onClick={() => handleCopy(wallet.txn_id)}
-                                        className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-2 rounded-full"
+                                        className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-1 rounded-full"
                                     >
-                                        <CopyIcon className="w-5 h-5"/>
+                                        <CopyIcon className="w-4 h-4"/>
                                     </button>
-                                </div>
-                            ))
-                        )}
-                    </div>
+                                </td>
+
+                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Status:</td>
+                                <td className="block md:table-cell px-4 py-2 text-green-600 font-medium">{wallet.transaction_confirmation}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+
+
                 </div>
             )}
         </div>
