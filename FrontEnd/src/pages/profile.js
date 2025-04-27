@@ -23,7 +23,30 @@ export default function ProfilePage() {
     const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(true);
     const [wallets, setWallets] = useState([]);
+    const [whitelistContent, setWhitelistContent] = useState({});
 
+    const fetchWhitelistContent = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_API_URL}/getWhitelistContent`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                }
+            );
+
+            if (response.status === 401) {
+                return;
+            }
+
+            const data = await response.json();
+            setWhitelistContent(data);
+        } catch (error) {
+            toast.error("Error fetching whitelist content.");
+            console.error("Error fetching whitelist content:", error);
+        }
+    };
     const fetchWallets = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/wallet`, {
@@ -70,6 +93,7 @@ export default function ProfilePage() {
 
 
     useEffect(() => {
+        fetchWhitelistContent();
         fetchWallets();
     }, []);
 
@@ -138,9 +162,14 @@ export default function ProfilePage() {
                              style={{width: `${progress}%`}}></div>
                     </div>
                     <div className="text-xl font-medium space-y-1 text-right">
-                        <p>Phase 1 (Invite Only): <span
-                            className="font-bold">1 $SBX = $0.220</span></p>
-                        <p>Next: <span className="font-semibold">Phase 2 (Public Presale). </span>Launch Price: <span className="font-bold">$0.310</span></p>
+                        <p className="underline">{ whitelistContent.name }</p>
+                        <p><span className="font-bold">1 $SBX = ${whitelistContent.sbxPrice}</span></p>
+                        <p className="underline">Next&nbsp;
+                            <span >{whitelistContent.nameNext}</span>
+                        </p>
+                        <p>
+                            <span className="font-bold">1 $SBX = ${whitelistContent.sbxPriceNext}</span>
+                        </p>
                     </div>
                 </div>
 
@@ -149,18 +178,24 @@ export default function ProfilePage() {
                     className="bg-gradient-to-r from-purple-200 to-blue-200 rounded-3xl p-10 flex flex-col justify-center text-[#7b36b6]">
                     <div className="flex flex-col gap-10 text-center">
                         <div>
-                            <p className="text-lg mb-1 tracking-wide">USD Raised</p>
-                            <p className="text-3xl font-extrabold">44.91</p>
+                            <p className="text-lg mb-1 tracking-wide">Total USD Raised</p>
+                            <p className="text-3xl font-extrabold">{whitelistContent.usdtRaised}</p>
                         </div>
                         <div>
-                            <p className="text-lg mb-1 tracking-wide">$SBX Allocated</p>
-                            <p className="text-3xl font-extrabold">14.67<span className="mx-2">—</span>
-                                10 000 000
+                            <p className="text-lg mb-1 tracking-wide">
+                                { whitelistContent.name?.split(' - ')[0] }
+                                <span className="mx-2">—</span>
+                                $SBX Allocated
+                            </p>
+                            <p className="text-3xl font-extrabold">
+                                { whitelistContent.sbxAllocated }
+                                <span className="mx-2">/</span>
+                                { whitelistContent.sbxTotal }
                             </p>
                         </div>
                         <div>
-                            <p className="text-lg mb-1 tracking-wide">Holders</p>
-                            <p className="text-3xl font-extrabold">3</p>
+                            <p className="text-lg mb-1 tracking-wide">Total Holders</p>
+                            <p className="text-3xl font-extrabold">{ whitelistContent.holders }</p>
                         </div>
                     </div>
                 </div>
