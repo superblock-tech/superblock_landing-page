@@ -27,7 +27,7 @@ class WalletController extends Controller
      */
     public function getWallets()
     {
-        $wallets = Wallet::all();
+        $wallets = Wallet::query()->with('crypto')->get();
 
         return response()->json($wallets);
     }

@@ -35,33 +35,19 @@ class WhitelistController extends Controller
 
     public function getWhitelistContent()
     {
-        $whiteListContent = Whitelist::first(['usdtRaised', 'sbxPrice', 'totalTokens', 'holders']);
-
-        $transactions = PresaleTransaction::all();
-
-        $usdtAmount = 0;
-        $sbxAmount = 0;
-
-        foreach ($transactions as $transaction) {
-            $usdtAmount += $transaction->usdt_amount;
-            $sbxAmount += $transaction->tokens_allocated;
-        }
-
-        $usdtRaised = $usdtAmount;
-        $sbxPrice = $whiteListContent->sbxPrice;
-        $totalTokens = $sbxAmount;
-        $totalBuyTokens = ($usdtRaised / $sbxPrice);
-        $percentage = $totalTokens === 0 ? 0 : (($totalBuyTokens / $totalTokens ) * 100);
-
-        $whiteListContent->percentage = $percentage;
-
+        $whiteListContent = Whitelist::query()->where('is_active', '=', 1)->first();
+        $transactionsCount = count(PresaleTransaction::query()->select('wallet_address')->groupBy('wallet_address')->get()->pluck('wallet_address')->toArray());
         return response()->json(
             [
-                'usdtRaised' => $usdtAmount,
-                'sbxPrice' => $sbxPrice,
-                'totalTokens' => $sbxAmount,
-                'holders' => count($transactions),
-                'percentage' => count($transactions) === 0 ? 0 : ($sbxAmount / count($transactions) * 100),
+                'usdtRaised' => $whiteListContent->usdtRaised,
+                'sbxPrice' => $whiteListContent->sbxPrice,
+                'name' => $whiteListContent->name,
+                'nameNext' => $whiteListContent->name_next,
+                'sbxPriceNext' => $whiteListContent->sbx_price_next,
+                'totalTokens' => $whiteListContent->sbx_tokens,
+                'holders' => $transactionsCount,
+                'sbxAllocated' => $whiteListContent->sbx_allocated,
+                'sbxTotal' => $whiteListContent->totalTokens,
             ]
         );
     }
