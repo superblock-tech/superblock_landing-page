@@ -68,8 +68,16 @@ export default function ProfilePage() {
     };
 
     useEffect(() => {
-        const start = new Date("2025-04-01T00:00:00Z").getTime();
-        const end = new Date("2025-06-01T00:00:00Z").getTime();
+        fetchWhitelistContent();
+        fetchWallets();
+    }, []);
+
+    useEffect(() => {
+
+        if (!whitelistContent?.startedAt || !whitelistContent?.finishedAt) return;
+
+        const start = whitelistContent.startedAt * 1000;
+        const end = whitelistContent.finishedAt * 1000;
 
         const update = () => {
             const now = new Date().getTime();
@@ -89,13 +97,10 @@ export default function ProfilePage() {
         update();
         const interval = setInterval(update, 1000);
         return () => clearInterval(interval);
-    }, []);
+    }, [whitelistContent]);
 
 
-    useEffect(() => {
-        fetchWhitelistContent();
-        fetchWallets();
-    }, []);
+
 
     return (<section>
         <div className="container mx-auto px-6 py-20">
