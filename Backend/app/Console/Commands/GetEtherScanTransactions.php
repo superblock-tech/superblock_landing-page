@@ -31,11 +31,11 @@ class GetEtherScanTransactions extends Command
     public function handle()
     {
         try {
-            $wallet = Wallet::find(9);
-//            foreach ($wallets as $wallet) {
+            $wallets = Wallet::all();
+            foreach ($wallets as $wallet) {
                 $this->info($wallet->address);
                 $this->info(json_encode($this->handleTransactions($wallet)));
-//            }
+            }
         }catch (\Throwable $exception){
             $this->warn($exception->getMessage());
         }
