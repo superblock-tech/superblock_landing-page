@@ -18,6 +18,8 @@ class PresaleTransaction extends Model
         'transaction_confirmation',
         'txn_id',
         'crypto_network_id',
+        'system_wallet',
+        'system_wallet_id',
     ];
 
 
@@ -36,10 +38,6 @@ class PresaleTransaction extends Model
 
     public function getTokensAllocatedAttribute($value)
     {
-        if (isset($this->attributes['usdt_amount'])) {
-            return round(($this->attributes['usdt_amount'] / $this->attributes['sbx_price']), 10);
-        } else {
-            $this->attributes['sbx_price'];
-        }
+        return $this->attributes['sbx_price'];
     }
 }
