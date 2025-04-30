@@ -39,7 +39,7 @@
                 </nav>
 
                 <div class="mt-3">
-                    <h3>Code List</h3>
+                    <h3>Founders Circle List</h3>
                     <table class="table table-bordered">
                         <thead>
                         <tr>
