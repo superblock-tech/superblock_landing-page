@@ -311,8 +311,8 @@ const TokenPurchase = () => {
                                 <input
                                     disabled={!selectedNetwork || !selectedToken}
                                     type="range"
-                                    min={process.env.REACT_APP_MIN_TOKENS_AMOUNT}
-                                    max={process.env.REACT_APP_MAX_TOKENS_AMOUNT}
+                                    min={Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT)}
+                                    max={Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT)}
                                     value={sbxAmount}
                                     onChange={(e) => handleSbxAmountChange(e)}
                                     className={`
