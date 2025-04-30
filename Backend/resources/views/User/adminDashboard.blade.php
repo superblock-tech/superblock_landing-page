@@ -48,6 +48,7 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
+                            <th>Wallet</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
@@ -59,6 +60,7 @@
                                 <td>{{ $code->nameOfPerson }}</td>
                                 <td>{{ $code->email }}</td>
                                 <td>{{ $code->phone }}</td>
+                                <td>{{ $code->default_wallet }}</td>
                                 <td>
                                     <!-- Delete Button Trigger -->
                                     <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCodeModal" data-id="{{ $code->id }}" data-name="{{ $code->code }}">Delete</a>
@@ -102,6 +104,10 @@
                         <div class="mb-3">
                             <label for="phone" class="form-label">Phone</label>
                             <input type="tel" name="phone" id="phone" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="default_wallet" class="form-label">Wallet</label>
+                            <input type="text" name="default_wallet" id="default_wallet" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer">

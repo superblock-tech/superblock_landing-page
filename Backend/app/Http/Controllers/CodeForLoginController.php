@@ -39,6 +39,7 @@ class CodeForLoginController extends Controller
             $code->nameOfPerson = $request->nameOfPerson;
             $code->email = $request->email;
             $code->phone = $request->phone;
+            $code->defalut_wallet = $request->defalut_wallet;
 
             $code->save();
 

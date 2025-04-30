@@ -9,5 +9,5 @@ class CodeForLogin extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['code', 'nameOfPerson', 'email', 'phone'];
+    protected $fillable = ['code', 'nameOfPerson', 'email', 'phone', 'default_wallet'];
 }
