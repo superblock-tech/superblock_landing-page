@@ -90,7 +90,7 @@ export default function ProfilePage() {
 
             const totalDuration = end - start;
             const elapsed = now - start;
-            const percentage = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
+            const percentage = Math.min(100, Math.max(0, (whitelistContent.sbxAllocated / whitelistContent.sbxTotal) * 100));
             setProgress(percentage);
         };
 
