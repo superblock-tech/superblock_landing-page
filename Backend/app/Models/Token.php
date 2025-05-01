@@ -10,4 +10,9 @@ class Token extends Model
     use HasFactory;
 
     protected $fillable = ['token'];
+
+    public function codeForLogin()
+    {
+        return $this->hasOne(CodeForLogin::class,'id', 'code_for_login_id');
+    }
 }
