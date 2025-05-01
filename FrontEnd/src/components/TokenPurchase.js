@@ -25,6 +25,7 @@ const TokenPurchase = () => {
     const [showWallets, setShowWallets] = useState(false);
     const {token} = useContext(AuthContext);
     const [presaleTransactions, setPresaleTransactions] = useState([]);
+    const [presaleTransactionsSum, setPresaleTransactionsSum] = useState(0);
 
 
     const fetchWhitelistContent = async () => {
@@ -143,6 +144,10 @@ const TokenPurchase = () => {
     useEffect( () => {
         fetchPresaleTransactionsByWallet(address);
     }, [address])
+
+    useEffect(() => {
+        setPresaleTransactionsSum(presaleTransactions.reduce((acc, tx) => acc + (parseFloat(tx.sbx_price) || 0), 0));
+    }, [presaleTransactions])
 
     // Calculate token to SBX conversion
     const calculateSbxAmount = (tokenAmt) => {
@@ -410,9 +415,10 @@ const TokenPurchase = () => {
                     }
 
 
-                    <h2 className="text-xl mb-4">
-                        Transactions List
-                    </h2>
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-xl">Transactions List</h2>
+                        <span className="text-xl">$SBX {presaleTransactionsSum.toFixed(6)}</span>
+                    </div>
 
                     <table className="min-w-full bg-white shadow-md rounded-lg overflow-x-auto">
                         <thead className="hidden md:table-header-group">
@@ -420,10 +426,11 @@ const TokenPurchase = () => {
                             <th className="px-4 py-2 text-left">Address</th>
                             <th className="px-4 py-2 text-left">$SBX Allocated</th>
                             <th className="px-4 py-2 text-left">USDT Amount</th>
+                            <th className="px-4 py-2 text-left">Crypto Amount</th>
                             <th className="px-4 py-2 text-left">Payment Token</th>
                             <th className="px-4 py-2 text-left">Network</th>
-                            <th className="px-4 py-2 text-left">Hash</th>
                             <th className="px-4 py-2 text-left">Status</th>
+                            <th className="px-4 py-2 text-left">Hash</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -431,7 +438,7 @@ const TokenPurchase = () => {
                             <tr key={wallet.id} className="border-t border-gray-200 text-sm md:table-row">
                                 {/* Mobile Card Layout (each row displayed as a card) */}
                                 <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Address:</td>
-                                <td className="block md:table-cell px-4 py-2">{wallet.wallet_address}</td>
+                                <td className="block md:table-cell px-4 py-2 break-all">{wallet.wallet_address}</td>
 
                                 <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">$SBX
                                     Allocated:
@@ -443,6 +450,12 @@ const TokenPurchase = () => {
                                 </td>
                                 <td className="block md:table-cell px-4 py-2 break-all">{parseFloat(wallet.usdt_amount).toFixed(6)}</td>
 
+                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Crypto
+                                    Amount:
+                                </td>
+                                <td className="block md:table-cell px-4 py-2 break-all">{parseFloat(wallet.amount).toFixed(6)}</td>
+
+
                                 <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Payment
                                     Token:
                                 </td>
@@ -450,6 +463,9 @@ const TokenPurchase = () => {
 
                                 <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Network:</td>
                                 <td className="block md:table-cell px-4 py-2">{wallet?.crypto_network?.description}</td>
+
+                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Status:</td>
+                                <td className="block md:table-cell px-4 py-2 text-green-600 font-medium">{wallet.transaction_confirmation}</td>
 
                                 <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Hash:</td>
                                 <td className="block md:table-cell px-4 py-2 break-all flex items-center gap-2">
@@ -461,9 +477,6 @@ const TokenPurchase = () => {
                                         <CopyIcon className="w-4 h-4"/>
                                     </button>
                                 </td>
-
-                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Status:</td>
-                                <td className="block md:table-cell px-4 py-2 text-green-600 font-medium">{wallet.transaction_confirmation}</td>
                             </tr>
                         ))}
                         </tbody>
