@@ -81,7 +81,7 @@
                                 <td>{{ $transaction->crypto?->name }}</td>
                                 <td>{{ $transaction->cryptoNetwork?->name }}</td>
                                 <td>{{ $transaction->usdt_amount }}</td>
-                                <td>{{ $transaction->sbx_price }}</td>
+                                <td>{{ $transaction->usdt_amount / $transaction->sbx_price }}</td>
                                 <td>{{ $transaction->tokens_allocated }}</td>
                                 <td>{{ $transaction->transaction_confirmation }}</td>
                                 <td>{{ $transaction->created_at }}</td>

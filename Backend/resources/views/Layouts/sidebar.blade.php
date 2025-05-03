@@ -15,7 +15,7 @@
         </li>
         <li class="nav-item ">
             <a class="nav-link" href="{{ route('whitelist') }}">
-                White List (Content)
+                Presale phase
             </a>
         </li>
         <li class="nav-item ">
