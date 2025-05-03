@@ -28,6 +28,7 @@ Route::post('/adminLogin', [UserController::class, 'login'])->name('adminLogin')
 Route::middleware(['admin'])->group(function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
     Route::post('/code_logins', [CodeForLoginController::class, 'store'])->name('code_logins.store');
+    Route::put('/code_logins/{code}', [CodeForLoginController::class, 'update'])->name('code_logins.update');
     Route::delete('code_logins/{code}', [CodeForLoginController::class, 'destroy'])->name('destroyCode');
     Route::get('code_logins/export', [CodeForLoginController::class, 'export'])->name('code_logins.export');
     Route::post('code_logins/import', [CodeForLoginController::class, 'import'])->name('code_logins.import');

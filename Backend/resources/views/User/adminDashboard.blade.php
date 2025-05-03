@@ -26,11 +26,13 @@
                         </li>
                         <li class="nav-item">
                             <!-- Trigger modal -->
-                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#addCodeModal">Add Code</a>
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#addCodeModal">Add
+                                Code</a>
                         </li>
                         <li class="nav-item">
 
-                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#importModal">Import Codes</a>
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#importModal">Import
+                                Codes</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('code_logins.export') }}">Export Codes</a>
@@ -62,8 +64,23 @@
                                 <td>{{ $code->phone }}</td>
                                 <td>{{ $code->default_wallet }}</td>
                                 <td>
+                                    <button
+                                        class="btn btn-sm btn-primary edit-code-btn"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#addCodeModal"
+                                        data-id="{{$code->id}}"
+                                        data-code="{{$code->code}}"
+                                        data-name="{{$code->nameOfPerson}}"
+                                        data-email="{{$code->email}}"
+                                        data-phone="{{$code->phone}}"
+                                        data-wallet="{{$code->default_wallet}}"
+                                    >
+                                        Edit
+                                    </button>
                                     <!-- Delete Button Trigger -->
-                                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCodeModal" data-id="{{ $code->id }}" data-name="{{ $code->code }}">Delete</a>
+                                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                       data-bs-target="#deleteCodeModal" data-id="{{ $code->id }}"
+                                       data-name="{{ $code->code }}">Delete</a>
                                 </td>
                             </tr>
                         @empty
@@ -120,7 +137,8 @@
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteCodeModal" tabindex="-1" aria-labelledby="deleteCodeModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteCodeModal" tabindex="-1" aria-labelledby="deleteCodeModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -142,7 +160,7 @@
         </div>
     </div>
 
-    <div class="modal fade"  id="importModal">
+    <div class="modal fade" id="importModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -150,7 +168,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="importForm" action="{{ route('code_logins.import') }}" method="POST" enctype="multipart/form-data">
+                    <form id="importForm" action="{{ route('code_logins.import') }}" method="POST"
+                          enctype="multipart/form-data">
                         @csrf
                         <input type="file" id="fileInput" name="file">
                         <button type="submit" class="btn btn-primary">Import</button>
@@ -189,9 +208,44 @@
             return randomCode;
         }
 
-        document.getElementById('addCodeModal').addEventListener('show.bs.modal', function () {
+        addCodeModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
             const codeInput = document.getElementById('code');
-            codeInput.value = generateRandomCode();
+            const nameInput = document.getElementById('nameOfPerson');
+            const emailInput = document.getElementById('email');
+            const phoneInput = document.getElementById('phone');
+            const walletInput = document.getElementById('default_wallet');
+            const form = addCodeModal.querySelector('form');
+
+            const id = button.getAttribute('data-id');
+
+            if (id) {
+
+                codeInput.value = button.getAttribute('data-code') || '';
+                nameInput.value = button.getAttribute('data-name') || '';
+                emailInput.value = button.getAttribute('data-email') || '';
+                phoneInput.value = button.getAttribute('data-phone') || '';
+                walletInput.value = button.getAttribute('data-wallet') || '';
+
+                form.action = `/code_logins/${id}`;
+                if (!form.querySelector('input[name="_method"]')) {
+                    const method = document.createElement('input');
+                    method.type = 'hidden';
+                    method.name = '_method';
+                    method.value = 'PUT';
+                    form.appendChild(method);
+                }
+            } else {
+                codeInput.value = generateRandomCode();
+                nameInput.value = '';
+                emailInput.value = '';
+                phoneInput.value = '';
+                walletInput.value = '';
+
+                form.action = '{{ route("code_logins.store") }}';
+                const method = form.querySelector('input[name="_method"]');
+                if (method) method.remove();
+            }
         });
     </script>
 @endsection
