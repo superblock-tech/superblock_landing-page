@@ -310,8 +310,8 @@ const TokenPurchase = () => {
                             <div
                                 className="bg-gradient-to-r from-purple-200 to-blue-200 p-6 rounded-xl flex flex-col gap-6">
                                 <div className="flex items-center justify-between text-sm text-gray-600">
-                                    <span>Min {Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT).toLocaleString('en-US')} $SBX</span>
-                                    <span>Max {Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT).toLocaleString('en-US')} $SBX</span>
+                                    <span>Min {Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT)?.toLocaleString('en-US')} $SBX</span>
+                                    <span>Max {Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT)?.toLocaleString('en-US')} $SBX</span>
                                 </div>
                                 <input
                                     disabled={!selectedNetwork || !selectedToken}
@@ -417,7 +417,7 @@ const TokenPurchase = () => {
 
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-xl">Transactions List</h2>
-                        <span className="text-xl">$SBX {presaleTransactionsSum.toFixed(6)}</span>
+                        <span className="text-xl font-bold">Allocated: $SBX {presaleTransactionsSum.toFixed(6)}</span>
                     </div>
 
                     <table className="min-w-full bg-white shadow-md rounded-lg overflow-x-auto">
@@ -426,7 +426,7 @@ const TokenPurchase = () => {
                             <th className="px-4 py-2 text-left">Address</th>
                             <th className="px-4 py-2 text-left">$SBX Allocated</th>
                             <th className="px-4 py-2 text-left">USDT Amount</th>
-                            <th className="px-4 py-2 text-left">Crypto Amount</th>
+                            <th className="px-4 py-2 text-left">Token Amount</th>
                             <th className="px-4 py-2 text-left">Payment Token</th>
                             <th className="px-4 py-2 text-left">Network</th>
                             <th className="px-4 py-2 text-left">Status</th>
@@ -450,7 +450,7 @@ const TokenPurchase = () => {
                                 </td>
                                 <td className="block md:table-cell px-4 py-2 break-all">{parseFloat(wallet.usdt_amount).toFixed(6)}</td>
 
-                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Crypto
+                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Token
                                     Amount:
                                 </td>
                                 <td className="block md:table-cell px-4 py-2 break-all">{parseFloat(wallet.amount).toFixed(6)}</td>
@@ -462,7 +462,7 @@ const TokenPurchase = () => {
                                 <td className="block md:table-cell px-4 py-2">{wallet?.crypto?.name}</td>
 
                                 <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Network:</td>
-                                <td className="block md:table-cell px-4 py-2">{wallet?.crypto_network?.description}</td>
+                                <td className="block md:table-cell px-4 py-2">{wallet?.crypto_network?.name}</td>
 
                                 <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Status:</td>
                                 <td className="block md:table-cell px-4 py-2 text-green-600 font-medium">{wallet.transaction_confirmation}</td>
