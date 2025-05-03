@@ -59,17 +59,19 @@ class UserController extends Controller
             return response()->json(['error' => $validator->errors()], 401);
         }
 
-        if (CodeForLogin::where('code', $request->code)->exists()) {
+        $code = CodeForLogin::where('code', $request->code)->first();
+        if ($code) {
             $token = Str::random(60);
 
             Token::create([
                 'token' => $token,
+                'code_for_login_id' => $code->id
             ]);
 
             return response()->json([
                 'success' => 'Code is valid',
                 'token' => $token
-            ], 200);
+            ]);
         }
 
         return response()->json(['error' => 'Invalid email or password'], 401);
