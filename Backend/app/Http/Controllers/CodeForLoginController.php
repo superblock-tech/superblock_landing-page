@@ -39,7 +39,7 @@ class CodeForLoginController extends Controller
             $code->nameOfPerson = $request->nameOfPerson;
             $code->email = $request->email;
             $code->phone = $request->phone;
-            $code->defalut_wallet = $request->defalut_wallet;
+            $code->default_wallet = $request->default_wallet;
 
             $code->save();
 
@@ -69,9 +69,21 @@ class CodeForLoginController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CodeForLogin $codeForLogin)
+    public function update(Request $request, CodeForLogin $code)
     {
-        //
+        try {
+            $code->code = $request->code;
+            $code->nameOfPerson = $request->nameOfPerson;
+            $code->email = $request->email;
+            $code->phone = $request->phone;
+            $code->default_wallet = $request->default_wallet;
+
+            $code->save();
+
+            return redirect()->route('dashboard')->with('success', 'Code successfully updated!');
+        } catch (\Exception $e) {
+            return redirect()->route('dashboard')->with('error', 'Failed to update code. Please try again.' . $e->getMessage());
+        }
     }
 
     /**
