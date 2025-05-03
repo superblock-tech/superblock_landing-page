@@ -58,8 +58,8 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Transaction Wallet</th>
                             <th>Account Wallet</th>
+                            <th>Transaction Wallet</th>
                             <th>Crypto Amount</th>
                             <th>Crypto</th>
                             <th>Crypto Network</th>
@@ -75,8 +75,8 @@
                         @forelse($transactions as $transaction)
                             <tr>
                                 <td>{{ $transaction->id }}</td>
-                                <td>{{ $transaction->system_wallet }}</td>
                                 <td>{{ $transaction->wallet_address }}</td>
+                                <td>{{ $transaction->system_wallet }}</td>
                                 <td>{{ $transaction->amount }}</td>
                                 <td>{{ $transaction->crypto?->name }}</td>
                                 <td>{{ $transaction->cryptoNetwork?->name }}</td>
