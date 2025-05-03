@@ -193,7 +193,7 @@ export default function ProfilePage() {
                                 $SBX Allocated
                             </p>
                             <p className="text-3xl font-extrabold">
-                                { whitelistContent.sbxAllocated }
+                                { whitelistContent.sbxAllocated.toLocaleString('en-US') }
                                 <span className="mx-2">/</span>
                                 { Number(whitelistContent.sbxTotal).toLocaleString('en-US') }
                             </p>
