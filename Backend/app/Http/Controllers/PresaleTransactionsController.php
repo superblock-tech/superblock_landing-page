@@ -6,6 +6,7 @@ use App\Exports\PresaleTransactionsExport;
 use App\Models\Crypto;
 use App\Models\CryptoNetwork;
 use App\Models\PresaleTransaction;
+use App\Models\Token;
 use Binance\Spot;
 use Exception;
 use Illuminate\Http\RedirectResponse;
@@ -34,9 +35,20 @@ class PresaleTransactionsController extends Controller
         return view('PresaleTransaction.index', compact('transactions', 'crypto', 'cryptoNetwork', 'transactionsCount', 'usdtAmount', 'sbxAmount'));
     }
 
-    public function findByAddress(string $address) {
-        $transactions = PresaleTransaction::query()
-            ->where('wallet_address', $address)->with(['crypto', 'cryptoNetwork'])
+    public function findByAddress(Request $request, string $address)
+    {
+        $code = Token::query()
+            ->where('token', '=', $request->bearerToken())
+            ->first()?->codeForLogin;
+
+        $transactionsQuery = PresaleTransaction::query()
+            ->where('wallet_address', $address);
+
+        if ($code) {
+            $transactionsQuery->orWhere('wallet_address', $code->default_wallet);
+        }
+
+        $transactions = $transactionsQuery->with(['crypto', 'cryptoNetwork'])
             ->orderByDesc('id')
             ->get();
 

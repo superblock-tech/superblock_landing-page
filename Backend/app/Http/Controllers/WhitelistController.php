@@ -37,7 +37,8 @@ class WhitelistController extends Controller
     public function getWhitelistContent()
     {
         $whiteListContent = Whitelist::query()->where('is_active', '=', 1)->first();
-        $transactionsCount = count(PresaleTransaction::query()->select('wallet_address')->groupBy('wallet_address')->get()->pluck('wallet_address')->toArray());
+        $presaleTransactions = PresaleTransaction::query()->select('wallet_address')->groupBy('wallet_address')->get();
+        $transactionsCount = count($presaleTransactions->pluck('wallet_address')->toArray());
 
         return response()->json(
             [
