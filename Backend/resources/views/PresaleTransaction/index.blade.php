@@ -58,8 +58,8 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>System Wallet</th>
-                            <th>Wallet Address</th>
+                            <th>Transaction Wallet</th>
+                            <th>Account Wallet</th>
                             <th>Crypto Amount</th>
                             <th>Crypto</th>
                             <th>Crypto Network</th>
