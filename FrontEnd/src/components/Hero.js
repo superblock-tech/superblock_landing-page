@@ -41,7 +41,7 @@ export default function Hero() {
               </p>
 
               <div className="flex items-center gap-[26px] sm:gap-[33px] overflow-x-scroll pr-[22px] scrollbar-hide">
-                <a href="/dashboard"
+                <a href="/presale"
                   className="rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px]
                   bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6]
                   hover:from-[#7B36B6] hover:to-[#1BA3FF]

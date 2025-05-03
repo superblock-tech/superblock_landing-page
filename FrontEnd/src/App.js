@@ -24,7 +24,7 @@ function App() {
                 }
               />
                 <Route
-                    path="/dashboard"
+                    path="/presale"
                     element={
                         <ProfilePage />
                     }
