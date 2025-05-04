@@ -40,4 +40,9 @@ class PresaleTransaction extends Model
     {
         return $this->attributes['sbx_price'];
     }
+
+    public function systemWalletObject()
+    {
+        return $this->hasOne(Wallet::class, 'id', 'system_wallet_id');
+    }
 }
