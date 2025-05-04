@@ -68,10 +68,10 @@ const TokenPurchase = () => {
     };
 
     const fetchPresaleTransactionsByWallet = async (wallet) => {
-        if (wallet) {
+        if (wallet || token) {
             try {
                 const response = await fetch(
-                    `${process.env.REACT_APP_API_URL}/transactions/${wallet}`,
+                    `${process.env.REACT_APP_API_URL}/transactions/${wallet ?? null}`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -143,7 +143,7 @@ const TokenPurchase = () => {
 
     useEffect( () => {
         fetchPresaleTransactionsByWallet(address);
-    }, [address])
+    }, [address, token])
 
     useEffect(() => {
         setPresaleTransactionsSum(presaleTransactions.reduce((acc, tx) => acc + (parseFloat(tx.sbx_price) || 0), 0));
