@@ -20,8 +20,8 @@ class PresaleTransactionsController extends Controller
     public function index()
     {
         $transactions = PresaleTransaction::all();
-        $crypto = Crypto::all();
         $cryptoNetwork = CryptoNetwork::all();
+        $crypto = Crypto::query()->where('symbol', '=', Crypto::FIAT)->get();
         $presaleTransactions = PresaleTransaction::query()->select('wallet_address')->groupBy('wallet_address')->get();
         $transactionsCount = count($presaleTransactions->pluck('wallet_address')->toArray());
 
