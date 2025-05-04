@@ -80,7 +80,7 @@
                                 <td class="break-all">{{ $transaction->wallet_address }}</td>
                                 <td>{{ $transaction->cryptoNetwork?->name }}</td>
                                 <td class="break-all">{{ $transaction->system_wallet }}</td>
-                                <td>{{ $transaction->cryptoNetwork?->name }}</td>
+                                <td>{{ $transaction->system_wallet ? $transaction->cryptoNetwork?->name : '' }}</td>
                                 <td>{{ $transaction->crypto?->name }}</td>
                                 <td>{{ $transaction->amount }}</td>
                                 <td>{{ $transaction->usdt_amount }}</td>
@@ -124,12 +124,16 @@
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="wallet_address" class="form-label">Transaction Wallet Address</label>
+                            <label for="wallet_address" class="form-label">Account Wallet Address</label>
                             <input type="text" name="wallet_address" id="wallet_address" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label for="amount" class="form-label">Transaction Amount</label>
-                            <input type="text" name="amount" id="amount" class="form-control" required>
+                            <label for="crypto_network_id" class="form-label">Account Wallet Network</label>
+                            <select type="text" name="crypto_network_id" id="crypto_network_id" class="form-control" required>
+                                @foreach($cryptoNetwork as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="crypto_id" class="form-label">Transaction Crypto Currency</label>
@@ -140,20 +144,17 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="crypto_network_id" class="form-label">Transaction Crypto Network</label>
-                            <select type="text" name="crypto_network_id" id="crypto_network_id" class="form-control" required>
-                                @foreach($cryptoNetwork as $item)
-                                    <option value="{{$item->id}}">{{$item->name}}</option>
-                                @endforeach
-                            </select>
+                            <label for="amount" class="form-label">Transaction Amount</label>
+                            <input type="text" name="amount" id="amount" class="form-control" required>
                         </div>
+
                         <div class="mb-3">
                             <label for="usdt_amount" class="form-label">Transaction USDT Amount</label>
                             <input type="text" name="usdt_amount" id="usdt_amount" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label for="sbx_price" class="form-label">Transaction SBX Price</label>
-                            <input type="text" name="sbx_price" id="sbx_price" class="form-control" required>
+                            <label for="sbx_price" class="form-label">Total SBX Amount</label>
+                            <input type="text" name="sbx_price" id="sbx_price" class="form-control" required readonly>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -256,6 +257,16 @@
             const transactionId = button.getAttribute('data-transaction-id');
             const form = confirmTransactionModal.querySelector('form');
             form.action = '/presale-transactions/' + transactionId + '/confirm';
+        });
+
+        document.getElementById('usdt_amount').addEventListener('input', function () {
+            const usdtAmount = parseFloat(this.value);
+            const sbxPriceInput = document.getElementById('sbx_price');
+            if (!isNaN(usdtAmount)) {
+                sbxPriceInput.value = (usdtAmount / 0.22).toFixed(6);
+            } else {
+                sbxPriceInput.value = '';
+            }
         });
     </script>
 @endsection

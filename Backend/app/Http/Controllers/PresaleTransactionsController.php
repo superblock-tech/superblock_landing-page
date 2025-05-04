@@ -22,7 +22,8 @@ class PresaleTransactionsController extends Controller
         $transactions = PresaleTransaction::all();
         $crypto = Crypto::all();
         $cryptoNetwork = CryptoNetwork::all();
-        $transactionsCount = count($transactions);
+        $presaleTransactions = PresaleTransaction::query()->select('wallet_address')->groupBy('wallet_address')->get();
+        $transactionsCount = count($presaleTransactions->pluck('wallet_address')->toArray());
 
         $usdtAmount = 0;
         $sbxAmount = 0;
