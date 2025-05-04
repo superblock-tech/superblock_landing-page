@@ -420,67 +420,56 @@ const TokenPurchase = () => {
                         <span className="text-xl font-bold">Allocated: $SBX {presaleTransactionsSum.toFixed(6)}</span>
                     </div>
 
-                    <table className="min-w-full bg-white shadow-md rounded-lg overflow-x-auto">
-                        <thead className="hidden md:table-header-group">
-                        <tr className="bg-gray-100 text-gray-600 text-sm uppercase">
-                            <th className="px-4 py-2 text-left">Address</th>
-                            <th className="px-4 py-2 text-left">$SBX Allocated</th>
-                            <th className="px-4 py-2 text-left">USDT Amount</th>
-                            <th className="px-4 py-2 text-left">Token Amount</th>
-                            <th className="px-4 py-2 text-left">Payment Token</th>
-                            <th className="px-4 py-2 text-left">Network</th>
-                            <th className="px-4 py-2 text-left">Status</th>
-                            <th className="px-4 py-2 text-left">Hash</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {presaleTransactions.map(wallet => (
-                            <tr key={wallet.id} className="border-t border-gray-200 text-sm md:table-row">
-                                {/* Mobile Card Layout (each row displayed as a card) */}
-                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Address:</td>
-                                <td className="block md:table-cell px-4 py-2 break-all">{wallet.wallet_address}</td>
-
-                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">$SBX
-                                    Allocated:
-                                </td>
-                                <td className="block md:table-cell px-4 py-2 break-all">{parseFloat(wallet.sbx_price).toFixed(6)}</td>
-
-                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">USDT
-                                    Amount:
-                                </td>
-                                <td className="block md:table-cell px-4 py-2 break-all">{parseFloat(wallet.usdt_amount).toFixed(6)}</td>
-
-                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Token
-                                    Amount:
-                                </td>
-                                <td className="block md:table-cell px-4 py-2 break-all">{parseFloat(wallet.amount).toFixed(6)}</td>
-
-
-                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Payment
-                                    Token:
-                                </td>
-                                <td className="block md:table-cell px-4 py-2">{wallet?.crypto?.name}</td>
-
-                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Network:</td>
-                                <td className="block md:table-cell px-4 py-2">{wallet?.crypto_network?.name}</td>
-
-                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Status:</td>
-                                <td className="block md:table-cell px-4 py-2 text-green-600 font-medium">{wallet.transaction_confirmation}</td>
-
-                                <td className="block md:table-cell px-4 py-2 font-bold text-gray-600 md:hidden">Hash:</td>
-                                <td className="block md:table-cell px-4 py-2 break-all flex items-center gap-2">
-                                    <span>{wallet.txn_id}</span>
-                                    <button
-                                        onClick={() => handleCopy(wallet.txn_id)}
-                                        className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-1 rounded-full"
-                                    >
-                                        <CopyIcon className="w-4 h-4"/>
-                                    </button>
-                                </td>
+                    <div className="w-full overflow-x-auto">
+                        <table className="min-w-full bg-white shadow-md rounded-lg">
+                            <thead className="bg-gray-100 text-gray-600 text-sm uppercase">
+                            <tr>
+                                <th className="px-4 py-2 text-left">Address</th>
+                                <th className="px-4 py-2 text-left">$SBX Allocated</th>
+                                <th className="px-4 py-2 text-left">USDT Amount</th>
+                                <th className="px-4 py-2 text-left">Token Amount</th>
+                                <th className="px-4 py-2 text-left">Payment Token</th>
+                                <th className="px-4 py-2 text-left">Network</th>
+                                <th className="px-4 py-2 text-left">Status</th>
+                                <th className="px-4 py-2 text-left">Transaction Hash</th>
+                                <th className="px-4 py-2 text-left">Date/Time</th>
                             </tr>
-                        ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            {presaleTransactions.map(wallet => (
+                                <tr key={wallet.id} className="border-t border-gray-200 text-sm">
+                                    <td className="px-4 py-2 break-all">
+                                        {wallet.wallet_address}
+                                        <button
+                                            onClick={() => handleCopy(wallet.wallet_address)}
+                                            className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-1 rounded-full"
+                                        >
+                                            <CopyIcon className="w-4 h-4"/>
+                                        </button>
+                                    </td>
+                                    <td className="px-4 py-2 break-all">{parseFloat(wallet.sbx_price).toFixed(6)}</td>
+                                    <td className="px-4 py-2 break-all">{parseFloat(wallet.usdt_amount).toFixed(6)}</td>
+                                    <td className="px-4 py-2 break-all">{parseFloat(wallet.amount).toFixed(6)}</td>
+                                    <td className="px-4 py-2">{wallet?.crypto?.name}</td>
+                                    <td className="px-4 py-2">{wallet?.crypto_network?.name}</td>
+                                    <td className="px-4 py-2 text-green-600 font-medium">{wallet.transaction_confirmation}</td>
+                                    <td className="px-4 py-2 break-all">
+                                        {wallet.txn_id}
+                                        <button
+                                            onClick={() => handleCopy(wallet.txn_id)}
+                                            className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-1 rounded-full"
+                                        >
+                                            <CopyIcon className="w-4 h-4"/>
+                                        </button>
+                                    </td>
+                                    <td className="px-4 py-2 font-medium">
+                                        {new Date(wallet.created_at).toLocaleString()}
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
 
 
                 </div>
