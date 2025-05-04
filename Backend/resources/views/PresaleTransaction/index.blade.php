@@ -1,7 +1,7 @@
 @extends('Layouts.main')
 
 @section('content')
-    <div class="container mt-4">
+    <div class="mt-4">
         <div class="row">
             <div class="col-md-12">
                 <!-- Flash Messages -->
@@ -58,34 +58,37 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Account Wallet</th>
-                            <th>Transaction Wallet</th>
+                            <th>Account Wallet Address</th>
+                            <th>Account Wallet Network</th>
+                            <th>Transaction Wallet Address</th>
+                            <th>Transaction Wallet Network</th>
+                            <th>Transaction Wallet Crypto</th>
                             <th>Crypto Amount</th>
-                            <th>Crypto</th>
-                            <th>Crypto Network</th>
                             <th>USDT Amount</th>
                             <th>$SBX Price</th>
                             <th>$SBX tokens Allocated</th>
                             <th>Transaction Confirmation</th>
-                            <th>Date/Time</th>
-                            <th>TXN ID</th>
+                            <th>Transaction Date/Time</th>
+                            <th>Transaction ID</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         @forelse($transactions as $transaction)
                             <tr>
                                 <td>{{ $transaction->id }}</td>
-                                <td>{{ $transaction->wallet_address }}</td>
-                                <td>{{ $transaction->system_wallet }}</td>
-                                <td>{{ $transaction->amount }}</td>
-                                <td>{{ $transaction->crypto?->name }}</td>
+                                <td class="break-all">{{ $transaction->wallet_address }}</td>
                                 <td>{{ $transaction->cryptoNetwork?->name }}</td>
+                                <td class="break-all">{{ $transaction->system_wallet }}</td>
+                                <td>{{ $transaction->cryptoNetwork?->name }}</td>
+                                <td>{{ $transaction->crypto?->name }}</td>
+                                <td>{{ $transaction->amount }}</td>
                                 <td>{{ $transaction->usdt_amount }}</td>
                                 <td>{{ $transaction->usdt_amount / $transaction->sbx_price }}</td>
                                 <td>{{ $transaction->tokens_allocated }}</td>
-                                <td>{{ $transaction->transaction_confirmation }}</td>
+                                <td class="break-all">{{ $transaction->transaction_confirmation }}</td>
                                 <td>{{ $transaction->created_at }}</td>
-                                <td>{{ $transaction->txn_id }}</td>
+                                <td class="break-all">{{ $transaction->txn_id }}</td>
                                 <td>
                                     @if(!$transaction->txn_id)
                                         <button class="btn btn-sm btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#confirmTransactionModal" data-transaction-id="{{ $transaction->id }}">
@@ -256,3 +259,8 @@
         });
     </script>
 @endsection
+<style>
+    .break-all {
+        word-break: break-all;
+    }
+</style>
