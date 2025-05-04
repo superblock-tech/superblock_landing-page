@@ -66,12 +66,12 @@ class PresaleTransactionsController extends Controller
             $crypto = Crypto::query()->find($request->crypto_id);
             $cryptoNetwork = CryptoNetwork::query()->find($request->crypto_network_id);
 
-            if ($crypto->name !== Crypto::FIAT && $cryptoNetwork) {
-                $binanceTransactionId = $this->withdrawBinance($request->wallet_address, $cryptoNetwork->address, $request->amount, $crypto->symbol);
-                if ($binanceTransactionId) {
-                    $request->request->set('txn_id', $binanceTransactionId);
-                    $request->request->set('transaction_confirmation', 'Confirmed via Binance');
-                }
+            if ($crypto->symbol !== Crypto::FIAT && $cryptoNetwork) {
+//                $binanceTransactionId = $this->withdrawBinance($request->wallet_address, $cryptoNetwork->address, $request->amount, $crypto->symbol);
+//                if ($binanceTransactionId) {
+//                    $request->request->set('txn_id', $binanceTransactionId);
+//                    $request->request->set('transaction_confirmation', 'Confirmed via Binance');
+//                }
             }
 
             $transaction = new PresaleTransaction();
