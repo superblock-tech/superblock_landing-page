@@ -193,7 +193,6 @@ const TokenPurchase = () => {
             className="bg-gradient-to-r from-purple-200 to-blue-200 p-8 rounded-3xl mx-auto text-black w-[calc(100%-40px)] max-w-6xl border-2 shadow-2xl border-gray-400"
         >
 
-            {/* Purchase Summary - Always visible when amounts are set */}
             {(tokenAmount || sbxAmount) && showWallets && (
                 <div className="mb-8 p-4 bg-gradient-to-r from-purple-200 to-blue-200 rounded-xl">
                     <h3 className="text-lg mb-2">Purchase Summary</h3>
@@ -207,7 +206,6 @@ const TokenPurchase = () => {
                 </div>
             )}
 
-            {/* Conditional rendering based on showWallets state */}
             {showWallets ? (
                 <div className="mb-8">
                     <div className="flex justify-between items-center mb-4">
@@ -343,7 +341,7 @@ const TokenPurchase = () => {
                         ) : ''}
 
                         <div
-                            className="flex flex-col md:flex-row items-center md:justify-between gap-4bg-gradient-to-r from-purple-200 to-blue-200 p-4 rounded-xl">
+                            className="flex flex-col md:flex-row items-center md:justify-between gap-4bg-gradient-to-r from-purple-200 to-blue-200 p-4 rounded-xl gap-2">
                             {/* First Input Group */}
                             <div className="flex items-center gap-2 w-full md:w-auto bg-[#FFFFFF] p-4 rounded-lg">
                                 <input
