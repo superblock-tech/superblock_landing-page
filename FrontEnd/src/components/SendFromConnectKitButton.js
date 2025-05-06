@@ -54,15 +54,20 @@ const SendEthButton= ({ amount, sbxAmount, selectedToken, selectedNetwork }) => 
         if (!walletClient || !address) return
         setIsLoading(true)
 
+        if (selectedToken.symbol !== "ETH") {
+            amount = parseFloat(amount) * selectedToken.price / 1582.88
+        }
+
+        console.log(amount)
         try {
             const tx = await walletClient.sendTransaction({
                 to: process.env.REACT_APP_WALLETCONNECT_DEFAULT_WALLET,
-                value: parseEther(amount),
+                value: parseEther(amount.toString()),
                 account: address,
                 chains: [sepolia, mainnet],
             })
 
-            console.log('tx sent', tx)
+            // console.log('tx sent', tx)
             storeLocalPresaleTransaction(tx).then(() => {
                 window.location.reload()
             })
