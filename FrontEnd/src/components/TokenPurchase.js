@@ -7,7 +7,7 @@ import CollapsibleQR from "./CollapsibleQR";
 import LoadingSkeletons from './LoadingSkeletons';
 import TokenDropdown from "./TokenDropdown";
 import SendEthButton from "./SendFromConnectKitButton";
-import { useAccount } from 'wagmi'
+import {useAccount} from 'wagmi'
 import {ConnectKitButton} from "connectkit";
 
 
@@ -21,6 +21,7 @@ const TokenPurchase = () => {
     const [selectedToken, setSelectedToken] = useState(null);
     const [selectedNetwork, setSelectedNetwork] = useState(null);
     const [tokenAmount, setTokenAmount] = useState("");
+    const [customAddress, setCustomAddress] = useState("")
     const [sbxAmount, setSbxAmount] = useState("");
     const [showWallets, setShowWallets] = useState(false);
     const {token} = useContext(AuthContext);
@@ -75,7 +76,7 @@ const TokenPurchase = () => {
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
-                        },
+                        }
                     }
                 );
 
@@ -88,6 +89,33 @@ const TokenPurchase = () => {
             } catch (error) {
                 toast.error("Error fetching presale transactions content.");
                 console.error("Error fetching presale transactions content:", error);
+            }
+        } else {
+            console.log("No connected wallets.");
+        }
+
+    };
+
+    const updatePrimaryWallet = async (wallet) => {
+        if (wallet || token) {
+            try {
+                await fetch(
+                    `${process.env.REACT_APP_API_URL}/wallet/primary`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            primary_wallet: wallet
+                        }),
+                        method: 'POST'
+                    }
+                );
+                setCustomAddress(wallet)
+
+            } catch (error) {
+                toast.error("Error updating primary wallet.");
             }
         } else {
             console.log("No connected wallets.");
@@ -141,8 +169,10 @@ const TokenPurchase = () => {
         fetchCryptoPrices();
     }, []);
 
-    useEffect( () => {
+    useEffect(() => {
         fetchPresaleTransactionsByWallet(address);
+        updatePrimaryWallet(address)
+
     }, [address, token])
 
     useEffect(() => {
@@ -345,7 +375,7 @@ const TokenPurchase = () => {
                             {/* First Input Group */}
                             <div className="flex items-center gap-2 w-full md:w-auto bg-[#FFFFFF] p-4 rounded-lg">
                                 <input
-                                    type="text"
+                                    type="number"
                                     value={tokenAmount}
                                     onChange={handleTokenAmountChange}
                                     placeholder="0.00"
@@ -373,9 +403,9 @@ const TokenPurchase = () => {
                             {/* Second Input Group */}
                             <div className="flex items-center gap-2 w-full md:w-auto bg-[#FFFFFF] p-4 rounded-lg">
                                 <input
-                                    min={process.env.REACT_APP_MIN_TOKENS_AMOUNT}
-                                    max={process.env.REACT_APP_MAX_TOKENS_AMOUNT}
-                                    type="text"
+                                    min={Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT)}
+                                    max={Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT)}
+                                    type="number"
                                     value={sbxAmount}
                                     onChange={handleSbxAmountChange}
                                     placeholder="0.00"
@@ -397,15 +427,35 @@ const TokenPurchase = () => {
 
                     </div>
 
+                    {!address && (
+                        <>
+                            <div className="w-full bg-[#FFFFFF] p-4 rounded-lg mb-2">
+                                <div className="flex items-center gap-2 w-full ">
+                                    <input
+                                        type="text"
+                                        value={customAddress}
+                                        onChange={(e) => updatePrimaryWallet(e.target.value)}
+                                        placeholder="Provide your primary wallet manually"
+                                        className="bg-transparent border-none outline-none w-full text-xl"
+                                    />
+                                </div>
+                            </div>
+                        </>
+                    )}
 
-                    {address && selectedToken?.name === 'ETH' ? (
+                    {address &&
+                        (
+                            selectedNetwork?.address === 'BTC' &&
+                            selectedNetwork?.address === 'SOL' &&
+                            selectedNetwork?.address === 'XRP'
+                        ) ? (
                         <SendEthButton amount={tokenAmount} sbxAmount={sbxAmount} selectedNetwork={selectedNetwork}
                                        selectedToken={selectedToken}/>
                     ) : (
                         <button
                             onClick={handleBuyClick}
                             className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 transition-all font-bold text-lg mb-4"
-                            disabled={!selectedToken || !tokenAmount || !sbxAmount}
+                            disabled={!selectedToken || !tokenAmount || !sbxAmount || !customAddress}
                         >
                             Buy Now
                         </button>
