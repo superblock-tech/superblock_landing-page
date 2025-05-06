@@ -29,4 +29,5 @@ Route::middleware(['check.token'])->group(function () {
     Route::get('wallet', [WalletController::class, 'getWallets']);
     Route::get('transactions/{wallet}', [PresaleTransactionsController::class, 'findByAddress']);
     Route::post('transactions', [PresaleTransactionsController::class, 'storeLocalTransaction']);
+    Route::post('wallet/primary', [UserController::class, 'updatePrimaryWallet']);
 });

@@ -77,6 +77,22 @@ class UserController extends Controller
         return response()->json(['error' => 'Invalid email or password'], 401);
     }
 
+    public function updatePrimaryWallet(Request $request)
+    {
+        $code = Token::query()
+            ->where('token', '=', $request->bearerToken())
+            ->first()?->codeForLogin;
+
+        if ($code && $request->primary_wallet) {
+            $code->default_wallet = $request->primary_wallet;
+            $code->save();
+
+            return response()->json(null, 204);
+        }
+
+        return response()->json(['error' => 'System error'], 422);
+    }
+
     public function dashboard()
     {
         $codes = CodeForLogin::all();
