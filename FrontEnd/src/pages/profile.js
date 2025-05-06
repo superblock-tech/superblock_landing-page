@@ -183,7 +183,7 @@ export default function ProfilePage() {
                     className="bg-gradient-to-r from-purple-200 to-blue-200 rounded-3xl p-10 flex flex-col justify-center text-[#7b36b6]">
                     <div className="flex flex-col gap-10 text-center">
                         <div>
-                            <p className="text-lg mb-1 tracking-wide">Total USD Raised</p>
+                            <p className="text-lg mb-1 tracking-wide">Total USDT Amount Raised</p>
                             <p className="text-3xl font-extrabold">{whitelistContent.usdtRaised}</p>
                         </div>
                         <div>
