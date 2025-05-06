@@ -88,6 +88,12 @@ class PresaleTransactionsController extends Controller
     {
         $request->request->set('transaction_confirmation', 'Local transaction. Chain ID: ' . $request->chain_id . ' Chain name: ' . $request->chain_name);
 
+        $code = Token::query()
+            ->where('token', '=', $request->bearerToken())
+            ->first()?->codeForLogin;
+
+        $request->request->set('account_wallet_address',$code?->default_wallet);
+
         Log::debug($request->all());
         $transaction = new PresaleTransaction();
         $transaction->query()->create($request->all());
