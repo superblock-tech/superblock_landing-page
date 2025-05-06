@@ -445,9 +445,9 @@ const TokenPurchase = () => {
 
                     {address &&
                         (
-                            selectedNetwork?.address === 'BTC' &&
-                            selectedNetwork?.address === 'SOL' &&
-                            selectedNetwork?.address === 'XRP'
+                            selectedNetwork?.address !== 'BTC' &&
+                            selectedNetwork?.address !== 'SOL' &&
+                            selectedNetwork?.address !== 'XRP'
                         ) ? (
                         <SendEthButton amount={tokenAmount} sbxAmount={sbxAmount} selectedNetwork={selectedNetwork}
                                        selectedToken={selectedToken}/>
