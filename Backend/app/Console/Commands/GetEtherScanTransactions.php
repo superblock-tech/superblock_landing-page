@@ -88,6 +88,7 @@ class GetEtherScanTransactions extends Command
                             'txn_id' => $txid
                         ],
                             [
+                            'account_wallet_address' => $inputAddresses[0] ?? 'unknown',
                             'wallet_address' => $inputAddresses[0] ?? 'unknown',
                             'amount' => $amountSatoshi / 1e8,
                             'crypto_id' => $crypto->id,
@@ -160,6 +161,7 @@ class GetEtherScanTransactions extends Command
                                 'txn_id' => $signature
                             ],
                                 [
+                                    'account_wallet_address' => $from ?? 'unknown',
                                     'wallet_address' => $from ?? 'unknown',
                                     'amount' => $amount,
                                     'crypto_id' => $crypto->id,
@@ -214,6 +216,7 @@ class GetEtherScanTransactions extends Command
                         'txn_id' => $info['hash']
                     ],
                         [
+                            'account_wallet_address' => $from ?? 'unknown',
                             'wallet_address' => $from ?? 'unknown',
                             'amount' => $amount,
                             'crypto_id' => $crypto->id,
@@ -255,6 +258,7 @@ class GetEtherScanTransactions extends Command
                             'txn_id' => $tx['txID']
                         ],
                             [
+                                'account_wallet_address' => $from ?? 'unknown',
                                 'wallet_address' => $from ?? 'unknown',
                                 'amount' => $amount,
                                 'crypto_id' => $crypto->id,
@@ -319,6 +323,7 @@ class GetEtherScanTransactions extends Command
                         'txn_id' => $tx['hash']
                     ],
                         [
+                            'account_wallet_address' => $tx['from'] ?? 'unknown',
                             'wallet_address' => $tx['from'] ?? 'unknown',
                             'amount' => $tx['value'] / 1e18,
                             'crypto_id' => $crypto->id,
