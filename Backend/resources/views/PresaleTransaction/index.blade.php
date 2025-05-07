@@ -126,8 +126,8 @@
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="wallet_address" class="form-label">Account Wallet Address</label>
-                            <input type="text" name="wallet_address" id="wallet_address" class="form-control" required>
+                            <label for="account_wallet_address" class="form-label">Account Wallet Address</label>
+                            <input type="text" name="account_wallet_address" id="account_wallet_address" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label for="crypto_network_id" class="form-label">Account Wallet Network</label>
