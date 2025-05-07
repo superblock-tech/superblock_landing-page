@@ -46,7 +46,7 @@ class PresaleTransactionsController extends Controller
             ->where('wallet_address', $address);
 
         if ($code) {
-            $transactionsQuery->orWhere('wallet_address', $code->default_wallet);
+            $transactionsQuery->orWhere('account_wallet_address', $code->default_wallet);
         }
 
         $transactions = $transactionsQuery->with(['crypto', 'cryptoNetwork'])
