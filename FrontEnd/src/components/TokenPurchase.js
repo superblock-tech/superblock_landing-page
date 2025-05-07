@@ -112,8 +112,6 @@ const TokenPurchase = () => {
                         method: 'POST'
                     }
                 );
-                setCustomAddress(wallet)
-
             } catch (error) {
                 toast.error("Error updating primary wallet.");
             }
@@ -176,6 +174,10 @@ const TokenPurchase = () => {
     }, [address, token])
 
     useEffect(() => {
+        updatePrimaryWallet(customAddress)
+    }, [customAddress])
+
+    useEffect(() => {
         setPresaleTransactionsSum(presaleTransactions.reduce((acc, tx) => acc + (parseFloat(tx.sbx_price) || 0), 0));
     }, [presaleTransactions])
 
@@ -204,8 +206,6 @@ const TokenPurchase = () => {
     };
 
     const prepareQRLink = (wallet, amount) => {
-
-        console.log(wallet)
         return wallet.crypto.prefix + ':' + wallet.address + '?amount=' + amount + '&label=' + wallet.name + '&message=Buy $SBX Tokens'
     }
 
@@ -217,24 +217,33 @@ const TokenPurchase = () => {
         }
     };
 
+    const handlePaste = async () => {
+        try {
+            const text = await navigator.clipboard.readText();
+            setCustomAddress(text);
+        } catch (err) {
+            console.error('Clipboard read error:', err);
+        }
+    };
+
     return (
         <div
             id="buyNow"
             className="bg-gradient-to-r from-purple-200 to-blue-200 p-8 rounded-3xl mx-auto text-black w-[calc(100%-40px)] max-w-6xl border-2 shadow-2xl border-gray-400"
         >
 
-            {(tokenAmount || sbxAmount) && showWallets && (
-                <div className="mb-8 p-4 bg-gradient-to-r from-purple-200 to-blue-200 rounded-xl">
-                    <h3 className="text-lg mb-2">Purchase Summary</h3>
-                    <div className="flex justify-between items-center">
-                        <span>
-                            {tokenAmount} {selectedToken?.symbol}
-                        </span>
-                        <span className="text-gray-400">=</span>
-                        <span>{sbxAmount} SBX</span>
-                    </div>
-                </div>
-            )}
+            {/*{(tokenAmount || sbxAmount) && showWallets && (*/}
+            {/*    <div className="mb-8 p-4 bg-gradient-to-r from-purple-200 to-blue-200 rounded-xl">*/}
+            {/*        <h3 className="text-lg mb-2">Purchase Summary</h3>*/}
+            {/*        <div className="flex justify-between items-center">*/}
+            {/*            <span>*/}
+            {/*                {tokenAmount} {selectedToken?.symbol}*/}
+            {/*            </span>*/}
+            {/*            <span className="text-gray-400">=</span>*/}
+            {/*            <span>{sbxAmount} SBX</span>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*)}*/}
 
             {showWallets ? (
                 <div className="mb-8">
@@ -247,6 +256,29 @@ const TokenPurchase = () => {
                             ← Change Token
                         </button>
                     </div>
+
+                    {!address && (
+                        <>
+                            <div className="w-full bg-[#FFFFFF] p-4 rounded-lg mb-4">
+                                <div className="flex items-center gap-2 w-full">
+                                    <input
+                                        type="text"
+                                        value={customAddress}
+                                        onChange={(e) => setCustomAddress(e.target.value)}
+                                        placeholder={`Paste your sending wallet ${selectedToken.name} address`}
+                                        className="bg-transparent border-none outline-none w-full text-xl"
+                                    />
+                                    <button
+                                        onClick={handlePaste}
+                                        className="px-6 py-4 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 transition-all font-bold text-lg"
+                                    >
+                                        Paste
+                                    </button>
+                                </div>
+
+                            </div>
+                        </>
+                    )}
 
                     {loading ? (
                         <LoadingSkeletons.Wallets/>
@@ -427,27 +459,9 @@ const TokenPurchase = () => {
 
                     </div>
 
-                    {!address && (
-                        <>
-                            <div className="w-full bg-[#FFFFFF] p-4 rounded-lg mb-2">
-                                <div className="flex items-center gap-2 w-full ">
-                                    <input
-                                        type="text"
-                                        value={customAddress}
-                                        onChange={(e) => updatePrimaryWallet(e.target.value)}
-                                        placeholder="Provide your primary wallet manually"
-                                        className="bg-transparent border-none outline-none w-full text-xl"
-                                    />
-                                </div>
-                            </div>
-                        </>
-                    )}
-
                     {address &&
                         (
-                            selectedNetwork?.address !== 'BTC' &&
-                            selectedNetwork?.address !== 'SOL' &&
-                            selectedNetwork?.address !== 'XRP'
+                            selectedNetwork?.address == 'ERC20'
                         ) ? (
                         <SendEthButton amount={tokenAmount} sbxAmount={sbxAmount} selectedNetwork={selectedNetwork}
                                        selectedToken={selectedToken}/>
@@ -455,7 +469,7 @@ const TokenPurchase = () => {
                         <button
                             onClick={handleBuyClick}
                             className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 transition-all font-bold text-lg mb-4"
-                            disabled={!selectedToken || !tokenAmount || !sbxAmount || !customAddress}
+                            disabled={!selectedToken || !tokenAmount || !sbxAmount}
                         >
                             Buy Now
                         </button>
