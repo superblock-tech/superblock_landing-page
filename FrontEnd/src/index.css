@@ -269,3 +269,42 @@ input[type="number"] {
 input[type="number"] {
   -ms-appearance: none;
 }
+
+
+.react-tel-input .form-control {
+  width: 100%!important;
+  height: 48px!important;
+  padding-left: 52px!important; /* space for flag */
+  background-color: transparent!important;
+  border: 1px solid #d1d5db!important; /* Tailwind's border-gray-300 */
+  border-radius: 0.375rem!important; /* Tailwind's rounded */
+  font-size: 18px!important;
+  line-height: 34px!important;
+  outline: none!important;
+  box-shadow: none!important;
+}
+
+
+.react-tel-input .selected-flag {
+  padding: 0 10px!important;
+}
+
+.react-tel-input .country-list {
+  z-index: 9999!important;
+  max-height: 16rem!important;
+  overflow-y: auto!important;
+  font-size: 14px!important;
+  border: 1px solid #e5e7eb!important; /* border-gray-200 */
+  box-shadow: 0px 2px 8px rgba(0,0,0,0.1)!important;
+}
+
+.react-tel-input .flag-dropdown {
+  @apply absolute left-2 top-1/2 -translate-y-1/2 z-10;
+  background-color: transparent!important;
+  border: none!important;
+  margin: 1.5rem 0!important;
+}
+
+.search-emoji {
+  display: none!important;
+}

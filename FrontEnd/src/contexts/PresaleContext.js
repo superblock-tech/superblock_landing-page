@@ -5,6 +5,8 @@ import {AuthContext} from "./AuthContext";
 import Modal from "../components/Modal";
 import {ArrowRightBlack, EmailIcon, FlagIcon} from "../Icons";
 import toast from "react-hot-toast";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const PresaleContext = createContext();
 
@@ -140,23 +142,17 @@ export function PresaleContextProvider({children}) {
 
                                 {/* Phone */}
                                 <div className="flex flex-col gap-[9px] lg:col-span-2">
-                  <span className="font-normal text-[15px] sm:text-[18px] leading-[29px] sm:leading-[34px]">
-                    What is your phone number?
-                    <span className="text-[#f00]">*</span>
-                  </span>
                                     <div
                                         className="bg-gradient-to-b from-[#F2F2F2] to-[#c0c0e6] p-[1px] rounded-[10px]">
                                         <div
                                             className="p-[13px] w-full h-full bg-[#ebeaff] rounded-[10px] flex items-center gap-2">
-                      <span className="cursor-pointer">
-                        <FlagIcon/>
-                      </span>
-                                            <input
-                                                required
-                                                type="tel"
+
+                                            <PhoneInput
+                                                country={'us'}
                                                 value={phone}
-                                                onChange={(e) => setPhone(e.target.value)}
-                                                className="w-full h-full bg-transparent border-none outline-none font-normal text-[18px] leading-[34px]"
+                                                onChange={setPhone}
+                                                enableSearch={true}
+                                                disableCountryCode={false}
                                             />
                                         </div>
                                     </div>
@@ -164,41 +160,46 @@ export function PresaleContextProvider({children}) {
                             </div>
 
                             {/* Dropdown */}
-                            <div style={{display: 'flex', flexDirection: 'column', gap: '10px',}}>
+                            <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
                                 <label className="mt-[18px] flex items-center gap-[11px]">
                                     <span
                                         className="font-normal text-[15px] sm:text-[18px] leading-[29px] sm:leading-[34px]">
                                         Investment interest:
                                     </span>
                                 </label>
-                                <select
-                                    id="token-select"
-                                    className="w-full bg-gradient-to-b from-[#F2F2F2] to-[#c0c0e6] p-[1px] rounded-[10px]"
-                                    value={investmentInterest}
-                                    onChange={(e) => setInvestmentInterest(e.target.value)}
-                                    style={{
-                                        padding: '8px 12px',
-                                        border: '1px solid #ccc',
-                                        borderRadius: '8px',
-                                        fontSize: '16px',
-                                        backgroundColor: 'white',
-                                        appearance: 'none',
-                                        cursor: 'pointer',
-                                        height: '60px'
-                                    }}
-                                >
-                                    <option value="0">-- Select --</option>
-                                    <option value="10000">Between $2,000 and $10,000</option>
-                                    <option value="10000">Between $10,000 and $50,000</option>
-                                    <option value="50000">Between $50,000 and $250,000</option>
-                                    <option value="250000">More than $250,000</option>
-                                </select>
+                                <div
+                                    className="p-[13px] w-full h-full bg-[#ebeaff] rounded-[10px] flex items-center gap-2">
+
+                                    <select
+                                        id="token-select"
+                                        className="w-full bg-gradient-to-b from-[#F2F2F2] to-[#c0c0e6] p-[1px] rounded-[10px]"
+                                        value={investmentInterest}
+                                        onChange={(e) => setInvestmentInterest(e.target.value)}
+                                        style={{
+                                            padding: '8px 12px',
+                                            border: '1px solid #ccc',
+                                            borderRadius: '8px',
+                                            fontSize: '16px',
+                                            backgroundColor: 'white',
+                                            appearance: 'none',
+                                            cursor: 'pointer',
+                                            height: '60px'
+                                        }}
+                                    >
+                                        <option value="0">-- Select --</option>
+                                        <option value="10000">Between $2,000 and $10,000</option>
+                                        <option value="10000">Between $10,000 and $50,000</option>
+                                        <option value="50000">Between $50,000 and $250,000</option>
+                                        <option value="250000">More than $250,000</option>
+                                    </select>
+                                </div>
+
 
                             </div>
 
                             {/* Checkbox */}
                             <label className="mt-[18px] flex items-center gap-[11px]">
-                                <input
+                            <input
                                     type="checkbox"
                                     checked={isAgreed}
                                     onChange={(e) => setIsAgreed(e.target.checked)}
