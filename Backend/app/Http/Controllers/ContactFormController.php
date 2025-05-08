@@ -40,15 +40,12 @@ class ContactFormController extends Controller
             'fullName' => 'required',
             'email' => 'required',
             'phone' => 'required',
+            'country' => 'required',
+            'investment_interest' => 'required',
+            'joinWhitelist' => 'required'
         ]);
 
-        $form = new ContactForm();
-        $form->fullName = $request->fullName;
-        $form->email = $request->email;
-        $form->phone = $request->phone;
-        $form->joinWhitelist = $request->joinWhitelist ?? 0;
-
-        if($form->save()) {
+        if(ContactForm::query()->create($request->all())) {
             return response()->json(['message' => 'Contact form submitted successfully']);
         } else {
             return response()->json(['message' => 'Failed to submit contact form']);

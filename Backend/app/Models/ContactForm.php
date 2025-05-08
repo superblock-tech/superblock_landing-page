@@ -13,6 +13,8 @@ class ContactForm extends Model
         'fullName',
         'email',
         'message',
-        'phone'
+        'phone',
+        'investment_interest',
+        'country'
     ];
 }
