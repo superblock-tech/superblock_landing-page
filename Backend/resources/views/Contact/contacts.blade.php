@@ -27,6 +27,8 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
+                            <th>Country</th>
+                            <th>Investment Interest</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
@@ -37,6 +39,8 @@
                                 <td>{{ $contact->fullName }}</td>
                                 <td>{{ $contact->email }}</td>
                                 <td>{{ $contact->phone }}</td>
+                                <td>{{ $contact->country }}</td>
+                                <td>{{ $contact->investment_interest }}</td>
                                 <td>
                                     <!-- Delete Button -->
                                     <form action="{{ route('contacts.destroy', $contact->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this contact?');">
