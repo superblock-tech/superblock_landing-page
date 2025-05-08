@@ -152,6 +152,11 @@ export function PresaleContextProvider({children}) {
                                     </div>
                                 </div>
 
+                                <CountryDropdown
+                                    value={selectedCountry}
+                                    onChange={(country) => setSelectedCountry(country)}
+                                />
+
                                 {/* Phone */}
                                 <div className="flex flex-col gap-[9px] lg:col-span-2">
                                     <div
@@ -174,11 +179,6 @@ export function PresaleContextProvider({children}) {
                             <InvestmentDropdown
                                 value={investmentInterest}
                                 onChange={setInvestmentInterest}
-                            />
-
-                            <CountryDropdown
-                                value={selectedCountry}
-                                onChange={(country) => setSelectedCountry(country)}
                             />
 
                             {/* Checkbox */}

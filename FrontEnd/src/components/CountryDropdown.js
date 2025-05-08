@@ -7,7 +7,7 @@ export default function CountryDropdown({ value, onChange }) {
     return (
         <div className="flex flex-col gap-[9px]">
       <span className="font-normal text-[15px] sm:text-[18px] leading-[29px] sm:leading-[34px]">
-        What country do you live in? <span className="text-[#f00]">*</span>
+        Country of Residence <span className="text-[#f00]">*</span>
       </span>
 
             <div className="relative">
