@@ -477,7 +477,7 @@ const TokenPurchase = () => {
 
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-xl">Transactions List</h2>
-                        <span className="text-xl font-bold">Allocated: $SBX {presaleTransactionsSum.toFixed(6)}</span>
+                        <span className="text-xl font-bold">Allocated: $SBX {Number(presaleTransactionsSum.toFixed(6))?.toLocaleString('en-US')}</span>
                     </div>
 
                     <div className="w-full overflow-x-auto">
