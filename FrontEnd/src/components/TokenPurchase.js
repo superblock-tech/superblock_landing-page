@@ -183,18 +183,17 @@ const TokenPurchase = () => {
 
     // Calculate token to SBX conversion
     const calculateSbxAmount = (tokenAmt) => {
-        if (!selectedToken || !whitelistContent.sbxPrice || !tokenAmt) return "";
+        if (!selectedToken || !whitelistContent.sbxPrice ) return "";
         const usdValue = tokenAmt * selectedToken?.price;
-        console.log(selectedToken)
-        return (usdValue / whitelistContent.sbxPrice).toFixed(6);
+        const result = (usdValue / whitelistContent.sbxPrice).toFixed(6)
+        return result >= Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) && result <= Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) ? result : 0;
     };
 
     // Calculate SBX to token conversion
     const calculateTokenAmount = (sbxAmt) => {
-        console.log(whitelistContent)
         if (!selectedToken || !whitelistContent.sbxPrice || !sbxAmt) return "";
         const usdValue = sbxAmt * whitelistContent.sbxPrice;
-        return (usdValue / selectedToken?.price).toFixed(6);
+        return sbxAmt >= Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) && sbxAmt <= Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) ? (usdValue / selectedToken?.price).toFixed(6) : 0;
     };
 
     const handleTokenAmountChange = (e) => {
@@ -403,54 +402,53 @@ const TokenPurchase = () => {
                         ) : ''}
 
                         <div
-                            className="flex flex-col md:flex-row items-center md:justify-between gap-4bg-gradient-to-r from-purple-200 to-blue-200 p-4 rounded-xl gap-2">
+                            className="flex flex-col md:flex-row items-center md:justify-between gap-4 bg-gradient-to-r from-purple-200 to-blue-200 p-4 rounded-xl">
                             {/* First Input Group */}
-                            <div className="flex items-center gap-2 w-full md:w-auto bg-[#FFFFFF] p-4 rounded-lg">
+                            <div className="flex items-center gap-2 bg-[#FFFFFF] p-4 rounded-lg w-full md:w-96">
                                 <input
                                     type="number"
                                     value={tokenAmount}
                                     onChange={handleTokenAmountChange}
                                     placeholder="0.00"
-                                    className="bg-transparent border-none outline-none w-full md:w-32 text-xl"
+                                    className="bg-transparent border-none outline-none w-full text-xl"
+                                    min={Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) || 0}
+                                    max={Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) || 1000000}
                                 />
                                 <div className="flex items-center gap-2 min-w-fit">
-                                    {
-                                        selectedToken &&
-                                        (
-                                            <img
-                                                className="w-6"
-                                                src={`/assets/images/crypto/color/${selectedToken?.icon}.svg`}
-                                                alt={selectedToken?.icon}
-                                            />
-
-                                        )
-                                    }
-                                    <span>{selectedNetwork && selectedToken ? selectedNetwork?.name + ' ' + selectedToken?.name : "Select Token"}</span>
+                                    {selectedToken && (
+                                        <img
+                                            className="w-6"
+                                            src={`/assets/images/crypto/color/${selectedToken?.icon}.svg`}
+                                            alt={selectedToken?.icon}
+                                        />
+                                    )}
+                                    <span>
+        {selectedNetwork && selectedToken
+            ? `${selectedNetwork.name} ${selectedToken.name}`
+            : 'Select Token'}
+      </span>
                                 </div>
                             </div>
 
                             {/* Equals Sign */}
-                            <div className="text-black text-3xl"></div>
+                            <div className="text-black text-3xl">=</div>
 
                             {/* Second Input Group */}
-                            <div className="flex items-center gap-2 w-full md:w-auto bg-[#FFFFFF] p-4 rounded-lg">
+                            <div className="flex items-center gap-2 bg-[#FFFFFF] p-4 rounded-lg w-full md:w-96">
                                 <input
-                                    min={Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT)}
-                                    max={Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT)}
                                     type="number"
                                     value={sbxAmount}
                                     onChange={handleSbxAmountChange}
                                     placeholder="0.00"
                                     className="bg-transparent border-none outline-none w-full text-xl"
+                                    min={Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) || 10000}
+                                    max={Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) || 1000000}
                                 />
                                 <div className="flex items-center gap-2 min-w-fit">
                                     <div
                                         className="bg-gradient-to-r from-purple-100 to-purple-300 rounded-full p-1 w-6 h-6">
-                                        <img
-                                            className="w-fit"
-                                            src={`/favicon.ico`}
-                                            alt="sbxtoken"
-                                        />
+                                        <img className="w-full h-full object-contain" src={`/favicon.ico`}
+                                             alt="sbxtoken"/>
                                     </div>
                                     <span>SBX</span>
                                 </div>
@@ -460,9 +458,9 @@ const TokenPurchase = () => {
                     </div>
 
                     {address &&
-                        (
-                            selectedNetwork?.address == 'ERC20'
-                        ) ? (
+                    (
+                        selectedNetwork?.address == 'ERC20'
+                    ) ? (
                         <SendEthButton amount={tokenAmount} sbxAmount={sbxAmount} selectedNetwork={selectedNetwork}
                                        selectedToken={selectedToken}/>
                     ) : (
