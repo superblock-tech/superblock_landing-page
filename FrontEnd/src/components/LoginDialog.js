@@ -51,7 +51,7 @@ export default function LoginDialog({ isOpen, onClose }) {
   return (
     <div className="">
       {/* Dialog Panel */}
-        <div className="bg-[#7765CE] p-8 rounded-lg relative max-w-md w-full mx-2">
+        <div className="bg-[#7765CE] p-8 rounded-3xl relative max-w-sm w-full mx-2 text-center">
             <h2 className="text-[24px] text-white mb-2 font-bold">
                 Founders Circle Presale Access Only
             </h2>
