@@ -3,10 +3,12 @@ import LoginDialog from "../components/LoginDialog"; // adapt path as needed
 import {useNavigate} from "react-router-dom";
 import {AuthContext} from "./AuthContext";
 import Modal from "../components/Modal";
-import {ArrowRightBlack, EmailIcon, FlagIcon} from "../Icons";
+import {ArrowRightBlack, EmailIcon} from "../Icons";
 import toast from "react-hot-toast";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import CountryDropdown from "../components/CountryDropdown";
+import InvestmentDropdown from "../components/InvestmentDropdown";
 
 const PresaleContext = createContext();
 
@@ -35,9 +37,10 @@ export function PresaleContextProvider({children}) {
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
-    const [investmentInterest, setInvestmentInterest] = useState("");
+    const [investmentInterest, setInvestmentInterest] = useState(0);
     const [loading, setLoading] = useState(false);
     const [isAgreed, setIsAgreed] = useState(false);
+    const [selectedCountry, setSelectedCountry] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -55,7 +58,14 @@ export function PresaleContextProvider({children}) {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({fullName, email, phone, joinWhitelist: 1, investmentInterest}),
+                    body: JSON.stringify({
+                        fullName,
+                        email,
+                        phone,
+                        joinWhitelist: 1,
+                        'investment_interest': investmentInterest,
+                        'country': selectedCountry.name
+                    }),
                 });
 
                 if (!response.ok) {
@@ -98,7 +108,9 @@ export function PresaleContextProvider({children}) {
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-[18px] gap-x-[28px]">
                                 {/* Full name */}
                                 <div className="flex flex-col gap-[9px]">
-                  <span className="font-normal text-[15px] sm:text-[18px] leading-[29px] sm:leading-[34px]">
+
+                                    <span
+                                        className="font-normal text-[15px] sm:text-[18px] leading-[29px] sm:leading-[34px]">
                     What is your full name?
                     <span className="text-[#f00]">*</span>
                   </span>
@@ -159,47 +171,19 @@ export function PresaleContextProvider({children}) {
                                 </div>
                             </div>
 
-                            {/* Dropdown */}
-                            <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-                                <label className="mt-[18px] flex items-center gap-[11px]">
-                                    <span
-                                        className="font-normal text-[15px] sm:text-[18px] leading-[29px] sm:leading-[34px]">
-                                        Investment interest:
-                                    </span>
-                                </label>
-                                <div
-                                    className="p-[13px] w-full h-full bg-[#ebeaff] rounded-[10px] flex items-center gap-2">
+                            <InvestmentDropdown
+                                value={investmentInterest}
+                                onChange={setInvestmentInterest}
+                            />
 
-                                    <select
-                                        id="token-select"
-                                        className="w-full bg-gradient-to-b from-[#F2F2F2] to-[#c0c0e6] p-[1px] rounded-[10px]"
-                                        value={investmentInterest}
-                                        onChange={(e) => setInvestmentInterest(e.target.value)}
-                                        style={{
-                                            padding: '8px 12px',
-                                            border: '1px solid #ccc',
-                                            borderRadius: '8px',
-                                            fontSize: '16px',
-                                            backgroundColor: 'white',
-                                            appearance: 'none',
-                                            cursor: 'pointer',
-                                            height: '60px'
-                                        }}
-                                    >
-                                        <option value="0">-- Select --</option>
-                                        <option value="10000">Between $2,000 and $10,000</option>
-                                        <option value="10000">Between $10,000 and $50,000</option>
-                                        <option value="50000">Between $50,000 and $250,000</option>
-                                        <option value="250000">More than $250,000</option>
-                                    </select>
-                                </div>
-
-
-                            </div>
+                            <CountryDropdown
+                                value={selectedCountry}
+                                onChange={(country) => setSelectedCountry(country)}
+                            />
 
                             {/* Checkbox */}
                             <label className="mt-[18px] flex items-center gap-[11px]">
-                            <input
+                                <input
                                     type="checkbox"
                                     checked={isAgreed}
                                     onChange={(e) => setIsAgreed(e.target.checked)}
@@ -209,9 +193,10 @@ export function PresaleContextProvider({children}) {
                                             "0px 18.38px 36.76px 0px rgba(255, 84, 62, 0.02)",
                                     }}
                                 />
-                                <p className="sm:text-[16px] text-[13px] sm:leading-[34px] font-normal flex-1">
-                                    I agree to receive emails related to updates, offers, and information about
-                                    SUPERBLOCK.
+                                <p className="sm:text-[16px] text-[13px] sm:leading-[34px] font-normal">
+                                    I agree to receive emails related to updates, offers, and information about SUPERBLOCK.
+                                    <br/>
+                                    I understand that I can unsubscribe at any time by following the instructions provided in the emails.
                                 </p>
                             </label>
 
