@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import CryptoPurchaseSteps from "../components/CryptoPurchaseSteps";
 import Footer from "../components/Footer";
 import HowToBuy from "../components/HowToBuy";
-import Phace1 from "../components/Phace1";
 import LoginDialog from "../components/LoginDialog";
 import TokenPurchase from "../components/TokenPurchase";
 import FlexStagesTable from "../components/FlexStagesTable";
@@ -22,54 +21,35 @@ export default function ProfilePage() {
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(true);
-    const [wallets, setWallets] = useState([]);
-    const [whitelistContent, setWhitelistContent] = useState({});
+    const [whitelistContent, setWhitelistContent] = useState(null);
 
     const fetchWhitelistContent = async () => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_API_URL}/getWhitelistContent`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
+        if (!whitelistContent) {
+            try {
+                const response = await fetch(
+                    `${process.env.REACT_APP_API_URL}/whitelist`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        },
+                    }
+                );
+
+                if (response.status === 401) {
+                    return;
                 }
-            );
 
-            if (response.status === 401) {
-                return;
+                const content = await response.json();
+                setWhitelistContent(content.data);
+            } catch (error) {
+                toast.error("Error fetching whitelist content.");
+                console.error("Error fetching whitelist content:", error);
             }
-
-            const data = await response.json();
-            setWhitelistContent(data);
-        } catch (error) {
-            toast.error("Error fetching whitelist content.");
-            console.error("Error fetching whitelist content:", error);
-        }
-    };
-    const fetchWallets = async () => {
-        try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/wallet`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            });
-
-            const data = await response.json();
-            setWallets(data);
-
-        } catch (error) {
-            navigate("/");
-            toast.error("Error fetching wallets.");
-            console.error("Error fetching wallets:", error);
-        } finally {
-            setLoading(false);
         }
     };
 
     useEffect(() => {
         fetchWhitelistContent();
-        fetchWallets();
     }, []);
 
     useEffect(() => {
@@ -152,28 +132,35 @@ export default function ProfilePage() {
                     <h2 className="text-3xl font-bold mb-4 text-right tracking-wide">
                         Phase Ends In:
                     </h2>
-                    <div className="grid grid-cols-4 gap-2 text-center mb-4">
+                    <div className="grid grid-cols-4 gap-2 text-center mb-6">
                         {Object.entries(timeLeft).map(([unit, value]) => (
-                            <div key={unit}>
-                                <div className="text-2xl lg:text-7xl font-bold">
+                            <div key={unit} className="bg-white bg-opacity-20 rounded-lg p-2">
+                                <div className="text-xl md:text-4xl lg:text-7xl font-bold">
                                     {String(value).padStart(2, '0')}
                                 </div>
-                                <div className="text-sm lg:text-xl uppercase mt-1 font-semibold">{unit}</div>
+                                <div className="text-xs md:text-sm lg:text-xl uppercase mt-1 font-semibold">{unit}</div>
                             </div>
                         ))}
                     </div>
-                    <div className="w-full h-5 bg-white bg-opacity-30 rounded-full overflow-hidden mb-3 ">
-                        <div className="h-full bg-white bg-opacity-80 transition-all duration-1000"
-                             style={{width: `${progress}%`}}></div>
+
+                    <div className="relative w-full h-6 bg-white bg-opacity-30 rounded-full overflow-hidden mb-5">
+                        <div
+                            className="h-full bg-white bg-opacity-80 transition-all duration-1000"
+                            style={{width: `${progress}%`}}
+                        />
+                        <span
+                            className="absolute inset-0 flex items-center justify-center text-lg md:text-base font-bold text-[#7b36b6]">
+                            {progress.toFixed(2) + '% Allocated'}
+                        </span>
                     </div>
                     <div className="text-xl font-medium space-y-1 text-right">
-                        <p className="underline">{ whitelistContent.name }</p>
-                        <p><span className="font-bold">1 $SBX = ${whitelistContent.sbxPrice}</span></p>
+                        <p className="underline">{whitelistContent?.name}</p>
+                        <p><span className="font-bold">1 $SBX = ${whitelistContent?.sbxPrice}</span></p>
                         <p className="underline">Next&nbsp;
-                            <span >{whitelistContent.nameNext}</span>
+                            <span>{whitelistContent?.nameNext}</span>
                         </p>
                         <p>
-                            <span className="font-bold">1 $SBX = ${whitelistContent.sbxPriceNext}</span>
+                            <span className="font-bold">1 $SBX = ${whitelistContent?.sbxPriceNext}</span>
                         </p>
                     </div>
                 </div>
@@ -184,23 +171,23 @@ export default function ProfilePage() {
                     <div className="flex flex-col gap-10 text-center">
                         <div>
                             <p className="text-lg mb-1 tracking-wide">Total USDT Amount Raised</p>
-                            <p className="text-3xl font-extrabold">{whitelistContent.usdtRaised}</p>
+                            <p className="text-3xl font-extrabold">{Number(whitelistContent?.usdtRaised).toLocaleString('en-US')}</p>
                         </div>
                         <div>
                             <p className="text-lg mb-1 tracking-wide">
-                                { whitelistContent.name?.split(' - ')[0] }
+                                {whitelistContent?.name?.split(' - ')[0]}
                                 <span className="mx-2">—</span>
                                 $SBX Allocated
                             </p>
                             <p className="text-3xl font-extrabold">
-                                { Number(whitelistContent.sbxAllocated).toLocaleString('en-US') }
+                            { Number(whitelistContent?.sbxAllocated).toLocaleString('en-US') }
                                 <span className="mx-2">/</span>
-                                { Number(whitelistContent.sbxTotal).toLocaleString('en-US') }
+                                { Number(whitelistContent?.sbxTotal).toLocaleString('en-US') }
                             </p>
                         </div>
                         <div>
                             <p className="text-lg mb-1 tracking-wide">Total Holders</p>
-                            <p className="text-3xl font-extrabold">{ whitelistContent.holders }</p>
+                            <p className="text-3xl font-extrabold">{ whitelistContent?.holders }</p>
                         </div>
                     </div>
                 </div>
@@ -212,7 +199,7 @@ export default function ProfilePage() {
         >
             <div style={{position: 'relative'}} className="w-full relative ">
                 <div>
-                    <TokenPurchase/>
+                    <TokenPurchase whitelistContent={whitelistContent}/>
                 </div>
 
                 {!token && (<div
