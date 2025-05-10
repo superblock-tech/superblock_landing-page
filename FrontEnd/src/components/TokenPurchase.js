@@ -11,11 +11,10 @@ import {useAccount} from 'wagmi'
 import {ConnectKitButton} from "connectkit";
 
 
-const TokenPurchase = () => {
+const TokenPurchase = (whitelist) => {
     // const navigate = useNavigate();
     const {logout} = useContext(AuthContext);
     const {address} = useAccount()
-    const [whitelistContent, setWhitelistContent] = useState({});
     const [tokens, setTokens] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedToken, setSelectedToken] = useState(null);
@@ -29,28 +28,7 @@ const TokenPurchase = () => {
     const [presaleTransactionsSum, setPresaleTransactionsSum] = useState(0);
 
 
-    const fetchWhitelistContent = async () => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_API_URL}/getWhitelistContent`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                }
-            );
 
-            if (response.status === 401) {
-                return;
-            }
-
-            const data = await response.json();
-            setWhitelistContent(data);
-        } catch (error) {
-            toast.error("Error fetching whitelist content.");
-            console.error("Error fetching whitelist content:", error);
-        }
-    };
     const handleCopy = (text) => {
         navigator.clipboard.writeText(text);
         toast.success("Copied to clipboard!");
@@ -68,11 +46,10 @@ const TokenPurchase = () => {
         logout();
     };
 
-    const fetchPresaleTransactionsByWallet = async (wallet) => {
-        if (wallet || token) {
+    const fetchPresaleTransactionsByWallet = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.REACT_APP_API_URL}/transactions/${wallet ?? null}`,
+                    `${process.env.REACT_APP_API_URL}/transactions`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -90,24 +67,24 @@ const TokenPurchase = () => {
                 toast.error("Error fetching presale transactions content.");
                 console.error("Error fetching presale transactions content:", error);
             }
-        } else {
-            console.log("No connected wallets.");
-        }
-
     };
 
-    const updatePrimaryWallet = async (wallet) => {
-        if (wallet || token) {
+    const updatePrimaryWallet = async (wallet, isPrimary) => {
+        if (wallet && selectedToken) {
             try {
                 await fetch(
-                    `${process.env.REACT_APP_API_URL}/wallet/primary`,
+                    `${process.env.REACT_APP_API_URL}/wallet`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
                             "Content-Type": "application/json",
+                            "Accept": "application/json",
                         },
                         body: JSON.stringify({
-                            primary_wallet: wallet
+                            wallet: wallet,
+                            is_primary: isPrimary,
+                            'crypto_id': selectedToken.id,
+                            'crypto_network_id': selectedNetwork.id
                         }),
                         method: 'POST'
                     }
@@ -123,37 +100,40 @@ const TokenPurchase = () => {
 
 
     const fetchCryptoPrices = async () => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_API_URL}/getPriceForCrypto`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
+        if (tokens.length === 0) {
+            try {
+                const response = await fetch(
+                    `${process.env.REACT_APP_API_URL}/crypto/prices`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        },
+                    }
+                );
+
+                if (response.status === 401) {
+                    handleLogout();
+                    return;
                 }
-            );
 
-            if (response.status === 401) {
-                handleLogout();
-                return;
+                const data = await response.json();
+                setTokens(data);
+                // Set initial selected token to ETH
+                const ethAddress = data.find((address) => address.address === "ERC20");
+                console.log('ll', ethAddress)
+                if (ethAddress) {
+                    setSelectedToken(
+                        ethAddress.cryptos.find((token) => token.symbol === "ETH")
+                    )
+                    setSelectedNetwork(ethAddress)
+                }
+
+            } catch (error) {
+                toast.error("Error fetching crypto prices.");
+                console.error("Error fetching crypto prices:", error);
+            } finally {
+                setLoading(false);
             }
-
-            const data = await response.json();
-            setTokens(data);
-            // Set initial selected token to ETH
-            const ethAddress = data.find((address) => address.name === "ETH");
-            if (ethAddress) {
-                setSelectedToken(
-                    ethAddress.cryptos.find((token) => token.name === "ETH")
-                )
-                setSelectedNetwork(ethAddress)
-            }
-
-        } catch (error) {
-            toast.error("Error fetching crypto prices.");
-            console.error("Error fetching crypto prices:", error);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -163,19 +143,14 @@ const TokenPurchase = () => {
     };
 
     useEffect(() => {
-        fetchWhitelistContent();
         fetchCryptoPrices();
-    }, []);
+    }, [tokens]);
 
     useEffect(() => {
         fetchPresaleTransactionsByWallet(address);
-        updatePrimaryWallet(address)
+        updatePrimaryWallet(address, true)
 
-    }, [address, token])
-
-    useEffect(() => {
-        updatePrimaryWallet(customAddress)
-    }, [customAddress])
+    }, [address])
 
     useEffect(() => {
         setPresaleTransactionsSum(presaleTransactions.reduce((acc, tx) => acc + (parseFloat(tx.sbx_price) || 0), 0));
@@ -183,16 +158,17 @@ const TokenPurchase = () => {
 
     // Calculate token to SBX conversion
     const calculateSbxAmount = (tokenAmt) => {
-        if (!selectedToken || !whitelistContent.sbxPrice ) return "";
+        console.log(!selectedToken , whitelist.whitelistContent.sbxPrice)
+        if (!selectedToken || !whitelist.whitelistContent.sbxPrice ) return "";
         const usdValue = tokenAmt * selectedToken?.price;
-        const result = (usdValue / whitelistContent.sbxPrice).toFixed(6)
+        const result = (usdValue / whitelist.whitelistContent.sbxPrice).toFixed(6)
         return result >= Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) && result <= Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) ? result : 0;
     };
 
     // Calculate SBX to token conversion
     const calculateTokenAmount = (sbxAmt) => {
-        if (!selectedToken || !whitelistContent.sbxPrice || !sbxAmt) return "";
-        const usdValue = sbxAmt * whitelistContent.sbxPrice;
+        if (!selectedToken || !whitelist.whitelistContent.sbxPrice || !sbxAmt) return "";
+        const usdValue = sbxAmt * whitelist.whitelistContent.sbxPrice;
         return sbxAmt >= Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) && sbxAmt <= Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) ? (usdValue / selectedToken?.price).toFixed(6) : 0;
     };
 
@@ -273,6 +249,13 @@ const TokenPurchase = () => {
                                     >
                                         Paste
                                     </button>
+                                    <button
+                                        onClick={() => {updatePrimaryWallet(customAddress, false)}}
+                                        className="px-6 py-4 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 transition-all font-bold text-lg"
+                                    >
+                                        Submit
+                                    </button>
+
                                 </div>
 
                             </div>
