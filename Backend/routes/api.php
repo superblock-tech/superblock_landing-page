@@ -1,13 +1,12 @@
 <?php
 
-use App\Http\Controllers\CryptoController;
-use App\Http\Controllers\PresaleTransactionsController;
-use App\Http\Controllers\WhitelistController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ContactController;
+use App\Http\Controllers\API\CryptoNetworkController;
+use App\Http\Controllers\API\TransactionsController;
+use App\Http\Controllers\API\WalletController;
+use App\Http\Controllers\API\WhitelistController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ContactFormController;
-use App\Http\Controllers\WalletController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,14 +19,13 @@ use App\Http\Controllers\WalletController;
 |
 */
 
-Route::post('/login', [UserController::class, 'loginForUser']);
-Route::post('/contact', [ContactFormController::class, 'store']);
-Route::get('getWhitelistContent', [WhitelistController::class, 'getWhitelistContent']);
-Route::get('getPriceForCrypto', [CryptoController::class, 'getPriceForCrypto']);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('contact', [ContactController::class, 'store']);
+Route::get('whitelist', [WhitelistController::class, 'index']);
+Route::get('crypto/prices', [CryptoNetworkController::class, 'index']);
 
 Route::middleware(['check.token'])->group(function () {
-    Route::get('wallet', [WalletController::class, 'getWallets']);
-    Route::get('transactions/{wallet}', [PresaleTransactionsController::class, 'findByAddress']);
-    Route::post('transactions', [PresaleTransactionsController::class, 'storeLocalTransaction']);
-    Route::post('wallet/primary', [UserController::class, 'updatePrimaryWallet']);
+    Route::get('transactions', [TransactionsController::class, 'index']);
+    Route::post('transactions', [TransactionsController::class, 'store']);
+    Route::post('wallet', [WalletController::class, 'update']);
 });
