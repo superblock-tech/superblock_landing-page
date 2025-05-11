@@ -9,7 +9,7 @@ class Token extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['token', 'code_for_login_id'];
+    protected $fillable = ['token', 'code_for_login_id', 'device', 'last_used_at', 'ip'];
 
     public function codeForLogin()
     {

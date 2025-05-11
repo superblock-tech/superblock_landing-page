@@ -20,7 +20,9 @@ class PresaleTransaction extends Model
         'crypto_network_id',
         'system_wallet',
         'system_wallet_id',
-        'account_wallet_address'
+        'account_wallet_address',
+        'chain_id',
+        'chain_name'
     ];
 
 
