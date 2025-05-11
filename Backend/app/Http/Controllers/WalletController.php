@@ -22,15 +22,6 @@ class WalletController extends Controller
         $wallets = Wallet::all();
         return view('Wallet.walletFromAdmin', compact('wallets'));
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function getWallets()
-    {
-        $wallets = Wallet::query()->with('crypto')->get();
-
-        return response()->json($wallets);
-    }
 
     /**
      * Store a newly created resource in storage.

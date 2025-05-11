@@ -6,7 +6,6 @@ use App\Exports\PresaleTransactionsExport;
 use App\Models\Crypto;
 use App\Models\CryptoNetwork;
 use App\Models\PresaleTransaction;
-use App\Models\Token;
 use Binance\Spot;
 use Exception;
 use Illuminate\Http\RedirectResponse;
@@ -36,26 +35,6 @@ class PresaleTransactionsController extends Controller
         return view('PresaleTransaction.index', compact('transactions', 'crypto', 'cryptoNetwork', 'transactionsCount', 'usdtAmount', 'sbxAmount'));
     }
 
-    public function findByAddress(Request $request, string $address)
-    {
-        $code = Token::query()
-            ->where('token', '=', $request->bearerToken())
-            ->first()?->codeForLogin;
-
-        $transactionsQuery = PresaleTransaction::query()
-            ->where('wallet_address', $address);
-
-        if ($code) {
-            $transactionsQuery->orWhere('account_wallet_address', $code->default_wallet);
-        }
-
-        $transactions = $transactionsQuery->with(['crypto', 'cryptoNetwork'])
-            ->orderByDesc('id')
-            ->get();
-
-        return response()->json($transactions);
-    }
-
 
     /**
      * Store a newly created resource in storage.
@@ -82,23 +61,6 @@ class PresaleTransactionsController extends Controller
             Log::info($e->getMessage());
             return redirect()->route('presale_transactions.list')->with('error', 'Failed to add Transaction. Please try again.');
         }
-    }
-
-    public function storeLocalTransaction(Request $request)
-    {
-        $request->request->set('transaction_confirmation', 'Local transaction. Chain ID: ' . $request->chain_id . ' Chain name: ' . $request->chain_name);
-
-        $code = Token::query()
-            ->where('token', '=', $request->bearerToken())
-            ->first()?->codeForLogin;
-
-        $request->request->set('account_wallet_address',$code?->default_wallet);
-
-        Log::debug($request->all());
-        $transaction = new PresaleTransaction();
-        $transaction->query()->create($request->all());
-
-        return response(null, 201);
     }
 
     /**

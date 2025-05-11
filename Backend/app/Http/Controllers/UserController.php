@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\CodeForLogin;
-use App\Models\Token;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -47,50 +45,6 @@ class UserController extends Controller
         }
 
         return redirect()->back()->with('error', 'Invalid email or password');
-    }
-
-    public function loginForUser(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'code' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
-        }
-
-        $code = CodeForLogin::where('code', $request->code)->first();
-        if ($code) {
-            $token = Str::random(60);
-
-            Token::create([
-                'token' => $token,
-                'code_for_login_id' => $code->id
-            ]);
-
-            return response()->json([
-                'success' => 'Code is valid',
-                'token' => $token
-            ]);
-        }
-
-        return response()->json(['error' => 'Invalid email or password'], 401);
-    }
-
-    public function updatePrimaryWallet(Request $request)
-    {
-        $code = Token::query()
-            ->where('token', '=', $request->bearerToken())
-            ->first()?->codeForLogin;
-
-        if ($code && $request->primary_wallet) {
-            $code->default_wallet = $request->primary_wallet;
-            $code->save();
-
-            return response()->json(null, 204);
-        }
-
-        return response()->json(['error' => 'System error'], 422);
     }
 
     public function dashboard()

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ContactsExport;
+use App\Http\Requests\API\ContactFormRequest;
 use App\Imports\ContactsImport;
 use App\Models\ContactForm;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -34,22 +36,13 @@ class ContactFormController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ContactFormRequest $request): JsonResponse
     {
-        $request->validate([
-            'fullName' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
-            'country' => 'required',
-            'investment_interest' => 'required',
-            'joinWhitelist' => 'required'
-        ]);
-
-        if(ContactForm::query()->create($request->all())) {
+        if(ContactForm::query()->create($request->validated())) {
             return response()->json(['message' => 'Contact form submitted successfully']);
-        } else {
-            return response()->json(['message' => 'Failed to submit contact form']);
         }
+
+        return response()->json(['message' => 'Failed to submit contact form']);
     }
 
     /**
