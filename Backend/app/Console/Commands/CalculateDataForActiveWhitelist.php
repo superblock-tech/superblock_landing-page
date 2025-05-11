@@ -30,8 +30,8 @@ class CalculateDataForActiveWhitelist extends Command
         $whitelist = Whitelist::query()->where('is_active', '=', 1)->first();
 
         if ($whitelist) {
-            $presaleTransactions = PresaleTransaction::query()->select('wallet_address')->groupBy('wallet_address')->get();
-            $transactionsCount = count($presaleTransactions->pluck('wallet_address')->toArray());
+            $presaleTransactions = PresaleTransaction::query()->select('account_wallet_address')->groupBy('account_wallet_address')->get();
+            $transactionsCount = count($presaleTransactions->pluck('account_wallet_address')->toArray());
 
             $whitelist->usdtRaised = round(PresaleTransaction::query()->sum('usdt_amount'), 2);
             $whitelist->sbx_allocated = round(PresaleTransaction::query()->sum('sbx_price'), 0);
