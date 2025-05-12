@@ -21,15 +21,15 @@ class PresaleTransactionsController extends Controller
         $transactions = PresaleTransaction::all();
         $cryptoNetwork = CryptoNetwork::all();
         $crypto = Crypto::query()->where('symbol', '=', Crypto::FIAT)->get();
-        $presaleTransactions = PresaleTransaction::query()->select('wallet_address')->groupBy('wallet_address')->get();
-        $transactionsCount = count($presaleTransactions->pluck('wallet_address')->toArray());
+        $presaleTransactions = PresaleTransaction::query()->select('account_wallet_address')->groupBy('account_wallet_address')->get();
+        $transactionsCount = count($presaleTransactions->pluck('account_wallet_address')->toArray());
 
         $usdtAmount = 0;
         $sbxAmount = 0;
 
         foreach ($transactions as $transaction) {
             $usdtAmount += $transaction->usdt_amount;
-            $sbxAmount += $transaction->tokens_allocated;
+            $sbxAmount += $transaction->sbx_price;
         }
 
         return view('PresaleTransaction.index', compact('transactions', 'crypto', 'cryptoNetwork', 'transactionsCount', 'usdtAmount', 'sbxAmount'));

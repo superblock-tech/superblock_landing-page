@@ -26,9 +26,6 @@ class PresaleTransaction extends Model
     ];
 
 
-
-    protected $appends = ['tokens_allocated'];
-
     public function crypto()
     {
         return $this->belongsTo(Crypto::class);
@@ -37,11 +34,6 @@ class PresaleTransaction extends Model
     public function cryptoNetwork()
     {
         return $this->belongsTo(CryptoNetwork::class);
-    }
-
-    public function getTokensAllocatedAttribute($value)
-    {
-        return $this->attributes['sbx_price'];
     }
 
     public function systemWalletObject()
