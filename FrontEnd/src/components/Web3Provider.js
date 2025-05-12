@@ -1,13 +1,13 @@
 import React from 'react';
 import { WagmiProvider, createConfig,http } from 'wagmi';
-import {mainnet, sepolia} from "wagmi/chains";
+import {mainnet, sepolia, polygon, arbitrum} from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
 
 const config = createConfig(
   getDefaultConfig({
     appName: 'SuperBlock',
-    chains: [mainnet, sepolia],
+    chains: [mainnet, sepolia, polygon, arbitrum],
     [mainnet.id]: http(),
     walletConnectProjectId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
   })
