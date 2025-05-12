@@ -1,5 +1,4 @@
 import {AuthContext} from "../contexts/AuthContext";
-// import { useNavigate } from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
 import toast from "react-hot-toast";
 import {CopyIcon} from "../Icons";
@@ -14,7 +13,7 @@ import {ConnectKitButton} from "connectkit";
 const TokenPurchase = (whitelist) => {
     // const navigate = useNavigate();
     const {logout} = useContext(AuthContext);
-    const {address} = useAccount()
+    const {address, chain} = useAccount()
     const [tokens, setTokens] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedToken, setSelectedToken] = useState(null);
@@ -26,8 +25,12 @@ const TokenPurchase = (whitelist) => {
     const {token} = useContext(AuthContext);
     const [presaleTransactions, setPresaleTransactions] = useState([]);
     const [presaleTransactionsSum, setPresaleTransactionsSum] = useState(0);
+    const inAppNetworks = ['ERC20', 'MATIC']
 
-
+    const chainRelation = {
+        MATIC: "Polygon",
+        ERC20: "Etherium"
+    }
 
     const handleCopy = (text) => {
         navigator.clipboard.writeText(text);
@@ -93,7 +96,7 @@ const TokenPurchase = (whitelist) => {
                 toast.error("Error updating primary wallet.");
             }
         } else {
-            console.log("No connected wallets.");
+            // console.log("No connected wallets.");
         }
 
     };
@@ -120,7 +123,6 @@ const TokenPurchase = (whitelist) => {
                 setTokens(data);
                 // Set initial selected token to ETH
                 const ethAddress = data.find((address) => address.address === "ERC20");
-                console.log('ll', ethAddress)
                 if (ethAddress) {
                     setSelectedToken(
                         ethAddress.cryptos.find((token) => token.symbol === "ETH")
@@ -158,18 +160,17 @@ const TokenPurchase = (whitelist) => {
 
     // Calculate token to SBX conversion
     const calculateSbxAmount = (tokenAmt) => {
-        console.log(!selectedToken , whitelist.whitelistContent.sbxPrice)
         if (!selectedToken || !whitelist.whitelistContent.sbxPrice ) return "";
         const usdValue = tokenAmt * selectedToken?.price;
         const result = (usdValue / whitelist.whitelistContent.sbxPrice).toFixed(6)
-        return result >= Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) && result <= Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) ? result : 0;
+        return result >= Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) && result <= Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) ? result : result;
     };
 
     // Calculate SBX to token conversion
     const calculateTokenAmount = (sbxAmt) => {
         if (!selectedToken || !whitelist.whitelistContent.sbxPrice || !sbxAmt) return "";
         const usdValue = sbxAmt * whitelist.whitelistContent.sbxPrice;
-        return sbxAmt >= Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) && sbxAmt <= Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) ? (usdValue / selectedToken?.price).toFixed(6) : 0;
+        return sbxAmt >= Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) && sbxAmt <= Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) ? (usdValue / selectedToken?.price).toFixed(6) : (usdValue / selectedToken?.price).toFixed(6);
     };
 
     const handleTokenAmountChange = (e) => {
@@ -440,21 +441,21 @@ const TokenPurchase = (whitelist) => {
 
                     </div>
 
-                    {address &&
-                    (
-                        selectedNetwork?.address == 'ERC20'
-                    ) ? (
-                        <SendEthButton amount={tokenAmount} sbxAmount={sbxAmount} selectedNetwork={selectedNetwork}
+                    {
+                        address
+                        && inAppNetworks.includes(selectedNetwork?.address)
+                        && chainRelation[selectedNetwork?.address] === chain.name ? (
+                            <SendEthButton amount={tokenAmount} sbxAmount={sbxAmount} selectedNetwork={selectedNetwork}
                                        selectedToken={selectedToken}/>
-                    ) : (
-                        <button
-                            onClick={handleBuyClick}
-                            className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 transition-all font-bold text-lg mb-4"
-                            disabled={!selectedToken || !tokenAmount || !sbxAmount}
-                        >
+                        ) : (
+                            <button
+                                onClick={handleBuyClick}
+                                className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 transition-all font-bold text-lg mb-4"
+                                disabled={!selectedToken || !tokenAmount || !sbxAmount}
+                            >
                             Buy Now
                         </button>
-                    )
+                        )
                     }
 
 
