@@ -59,7 +59,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Account Wallet Address</th>
-                            <th>Account Wallet Network</th>
+                            <th>Chain name</th>
                             <th>Transaction Wallet Address</th>
                             <th>Transaction Wallet Network</th>
                             <th>Transaction Wallet Crypto</th>
@@ -79,14 +79,14 @@
                             <tr>
                                 <td>{{ $transaction->id }}</td>
                                 <td class="break-all">{{ $transaction->account_wallet_address }}</td>
-                                <td>{{ $transaction->cryptoNetwork?->name }}</td>
+                                <td ">{{ $transaction->chain_name }}</td>
                                 <td class="break-all">{{ $transaction->wallet_address }}</td>
                                 <td>{{ $transaction->system_wallet ? $transaction->cryptoNetwork?->name : '' }}</td>
                                 <td>{{ $transaction->crypto?->name }}</td>
                                 <td>{{ $transaction->amount }}</td>
                                 <td>{{ $transaction->usdt_amount }}</td>
                                 <td>{{ $transaction->usdt_amount / $transaction->sbx_price }}</td>
-                                <td>{{ $transaction->tokens_allocated }}</td>
+                                <td>{{ $transaction->sbx_price }}</td>
                                 <td class="break-all">{{ $transaction->system_wallet }}</td>
                                 <td class="break-all">{{ $transaction->transaction_confirmation }}</td>
                                 <td>{{ $transaction->created_at }}</td>
