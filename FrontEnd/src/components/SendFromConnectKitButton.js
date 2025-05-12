@@ -1,77 +1,118 @@
-import { useAccount, useWalletClient } from 'wagmi'
-import { parseEther } from 'viem'
-import React, { useState } from 'react'
-import {mainnet, sepolia} from "wagmi/chains";
+import {useAccount, useWalletClient} from 'wagmi'
+import {erc20Abi, parseEther} from 'viem'
+import React, {useState} from 'react'
+import {mainnet, polygon, sepolia} from "wagmi/chains";
 import toast from "react-hot-toast";
-import * as wallet from "framer-motion/m";
 
-const SendEthButton= ({ amount, sbxAmount, selectedToken, selectedNetwork }) => {
-    const { address, chain, chainId } = useAccount()
-    const { data: walletClient } = useWalletClient()
+const SendEthButton = ({amount, sbxAmount, selectedToken, selectedNetwork}) => {
+    const {address, chain, chainId} = useAccount()
+    const {data: walletClient} = useWalletClient()
     const [isLoading, setIsLoading] = useState(false)
 
+    const CONTRACT_CURRENCIES = ["USDT", "USDC"]
+
+    const TOKENS = {
+        MATIC: {
+            USDC: {
+                address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+                decimals: 6,
+                chain: polygon
+            },
+            USDT: {
+                address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
+                decimals: 6,
+                chain: polygon
+            },
+        },
+        ERC20: {
+            USDC: {
+                address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+                decimals: 6,
+                chain: mainnet
+            },
+            USDT: {
+                address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+                decimals: 6,
+                chain: mainnet
+            },
+
+        },
+    }
+
+
     const storeLocalPresaleTransaction = async (txn_id) => {
-
-            try {
-                const response = await fetch(
-                    `${process.env.REACT_APP_API_URL}/transactions`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem("token")}`,
-                            "Content-Type": "application/json",
-                            Accept: "application/json",
-                        },
-                        method: "POST",
-                        body: JSON.stringify(
-                            {
-                                chain_id: chainId,
-                                chain_name: chain.name,
-                                txn_id: txn_id,
-                                sbx_price: sbxAmount,
-                                amount: amount,
-                                crypto_id: selectedToken?.id,
-                                crypto_network_id: selectedNetwork?.id,
-                                wallet_address: address
-                            }),
-                    }
-                );
-
-                if (response.status === 401) {
-                    return;
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_API_URL}/transactions`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                    method: "POST",
+                    body: JSON.stringify(
+                        {
+                            chain_id: chainId,
+                            chain_name: chain.name,
+                            txn_id: txn_id,
+                            sbx_price: sbxAmount,
+                            amount: amount,
+                            crypto_id: selectedToken?.id,
+                            crypto_network_id: selectedNetwork?.id,
+                            wallet_address: address
+                        }),
                 }
+            );
 
-                const data = await response.json();
-
-                console.log(data)
-            } catch (error) {
-                toast.error("Error.");
-                console.error("Error:", error);
+            if (response.status === 401) {
+                return;
             }
+
+            const data = await response.json();
+
+        } catch (error) {
+            toast.error("Error.");
+            console.error("Error:", error);
+        }
 
     };
 
     const sendETH = async () => {
         if (!walletClient || !address) return
+
+        // if (selectedToken.symbol !== chain.nativeCurrency.symbol) {
+        //     toast.error("Select correct network of connected wallet");
+        //     return;
+        // }
+
         setIsLoading(true)
+        const wallet = selectedToken.wallets[0].address
 
-        if (selectedToken.symbol !== "ETH") {
-            amount = parseFloat(amount) * selectedToken.price / 1582.88
-        }
-
-        console.log(amount)
         try {
-            const tx = await walletClient.sendTransaction({
-                to: process.env.REACT_APP_WALLETCONNECT_DEFAULT_WALLET,
-                value: parseEther(amount.toString()),
-                account: address,
-                chains: [sepolia, mainnet],
-            })
+            if (CONTRACT_CURRENCIES.includes(selectedToken.symbol)) {
 
-            // console.log('tx sent', tx)
-            storeLocalPresaleTransaction(tx).then(() => {
-                window.location.reload()
-            })
+                await walletClient.writeContract({
+                    address: TOKENS[selectedNetwork.address][selectedToken.symbol].address,
+                    abi: erc20Abi,
+                    functionName: 'transfer',
+                    args: [
+                        wallet,
+                        BigInt(amount * (10 ** (TOKENS[selectedNetwork.address][selectedToken.symbol].decimals))),
+                    ],
+                    account: address,
+                    chain: TOKENS[selectedNetwork.address][selectedToken.symbol].chain,
+                })
+            } else {
+                await walletClient.sendTransaction({
+                    to: wallet,
+                    value: parseEther(amount.toString()),
+                    account: address,
+                    chains: [sepolia, mainnet, polygon],
+                })
+            }
 
+            toast.success("Transaction initiated successfully!");
         } catch (err) {
             console.error('Transaction error:', err)
         } finally {
