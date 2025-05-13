@@ -290,7 +290,7 @@ class GetEtherScanTransactions extends Command
         $apiUrls = [
             'polygon' => [
                 'url' => 'https://api.polygonscan.com/api',
-                'token' => 'AWIE3B6XXUJEDGKMF22XIN884DMMIJFJ9B',
+                'token' => env('POLYSCAN_API_TOKEN'),
                 'actions' => [
                     'txlist',
                     'tokentx'
@@ -302,7 +302,7 @@ class GetEtherScanTransactions extends Command
             ],
             'mainnet' => [
                 'url' => 'https://api.etherscan.io/api',
-                'token' => 'MZBJRUHJNCKKABRK7VMJVMP8RU6R3F7XTP',
+                'token' => env('ETHERSCAN_API_TOKEN'),
                 'actions' => ['txlist', 'tokentx'],
                 'crypto_id' => 2,
                 'crypto_network_id' => 1,
