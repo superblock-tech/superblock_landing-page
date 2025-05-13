@@ -25,6 +25,7 @@ export default function Faq() {
                 className="sm:max-w-full max-w-[286px]"
                 src="/assets/gifs/faq.gif"
                 alt=""
+                loading="lazy"
               />
             </div>
           </div>

@@ -62,11 +62,13 @@ export default function WhySuperblock() {
         className="absolute lg:-top-[85px] top-[180px] lg:right-0 -right-[225px]"
         src="assets/images/bg-shape1.svg"
         alt=""
+        loading="lazy"
       />
       <img
         className="absolute lg:-bottom-[85px] -bottom-[50px] lg:left-0 -left-[10px] lg:h-auto h-[207px]"
         src="assets/images/bg-shape2.svg"
         alt=""
+        loading="lazy"
       />
       <div className="container">
         <div className="max-w-[1516px] mx-auto">
@@ -148,6 +150,7 @@ export default function WhySuperblock() {
                 src="/assets/gifs/why-super-block.gif"
                 className="max-w-full"
                 alt=""
+                loading="lazy"
               />
             </div>
           </div>

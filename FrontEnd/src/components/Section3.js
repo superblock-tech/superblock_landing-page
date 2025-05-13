@@ -23,7 +23,7 @@ export default function Section3() {
                     dt.textClassName ? dt.textClassName : "w-[260px]"
                   }`}
                 >
-                  <img src={dt.icon} alt="" />
+                  <img src={dt.icon} alt="" loading="lazy" />
                   <h3 className="text-black font-bold font-inter text-[24px] leading-[29px] py-[12px]">
                     {dt.title}
                   </h3>

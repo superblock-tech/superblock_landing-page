@@ -15,6 +15,7 @@ export default function Footer() {
           src="assets/images/x.svg"
           className="sm:w-fit mx-auto w-[72px]"
           alt=""
+          loading="lazy"
         />
 
         <p className="text-center text-[#7B36B6] lg:text-[60px] text-[30px] lg:leading-[62px] leading-[28px] lg:my-[14px] py-[20px] max-w-[1069px] mx-auto font-semibold">

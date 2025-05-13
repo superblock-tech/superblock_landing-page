@@ -2,7 +2,7 @@ import React from "react";
 
 export default function CuttingEdge() {
   return (
-    <section className="mt-[67px] xl:mt-0 xl:mb-[80px] mb-[60px]">
+    <section className="xl:mb-[80px] mb-[60px]">
       <div id="technology" className="container">
         <div className="max-w-[1596px] mx-auto">
           <div

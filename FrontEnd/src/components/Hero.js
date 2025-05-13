@@ -9,7 +9,7 @@ export default function Hero() {
   const { openLoginDialog } = usePresaleContext();
 
   return (
-    <section className="overflow-hidden">
+    <section className="overflow-hidden mb-[60px]">
       <div className="max-w-[1920px] mx-auto">
         <div className="pl-[22px] sm:pl-[48px] xl:pl-[78px]">
           <div className="flex flex-col-reverse xl:flex-row xl:gap-x-[20px] justify-between xl:items-center">
