@@ -13,7 +13,7 @@ export const useHorizontalScroll = () => {
           behavior: "smooth",
         });
       };
-      el.addEventListener("wheel", onWheel);
+      el.addEventListener("wheel", onWheel, { passive: false }); // Inform the browser that we're intentionally blocking scroll (passive: false)
       return () => el.removeEventListener("wheel", onWheel);
     }
   }, []);

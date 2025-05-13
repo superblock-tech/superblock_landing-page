@@ -1,5 +1,5 @@
 import React from "react";
-import { useHorizontalScroll } from "../hooks/getHorizentalScroll";
+import { useHorizontalScroll } from "../hooks/getHorizontalScroll";
 
 export default function Section3() {
   const scrollRef = useHorizontalScroll();
@@ -7,7 +7,7 @@ export default function Section3() {
     <section className="overflow-hidden xl:pb-[130px] pb-[125px]">
       <div className="pl-[22px] sm:pl-[48px] xl:pl-[78px] overflow-hidden mx-auto max-w-[1920px]">
         <div
-          className="overflow-x-auto scrollbar-hide  xl:pl-[84px] "
+          className="overflow-x-auto scrollbar-hide xl:pl-[84px] relative"
           ref={scrollRef}
         >
           <div className="flex flex-nowrap ">

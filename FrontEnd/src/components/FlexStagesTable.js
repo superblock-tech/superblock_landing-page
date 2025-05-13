@@ -1,5 +1,5 @@
 import React from "react";
-import {useHorizontalScroll} from "../hooks/getHorizentalScroll";
+import {useHorizontalScroll} from "../hooks/getHorizontalScroll";
 
 const tokenData = [
     {

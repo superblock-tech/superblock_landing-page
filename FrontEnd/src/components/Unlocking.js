@@ -41,7 +41,7 @@ export default function Unlocking() {
                               "linear-gradient(136deg, rgba(123, 54, 182, 0.16) 66.43%, rgba(27, 163, 255, 0.32) 97.11%)",
                           }}
                         >
-                          <img className="max-w-full" src={dt.icon} alt="" loading="lazy" />
+                          <img className="max-w-full" src={dt.icon} alt="" />
                         </div>
 
                         <h3 className="font-inter text-black font-bold leading-[29.3px] text-[20px]">
@@ -101,7 +101,7 @@ export default function Unlocking() {
                             "linear-gradient(136deg, rgba(123, 54, 182, 0.16) 66.43%, rgba(27, 163, 255, 0.32) 97.11%)",
                         }}
                       >
-                        <img className="w-[36px]" src={dt.icon} alt="" loading="lazy"/>
+                        <img className="w-[36px]" src={dt.icon} alt="" />
                       </div>
                       <h3 className="text-black font-bold font-inter text-[16px] leading-[23px] py-[12px]">
                         {dt.title}
@@ -160,7 +160,7 @@ const data = [
   {
     title: "Supply Chain Management",
     icon: "/assets/images/unlock/img7.svg",
-    text: "Superblock's tokenization technology can be applied to track and verify the authenticity of goods throughout the supply chain. This is particularly valuable in industries where provenance and authenticity are critical, such as luxury goods and pharmaceuticals.",
+    text: "Superblock's tokenization technology can be applied to track and verify the authenticity of goods throughout the supply chain. This is particularly valuable in industries where provenance and authenticity are critical, such as luxury goods and pharmaceuticals. ",
   },
   {
     title: "Decentralized Governance",

@@ -18,7 +18,7 @@ export default function Faq() {
         <div className="flex  flex-col lg:flex-row  max-w-[1496px] lg:gap-[100px] gap-[35px] mx-auto">
           <div className="lg:w-[399px] w-full">
             <div className=" flex flex-col justify-between items-center gap-[47px] sm:gap-[58px] lg:mt-[30px]">
-              <h1 className="text-[#353535] text-[58px] lg:text-[105px] leading-[64px] font-bold font-futura-cond-extra text-cener">
+              <h1 className="text-[#353535] text-[58px] lg:text-[105px] leading-[64px] font-bold font-futura-cond-extra text-center">
                 FAQ’s
               </h1>
               <img

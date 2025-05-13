@@ -5,7 +5,7 @@ import Hero from "../components/Hero";
 import Join from "../components/Join";
 import Products from "../components/Products";
 import Section3 from "../components/Section3";
-import Unloacking from "../components/Unloacking";
+import Unlocking from "../components/Unlocking";
 import WhySuperblock from "../components/WhySuperblock";
 import KeyFeatures from "../components/KeyFeatures";
 import Tokenomics from "../components/Tokenomics";
@@ -20,7 +20,7 @@ export default function HomePage() {
         <CuttingEdge />
         <Section3 />
         <Products />
-        <Unloacking />
+        <Unlocking />
         <WhySuperblock />
         <Tokenomics/>
         <KeyFeatures/>
