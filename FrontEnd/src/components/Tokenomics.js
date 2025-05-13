@@ -9,9 +9,9 @@ const Tokenomics = () => {
                  }}>
             <div className="container">
                 <div
-                    className="max-w-[1596px] mx-auto lg:rounded-[60px] rounded-[20px] sm:py-[39px] py-[21px] pl-[12px] sm:pl-[69px] sm:pr-[57px] pr-[12px] overflow-hidden"
+                    className="max-w-[1596px] mx-auto lg:rounded-[60px] rounded-[20px] sm:py-[39px] py-[21px] pl-[12px] sm:pl-[20px] sm:pr-[20px] pr-[12px] overflow-hidden"
                 >
-                    <div className="p-1 rounded-xl mx-auto">
+                    <div className="p-8 px-0 rounded-xl mx-auto">
                         {/* Header */}
                         <div className="text-center mb-10">
                             <h1 className="text-center text-gray-800 text-[36px] sm:text-[40px] font-bold lg:leading-[59px] leading-[36px] font-sans mb-[22px] sm:mb-[36px]">
@@ -31,9 +31,10 @@ const Tokenomics = () => {
                         {/* Two Column Layout */}
                         <div className="flex flex-col md:flex-row gap-2">
                             {/* Left Column - Token Allocation */}
-                            <div className="w-full md:w-1/2">
+                            <div className="w-full md:w-[60%]">
+                                {/* <div className="flex flex-col md:flex-row"> */}
                                 <div className="flex flex-col md:flex-row">
-                                    <div className="md:w-2/3">
+                                    <div className="md:w-1/2">
                                         <h2 className="text-3xl font-bold text-blue-500 mb-4">Token Allocation</h2>
                                         <p className="text-gray-700 mb-6">
                                             The total supply of $SBX tokens is capped at 1 billion and distributed
@@ -124,9 +125,9 @@ const Tokenomics = () => {
                                     </div>
 
                                     {/* Pie Chart - Now positioned to the right */}
-                                    <div className="flex items-center">
-                                        <div className="mt-6 md:mt-0">
-                                            <svg width="300" height="300" viewBox="0 0 347 347" fill="none"
+                                    <div className="md:w-1/2 min-w-[160px] flex justify-center items-center">
+                                        <div className="mt-6 md:mt-0 max-w-[300px] min-w-[160px]">
+                                            <svg className="w-full h-auto" viewBox="0 0 347 347" fill="none"
                                                  xmlns="http://www.w3.org/2000/svg"
                                                  xmlnsXlink="http://www.w3.org/1999/xlink">
                                                 <g filter="url(#filter0_d_945_5487)">
@@ -204,7 +205,7 @@ const Tokenomics = () => {
                             </div>
 
                             {/* Right Column - Token Release Milestones */}
-                            <div className="w-full md:w-1/2 bg-white rounded-xl p-6 shadow-md">
+                            <div className="w-full md:w-[40%] bg-white rounded-xl p-6 shadow-md">
                                 <h2 className="text-3xl font-bold text-blue-500 mb-6">Token Release Milestones</h2>
 
                                 <div className="space-y-8">
