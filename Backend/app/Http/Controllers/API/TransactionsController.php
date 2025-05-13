@@ -4,9 +4,13 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\TransactionStoreRequest;
 use App\Models\CodeForLoginWallet;
+use App\Models\Crypto;
 use App\Models\PresaleTransaction;
+use App\Models\Wallet;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class TransactionsController extends APIController
 {
@@ -34,16 +38,5 @@ class TransactionsController extends APIController
 
 
         return response()->json($transactions);
-    }
-
-    final public function store(TransactionStoreRequest $request): Response
-    {
-        $request->request->set('transaction_confirmation', 'Confirmed via External Application');
-        $request->request->set('account_wallet_address',(new WalletController())->getPrimaryWallet($request->crypto_id, $request->crypto_network_id));
-
-        $transaction = new PresaleTransaction();
-        $transaction->query()->create($request->all());
-
-        return response(null, 201);
     }
 }

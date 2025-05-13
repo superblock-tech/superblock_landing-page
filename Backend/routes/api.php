@@ -26,6 +26,5 @@ Route::get('crypto/prices', [CryptoNetworkController::class, 'index']);
 
 Route::middleware(['check.token'])->group(function () {
     Route::get('transactions', [TransactionsController::class, 'index']);
-    Route::post('transactions', [TransactionsController::class, 'store']);
     Route::post('wallet', [WalletController::class, 'update']);
 });
