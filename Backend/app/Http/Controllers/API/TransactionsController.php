@@ -24,7 +24,7 @@ class TransactionsController extends APIController
             $transactionsQuery = PresaleTransaction::query();
 
             if ($wallets) {
-                $transactionsQuery->whereIn('account_wallet_address', $wallets->pluck('address')->toArray());
+                $transactionsQuery->whereIn('account_wallet_address', $wallets->pluck('wallet')->toArray());
             }
 
             if ($code->default_wallet) {
