@@ -29,7 +29,7 @@ const TokenPurchase = (whitelist) => {
 
     const chainRelation = {
         MATIC: "Polygon",
-        ERC20: "Etherium"
+        ERC20: "Ethereum"
     }
 
     const handleCopy = (text) => {
