@@ -9,6 +9,7 @@ use App\Models\Wallet;
 use App\Models\Whitelist;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class GetEtherScanTransactions extends Command
 {
@@ -32,10 +33,11 @@ class GetEtherScanTransactions extends Command
     public function handle()
     {
         try {
-            $wallets = Wallet::all();
-            foreach ($wallets as $wallet) {
+            $wallets = Wallet::all()->groupBy('address');
+            foreach ($wallets as $walletGroup) {
+                $wallet = $walletGroup->first();
                 $this->info($wallet->address);
-                $this->info(json_encode($this->handleTransactions($wallet)));
+                $this->handleTransactions($wallet);
             }
         }catch (\Throwable $exception){
             $this->warn($exception->getMessage());
@@ -44,7 +46,7 @@ class GetEtherScanTransactions extends Command
         return 0;
     }
 
-    public function getBitcoinTransactions($wallet)
+    public function getBitcoinTransactions(Wallet $wallet)
     {
         $walletAddress = $wallet->address;
         $crypto = Crypto::query()->find($wallet->crypto_id);
@@ -89,7 +91,7 @@ class GetEtherScanTransactions extends Command
                             'txn_id' => $txid
                         ],
                             [
-                            'account_wallet_address' => (new WalletController())->getPrimaryWallet($crypto->id, 6),
+                            'account_wallet_address' => (new WalletController())->getPrimaryWalletByTransactionWallet($inputAddresses[0]),
                             'wallet_address' => $inputAddresses[0] ?? 'unknown',
                             'amount' => $amountSatoshi / 1e8,
                             'crypto_id' => $crypto->id,
@@ -113,7 +115,7 @@ class GetEtherScanTransactions extends Command
         return ['error' => 'Could not fetch BTC transactions'];
     }
 
-    public function getSolanaTransactions($wallet)
+    public function getSolanaTransactions(Wallet $wallet)
     {
         $walletAddress = $wallet->address;
         $crypto = Crypto::query()->find($wallet->crypto_id);
@@ -162,7 +164,7 @@ class GetEtherScanTransactions extends Command
                                 'txn_id' => $signature
                             ],
                                 [
-                                    'account_wallet_address' => (new WalletController())->getPrimaryWallet($crypto->id, 7),
+                                    'account_wallet_address' => (new WalletController())->getPrimaryWalletByTransactionWallet($from),
                                     'wallet_address' => $from ?? 'unknown',
                                     'amount' => $amount,
                                     'crypto_id' => $crypto->id,
@@ -186,7 +188,7 @@ class GetEtherScanTransactions extends Command
         return ['error' => 'Could not fetch SOL transactions'];
     }
 
-    public function getXrpTransactions($wallet)
+    public function getXrpTransactions(Wallet $wallet)
     {
         $walletAddress = $wallet->address;
         $crypto = Crypto::query()->find($wallet->crypto_id);
@@ -217,7 +219,7 @@ class GetEtherScanTransactions extends Command
                         'txn_id' => $info['hash']
                     ],
                         [
-                            'account_wallet_address' => (new WalletController())->getPrimaryWallet($crypto->id, 8),
+                            'account_wallet_address' => (new WalletController())->getPrimaryWalletByTransactionWallet($from),
                             'wallet_address' => $from ?? 'unknown',
                             'amount' => $amount,
                             'crypto_id' => $crypto->id,
@@ -238,7 +240,7 @@ class GetEtherScanTransactions extends Command
         return ['error' => 'Could not fetch XRP transactions'];
     }
 
-    public function getTronTransactions($wallet)
+    public function getTronTransactions(Wallet $wallet)
     {
         $walletAddress = $wallet->address;
         $crypto = Crypto::query()->find($wallet->crypto_id);
@@ -259,7 +261,7 @@ class GetEtherScanTransactions extends Command
                             'txn_id' => $tx['txID']
                         ],
                             [
-                                'account_wallet_address' => (new WalletController())->getPrimaryWallet($crypto->id, 5),
+                                'account_wallet_address' => (new WalletController())->getPrimaryWalletByTransactionWallet($from),
                                 'wallet_address' => $from ?? 'unknown',
                                 'amount' => $amount,
                                 'crypto_id' => $crypto->id,
@@ -281,82 +283,106 @@ class GetEtherScanTransactions extends Command
         return ['error' => 'Could not fetch TRON transactions'];
     }
 
-    public function getMainnetTransactions($wallet)
+    public function getOtherTransactions(Wallet $wallet)
     {
         $walletAddress = $wallet->address;
-        $crypto = Crypto::query()->find($wallet->crypto_id);
         $sbxWhitelist = Whitelist::query()->where('is_active', '=', 1)->first();
         $apiUrls = [
-            'mainnet' => 'https://api.etherscan.io/api',
-            'sepolia' => 'https://api-sepolia.etherscan.io/api',
+            'polygon' => [
+                'url' => 'https://api.polygonscan.com/api',
+                'token' => 'AWIE3B6XXUJEDGKMF22XIN884DMMIJFJ9B',
+                'actions' => [
+                    'txlist',
+                    'tokentx'
+                ],
+                'crypto_id' => 10,
+                'crypto_network_id' => 4,
+                'chain_id' => 137,
+                'chain_name' => 'Polygon'
+            ],
+            'mainnet' => [
+                'url' => 'https://api.etherscan.io/api',
+                'token' => 'MZBJRUHJNCKKABRK7VMJVMP8RU6R3F7XTP',
+                'actions' => ['txlist', 'tokentx'],
+                'crypto_id' => 2,
+                'crypto_network_id' => 1,
+                'chain_id' => 1,
+                'chain_name' => 'Ethereum'
+
+            ],
+//            'sepolia' => 'https://api-sepolia.etherscan.io/api',
         ];
 
-        $transactionData = [];
+        $delimeter = [
+            'txlist' => 1e18,
+            'tokentx' => 1e6,
+        ];
 
-        foreach ($apiUrls as $apiUrl) {
-            $response = Http::get($apiUrl, [
-                'module' => 'account',
-                'action' => 'txlist',
-                'address' => $walletAddress,
-                'startblock' => 0,
-                'endblock' => 99999999,
-                'sort' => 'desc',
-                'apikey' => 'MZBJRUHJNCKKABRK7VMJVMP8RU6R3F7XTP',
-            ]);
+        foreach ($apiUrls as $item) {
+            foreach ($item['actions'] as $action) {
+                $response = Http::get($item['url'], [
+                    'module' => 'account',
+                    'action' => $action,
+                    'address' => $walletAddress,
+                    'startblock' => 0,
+                    'endblock' => 99999999,
+                    'sort' => 'desc',
+                    'apikey' => $item['token'],
+                ]);
 
-            if (!is_array($response->json()['result'])) {
-                dd($response->json()['result']);
-            }
-            foreach ($response->json()['result'] as $tx) {
-                $transactionData[] = [
-                    'hash' => $tx['hash'],
-                    'blockNumber' => hexdec($tx['blockNumber']),
-                    'from' => $tx['from'],
-                    'to' => $tx['to'],
-                    'transactionIndex' => hexdec($tx['transactionIndex']),
-                    'saved_value' => $tx['value'],
-                    'formatted_value' => $tx['value'],
-                    'status' => $tx['txreceipt_status'] === "1" ? 'Success' : 'Failed',
-                ];
-
-                if ($tx['txreceipt_status'] === "1") {
-                    $transaction = PresaleTransaction::query()->firstOrCreate([
-                        'txn_id' => $tx['hash']
-                    ],
-                        [
-                            'account_wallet_address' => (new WalletController())->getPrimaryWallet($crypto->id, 1),
-                            'wallet_address' => $tx['from'] ?? 'unknown',
-                            'amount' => $tx['value'] / 1e18,
-                            'crypto_id' => $crypto->id,
-                            'usdt_amount' => $tx['value'] / 1e18 * $crypto->price,
-                            'sbx_price' => $tx['value'] / 1e18 * $crypto->price / $sbxWhitelist->sbxPrice,
-                            'transaction_confirmation' => 'Confirmed via chain status tracking',
-                            'txn_id' => $tx['hash'],
-                            'crypto_network_id' => 1,
-                            'system_wallet_id' => $wallet->id,
-                            'system_wallet' => $tx['to']
-                        ]);
-                    $this->info('Recognized transaction: ' . $transaction->id);
+                if (!is_array($response->json()['result'])) {
+                    Log::warning(json_encode($response->json()));
                 }
 
+                foreach ($response->json()['result'] as $tx) {
 
+                    if ($action === 'tokentx' || (isset($tx['txreceipt_status']) && $tx['txreceipt_status'] === "1")) {
+                        if ($action === 'tokentx') {
+                            $crypto = Crypto::query()->where('symbol', '=', $tx['tokenSymbol'])->first();
+                        } else {
+                            $crypto = Crypto::query()->find($item['crypto_id']);
+                        }
+
+                        if ($crypto) {
+                            $transaction = PresaleTransaction::query()->updateOrCreate([
+                                'txn_id' => $tx['hash']
+                            ],
+                                [
+                                    'account_wallet_address' => (new WalletController())->getPrimaryWalletByTransactionWallet($tx['from']),
+                                    'wallet_address' => $tx['from'] ?? 'unknown',
+                                    'amount' => round(($tx['value'] / $delimeter[$action]), 6),
+                                    'crypto_id' => $crypto->id,
+                                    'usdt_amount' => round($tx['value'] / $delimeter[$action] * $crypto->price, 6),
+                                    'sbx_price' => round($tx['value'] / $delimeter[$action] * $crypto->price / $sbxWhitelist->sbxPrice, 6),
+                                    'transaction_confirmation' => 'Confirmed via chain status tracking',
+                                    'txn_id' => $tx['hash'],
+                                    'crypto_network_id' => $item['crypto_network_id'],
+                                    'system_wallet_id' => $wallet->id,
+                                    'system_wallet' => $tx['to'],
+                                    'chain_id' => $item['chain_id'],
+                                    'chain_name' => $item['chain_name'],
+                                ]);
+                            $this->info('Recognized transaction: ' . $transaction->id);
+                        }
+                    }
+                }
             }
+
         }
-        return $transactionData;
     }
 
-    public function handleTransactions($wallet)
+    public function handleTransactions(Wallet $wallet)
     {
                 if ($wallet->crypto?->symbol === 'BTC') {
-                    return $this->getBitcoinTransactions($wallet);
+                    $this->getBitcoinTransactions($wallet);
                 } else if ($wallet->crypto?->symbol === 'SOL') {
-                    return $this->getSolanaTransactions($wallet);
+                    $this->getSolanaTransactions($wallet);
                 } else if ($wallet->crypto?->symbol === 'XRP') {
-                    return $this->getXrpTransactions($wallet);
+                    $this->getXrpTransactions($wallet);
                 } else if ($wallet->crypto?->symbol === 'TRX') {
-                    return $this->getTronTransactions($wallet);
+                    $this->getTronTransactions($wallet);
                 } else {
-                    return $this->getMainnetTransactions($wallet);
+                    $this->getOtherTransactions($wallet);
                 }
 
     }
