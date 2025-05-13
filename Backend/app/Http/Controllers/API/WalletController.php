@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\WalletUpdateRequest;
+use App\Models\CodeForLogin;
 use App\Models\CodeForLoginWallet;
 use Illuminate\Http\Response;
 
@@ -59,5 +60,31 @@ class WalletController extends APIController
         }
 
         return $primaryWallet;
+    }
+
+    final public function getPrimaryWalletByTransactionWallet(string $transactionWallet): string|null
+    {
+        $codeForLoginWallet = CodeForLoginWallet::query()->where('wallet', '=', $transactionWallet)->first();
+        if ($codeForLoginWallet) {
+            if ($codeForLoginWallet->is_primary === true) {
+                return $codeForLoginWallet->wallet;
+            }
+
+            $codeForLoginPrimaryWallet = CodeForLoginWallet::query()
+                ->where('code_for_login_id', '=', $codeForLoginWallet->code_for_login_id)
+                ->where('is_primary', '=', true)
+                ->first();
+
+            if ($codeForLoginPrimaryWallet) {
+                return $codeForLoginPrimaryWallet->wallet;
+            }
+
+            $codeForLogin = CodeForLogin::query()->find($codeForLoginWallet->code_for_login_id);
+            if ($codeForLogin) {
+                return $codeForLogin->default_wallet;
+            }
+
+        }
+        return null;
     }
 }
