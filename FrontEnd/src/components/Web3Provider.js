@@ -17,6 +17,11 @@ const config = createConfig(
             [arbitrum.id]: http(),
         },
         projectId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
+        connectors: [
+            injected({
+                shimDisconnect: true
+            }),
+        ],
         ssr: false,
         autoConnect: true,
     }
