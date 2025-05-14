@@ -150,7 +150,7 @@ export default function ProfilePage() {
                         />
                         <span
                             className="absolute inset-0 flex items-center justify-center text-lg md:text-base font-bold text-[#7b36b6]">
-                            {'$SBX ' + progress.toFixed(2) + '% Allocated'}
+                            {progress.toFixed(2) + '% $SBX Allocated'}
                         </span>
                     </div>
                     <div className="text-xl font-medium space-y-1 text-right">
