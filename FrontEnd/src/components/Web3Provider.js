@@ -2,16 +2,24 @@ import React from 'react';
 import {createConfig, http, WagmiProvider} from 'wagmi';
 import {arbitrum, mainnet, polygon, sepolia} from "wagmi/chains";
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import {ConnectKitProvider, getDefaultConfig} from 'connectkit';
+import {ConnectKitProvider} from 'connectkit';
+import {injected, walletConnect} from '@wagmi/connectors'
+
 
 const config = createConfig(
-    getDefaultConfig({
+    {
         appName: '$SBXToken',
-        chains: [mainnet, sepolia, polygon, arbitrum],
-        [mainnet.id]: http(),
-        walletConnectProjectId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
+        chains: [mainnet, polygon, sepolia, arbitrum],
+        transports: {
+            [mainnet.id]: http(),
+            [polygon.id]: http(),
+            [sepolia.id]: http(),
+            [arbitrum.id]: http(),
+        },
+        projectId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
+        ssr: false,
         autoConnect: true,
-    })
+    }
 );
 
 const queryClient = new QueryClient();
