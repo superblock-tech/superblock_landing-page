@@ -149,10 +149,14 @@ const TokenPurchase = (whitelist) => {
     }, [tokens]);
 
     useEffect(() => {
-        fetchPresaleTransactionsByWallet(address);
+        fetchPresaleTransactionsByWallet();
         updatePrimaryWallet(address, true)
 
     }, [address])
+
+    useEffect(() => {
+        fetchPresaleTransactionsByWallet();
+    }, [token])
 
     useEffect(() => {
         setPresaleTransactionsSum(presaleTransactions.reduce((acc, tx) => acc + (parseFloat(tx.sbx_price) || 0), 0));
