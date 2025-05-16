@@ -174,18 +174,18 @@ const TokenPurchase = (whitelist) => {
         if (!selectedToken || !whitelist.whitelistContent.sbxPrice ) return "";
         const usdValue = tokenAmt * selectedToken?.price;
         const result = (usdValue / whitelist.whitelistContent.sbxPrice).toFixed(6)
-        return result >= Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) && result <= Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) ? result : result;
+        return result >= Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) && result <= Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) ? result : 0;
     };
 
     // Calculate SBX to token conversion
     const calculateTokenAmount = (sbxAmt) => {
         if (!selectedToken || !whitelist.whitelistContent.sbxPrice || !sbxAmt) return "";
         const usdValue = sbxAmt * whitelist.whitelistContent.sbxPrice;
-        return sbxAmt >= Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) && sbxAmt <= Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) ? (usdValue / selectedToken?.price).toFixed(6) : (usdValue / selectedToken?.price).toFixed(6);
+        return sbxAmt >= Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) && sbxAmt <= Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) ? (usdValue / selectedToken?.price).toFixed(6) : 0;
     };
 
     const handleTokenAmountChange = (e) => {
-        const value = e.target.value;
+        const value = e.target.value?.replace(/,/g, "");
         if (!value === "" || /^\d*\.?\d*$/.test(value)) {
             setTokenAmount(value);
             setSbxAmount(calculateSbxAmount(parseFloat(value)));
@@ -197,7 +197,8 @@ const TokenPurchase = (whitelist) => {
     }
 
     const handleSbxAmountChange = (e) => {
-        const value = e.target.value;
+
+        const value = e.target.value?.replace(/,/g, "");
         if (value === "" || /^\d*\.?\d*$/.test(value)) {
             setSbxAmount(value);
             setTokenAmount(calculateTokenAmount(parseFloat(value)));
@@ -401,13 +402,11 @@ const TokenPurchase = (whitelist) => {
                             {/* First Input Group */}
                             <div className="flex items-center gap-2 bg-[#FFFFFF] p-4 rounded-lg w-full md:w-96">
                                 <input
-                                    type="number"
-                                    value={tokenAmount}
+                                    type="text"
+                                    value={Number(tokenAmount).toLocaleString('en-US')}
                                     onChange={handleTokenAmountChange}
                                     placeholder="0.00"
                                     className="bg-transparent border-none outline-none w-full text-xl"
-                                    min={Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) || 0}
-                                    max={Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) || 1000000}
                                 />
                                 <div className="flex items-center gap-2 min-w-fit">
                                     {selectedToken && (
@@ -431,13 +430,11 @@ const TokenPurchase = (whitelist) => {
                             {/* Second Input Group */}
                             <div className="flex items-center gap-2 bg-[#FFFFFF] p-4 rounded-lg w-full md:w-96">
                                 <input
-                                    type="number"
-                                    value={sbxAmount}
+                                    type="text"
+                                    value={Number(sbxAmount).toLocaleString('en-US')}
                                     onChange={handleSbxAmountChange}
                                     placeholder="0.00"
                                     className="bg-transparent border-none outline-none w-full text-xl"
-                                    min={Number(process.env.REACT_APP_MIN_TOKENS_AMOUNT) || 10000}
-                                    max={Number(process.env.REACT_APP_MAX_TOKENS_AMOUNT) || 1000000}
                                 />
                                 <div className="flex items-center gap-2 min-w-fit">
                                     <div
