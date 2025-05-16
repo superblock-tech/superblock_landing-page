@@ -5,12 +5,12 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import {usePresaleContext} from "../contexts/PresaleContext";
+import {event} from '../utils/gtag'
 
 export default function LoginDialog({ isOpen, onClose }) {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const { openLoginDialog } = usePresaleContext();
-
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -25,6 +25,13 @@ export default function LoginDialog({ isOpen, onClose }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ code }),
         });
+
+        event({
+            action: 'login',
+            category: 'presale',
+            label: 'login_via_code',
+            value: code
+        })
 
         if (!response.ok) {
           throw new Error("Login failed");

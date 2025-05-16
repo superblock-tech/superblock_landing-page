@@ -8,6 +8,7 @@ import TokenDropdown from "./TokenDropdown";
 import SendEthButton from "./SendFromConnectKitButton";
 import {useAccount} from 'wagmi'
 import {ConnectKitButton} from "connectkit";
+import {event} from "../utils/gtag";
 
 
 const TokenPurchase = (whitelist) => {
@@ -39,6 +40,12 @@ const TokenPurchase = (whitelist) => {
 
     const handleBuyClick = () => {
         setShowWallets(true);
+        event({
+            action: 'show_payment_qr',
+            category: 'presale',
+            label: 'show_payment_qr_for',
+            value: selectedToken?.name.toLowerCase()
+        })
     };
 
     const handleBackToTokens = () => {

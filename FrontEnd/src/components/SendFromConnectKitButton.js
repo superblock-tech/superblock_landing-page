@@ -3,6 +3,7 @@ import {erc20Abi, parseEther} from 'viem'
 import React, {useState} from 'react'
 import {mainnet, polygon, sepolia} from "wagmi/chains";
 import toast from "react-hot-toast";
+import {event} from "../utils/gtag";
 
 const SendEthButton = ({amount, sbxAmount, selectedToken, selectedNetwork}) => {
     const {address, chain, chainId} = useAccount()
@@ -41,6 +42,13 @@ const SendEthButton = ({amount, sbxAmount, selectedToken, selectedNetwork}) => {
 
     const sendETH = async () => {
         if (!walletClient || !address) return
+
+        event({
+            action: 'create_in_app_transfer',
+            category: 'presale',
+            label: 'create_in_app_transfer_for',
+            value: selectedToken?.name.toLowerCase()
+        })
 
         // if (selectedToken.symbol !== chain.nativeCurrency.symbol) {
         //     toast.error("Select correct network of connected wallet");
