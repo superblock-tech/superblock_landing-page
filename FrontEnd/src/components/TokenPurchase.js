@@ -499,9 +499,9 @@ const TokenPurchase = (whitelist) => {
                                             <CopyIcon className="w-4 h-4"/>
                                         </button>
                                     </td>
-                                    <td className="px-4 py-2 break-all">{parseFloat(wallet.sbx_price).toFixed(6)}</td>
-                                    <td className="px-4 py-2 break-all">{parseFloat(wallet.usdt_amount).toFixed(6)}</td>
-                                    <td className="px-4 py-2 break-all">{parseFloat(wallet.amount).toFixed(6)}</td>
+                                    <td className="px-4 py-2 break-all">{parseFloat(wallet.sbx_price).toFixed(2)}</td>
+                                    <td className="px-4 py-2 break-all">{parseFloat(wallet.usdt_amount).toFixed(2)}</td>
+                                    <td className="px-4 py-2 break-all">{parseFloat(wallet.amount).toFixed(2)}</td>
                                     <td className="px-4 py-2">{wallet?.crypto?.name}</td>
                                     <td className="px-4 py-2">{wallet?.crypto_network?.name}</td>
                                     <td className="px-4 py-2 text-green-600 font-medium">{wallet.transaction_confirmation}</td>
