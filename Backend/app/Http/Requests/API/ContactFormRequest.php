@@ -22,11 +22,11 @@ class ContactFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'full_name' => 'required|string',
+            'fullName' => 'required|string',
             'email' => 'required|email',
             'phone' => 'required',
             'country' => 'required|string',
-            'investment_interest' => 'required',
+            'joinWhitelist' => 'required',
             'join_whitelist' => 'required'
         ];
     }
