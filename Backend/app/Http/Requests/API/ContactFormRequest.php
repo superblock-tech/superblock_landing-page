@@ -26,8 +26,8 @@ class ContactFormRequest extends FormRequest
             'email' => 'required|email',
             'phone' => 'required',
             'country' => 'required|string',
-            'joinWhitelist' => 'required',
-            'join_whitelist' => 'required'
+            'investment_interest' => 'required',
+            'joinWhitelist' => 'required'
         ];
     }
 
