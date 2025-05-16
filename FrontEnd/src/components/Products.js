@@ -1,9 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ProductCard from "./ProductCard";
 
 export default function Products() {
   const [activeSlide, setActiveSlide] = useState({ index: 0, position: 0 });
+  const [isTabActive, setIsTabActive] = useState(true);
 
+  // Manage animation during tab switch
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      const isVisible = !document.hidden;
+      setIsTabActive(isVisible);
+      // console.log(isVisible ? "Returned to the tab" : "Left the tab");
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+ 
   return (
     <section>
       <div id="ecosystem" className="container">
@@ -17,8 +30,8 @@ export default function Products() {
           institutions.
         </p>
 
-        <div className="mt-[56px] flex max-w-[1298px] mx-auto relative">
-          <div className="flex flex-col lg:gap-[50px] gap-[31px] flex-1">
+        <div className="mt-[56px] flex max-w-[1298px] mx-auto">
+          <div className="flex flex-col lg:gap-[50px] gap-[31px] flex-1 relative">
             {data.map((dt, i) => (
               <ProductCard
                 dt={dt}
@@ -27,6 +40,7 @@ export default function Products() {
                 setActiveSlide={setActiveSlide}
                 activeSlide={activeSlide}
                 data={data}
+                isTabActive={isTabActive}
               />
             ))}
           </div>
@@ -104,3 +118,4 @@ const projects = [
     color: "#C2491D",
   },
 ];
+

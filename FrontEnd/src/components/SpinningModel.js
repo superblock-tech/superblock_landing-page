@@ -79,10 +79,10 @@ export default function SpinningModel() {
       isVisible.current = !document.hidden
 
       if (document.hidden) {
-        console.log("Ушли со вкладки Spinning")
+        // console.log("Ушли со вкладки Spinning")
         clockRef.current.stop() // Completely stop the animation
       } else {
-        console.log("Вернулись на вкладку Spinning")
+        // console.log("Вернулись на вкладку Spinning")
         clockRef.current.start() // Smoothly resume animation
       }
     }
