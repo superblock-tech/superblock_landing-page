@@ -65,8 +65,8 @@ function Step({title, description, icons, image, reverse}) {
                 {image}
                 {!image && (
                     <div className="flex space-x-4">
-                        {icons.includes("MetaMask") && <WalletButton name="MetaMask"/>}
-                        {icons.includes("TrustWallet") && <WalletButton name="TrustWallet"/>}
+                        {icons.includes("MetaMask") && <WalletButton name="MetaMask" link={'https://metamask.io/'}/>}
+                        {icons.includes("TrustWallet") && <WalletButton name="TrustWallet" link={'https://trustwallet.com/'}/>}
                     </div>
                 )}
             </div>
@@ -80,11 +80,14 @@ function Step({title, description, icons, image, reverse}) {
     );
 }
 
-function WalletButton({name}) {
+function WalletButton({name, link}) {
     return (
-        <button
-            className=" rounded-[12px] bg-gradient-to-r from-[#FFFFFF] to-[#FFFFFF] hover:from-[#7B36B6] hover:to-[#1BA3FF] text-white px-4 py-2 rounded flex items-center space-x-2">
+        <a
+            href={link}
+            target="_blank"
+            className=" rounded-[12px] bg-gradient-to-r from-[#FFFFFF] to-[#FFFFFF] hover:from-blue-200 hover:to-purple-200 text-white px-4 py-2 rounded flex items-center space-x-2"
+        >
             <img style={{width: '200px'}} src={'/assets/images/' + name + '.png'}></img>
-        </button>
+        </a>
     );
 }
