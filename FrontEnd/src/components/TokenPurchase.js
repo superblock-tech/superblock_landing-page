@@ -26,11 +26,12 @@ const TokenPurchase = (whitelist) => {
     const {token} = useContext(AuthContext);
     const [presaleTransactions, setPresaleTransactions] = useState([]);
     const [presaleTransactionsSum, setPresaleTransactionsSum] = useState(0);
-    const inAppNetworks = ['ERC20', 'MATIC']
+    const inAppNetworks = ['ERC20', 'MATIC', 'SOL']
 
     const chainRelation = {
         MATIC: "Polygon",
-        ERC20: "Ethereum"
+        ERC20: "Ethereum",
+        SOL: "Solana"
     }
 
     const handleCopy = (text) => {
@@ -452,7 +453,10 @@ const TokenPurchase = (whitelist) => {
                     {
                         address
                         && inAppNetworks.includes(selectedNetwork?.address)
-                        && chainRelation[selectedNetwork?.address] === chain.name ? (
+                        && (
+                            chainRelation[selectedNetwork?.address] === chain.name
+                            || chainRelation[selectedNetwork?.address] === 'Solana'
+                        ) ? (
                             <SendEthButton amount={tokenAmount} sbxAmount={sbxAmount} selectedNetwork={selectedNetwork}
                                        selectedToken={selectedToken}/>
                         ) : (
