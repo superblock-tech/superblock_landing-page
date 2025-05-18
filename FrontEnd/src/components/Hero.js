@@ -13,7 +13,7 @@ export default function Hero() {
       <div className="max-w-[1920px] mx-auto">
         <div className="pl-[22px] sm:pl-[48px] xl:pl-[78px]">
           <div className="flex flex-col-reverse xl:flex-row xl:gap-x-[20px] justify-between xl:items-center">
-            <div className="xl:max-w-[657px]  w-full">
+            <div className="xl:max-w-[657px] pr-[22px] sm:pr-12 xl:pr-0">
             <h1
                 className="
                   bg-multi-color-gradient
@@ -40,7 +40,7 @@ export default function Hero() {
                 and modular blockchain development.
               </p>
 
-              <div className="flex items-center gap-[26px] sm:gap-[33px] overflow-x-scroll pr-[22px] scrollbar-hide">
+              <div className="flex items-center gap-[26px] sm:gap-[33px] overflow-x-scroll scrollbar-hide">
                 <a href="/presale"
                   className="rounded-[12px] xl:flex items-center py-[6.58px] px-[20px] gap-[24px]
                   bg-gradient-to-r from-[#1BA3FF] to-[#7B36B6]
