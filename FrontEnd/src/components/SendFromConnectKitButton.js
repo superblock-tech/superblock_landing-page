@@ -55,11 +55,6 @@ const SendEthButton = ({amount, sbxAmount, selectedToken, selectedNetwork}) => {
             value: selectedToken?.name.toLowerCase()
         })
 
-        // if (selectedToken.symbol !== chain.nativeCurrency.symbol) {
-        //     toast.error("Select correct network of connected wallet");
-        //     return;
-        // }
-
         setIsLoading(true)
         const wallet = selectedToken.wallets[0].address
 
