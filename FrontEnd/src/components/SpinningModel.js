@@ -130,7 +130,7 @@ export default function SpinningModel() {
         ref={ref}
         position={[0, 0, 0]}
         rotation={[Math.PI / 0.5, 0, 0]}
-        // dispose={null}
+        dispose={null}
         scale={[0.1, 0.1, 0.1]}
       >
         {nodes.model?.children?.map?.((mesh, index) => (
