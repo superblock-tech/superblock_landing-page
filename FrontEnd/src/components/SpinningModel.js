@@ -9,7 +9,7 @@ export default function SpinningModel() {
   const isVisible = useRef(true)
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
   const [materialsApplied, setMaterialsApplied] = useState(false)
-  const [deviceCores, setDeviceCores] = useState(4) // default safe value
+  const [deviceCores, setDeviceCores] = useState(4)
 
   const clockRef = useRef(null)
 
@@ -44,7 +44,6 @@ export default function SpinningModel() {
   useEffect(() => {
     return () => {
       material.dispose()
-      // console.log("Disposed material")
     }
   }, [material])
 
@@ -79,10 +78,8 @@ export default function SpinningModel() {
       isVisible.current = !document.hidden
 
       if (document.hidden) {
-        // console.log("Ушли со вкладки Spinning")
         clockRef.current.stop() // Completely stop the animation
       } else {
-        // console.log("Вернулись на вкладку Spinning")
         clockRef.current.start() // Smoothly resume animation
       }
     }
@@ -109,7 +106,6 @@ export default function SpinningModel() {
   // Disable shadows on iOS devices with fewer than 4 CPU cores (older iPhones)
   const enableShadows = !(isIOS && deviceCores < 4)
 
-  // Size of the shadow map
   let shadowMapSize = 1024
   if (isIOS) {
     shadowMapSize = deviceCores < 4 ? 256 : 512

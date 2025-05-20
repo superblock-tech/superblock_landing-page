@@ -89,7 +89,8 @@ export default function ProductCard({
           }}
         >
           <div className="max-w-[596px]">
-            <h1 className="transform-gpu will-change-transform"> // Critical for Safari on MacBook
+          {/* Critical for Safari on MacBook */}
+            <h1 className="transform-gpu will-change-transform">
               <span
                 className="text-[#7B36B6] text-[24px] leading-[29.3px] font-[450]"
                 style={numberStyle}

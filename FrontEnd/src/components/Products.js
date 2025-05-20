@@ -10,7 +10,7 @@ export default function Products() {
     const handleVisibilityChange = () => {
       const isVisible = !document.hidden;
       setIsTabActive(isVisible);
-      // console.log(isVisible ? "Returned to the tab" : "Left the tab");
+
     };
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -53,27 +53,27 @@ export default function Products() {
 const data = [
   {
     title: "Asset Tokenization Platform",
-    icon: "/assets/gifs/products/gif1.gif",
+    icon: "/assets/gifs/products/gif1.webp",
     text: "Superblock’s core product is its asset tokenization platform, which allows users to tokenize real-world assets such as real estate, art, and commodities. This platform enables fractional ownership, making it easier for users to diversify their portfolios and access high-value markets.",
   },
   {
     title: "Superblock DeFi Suite",
-    icon: "/assets/gifs/products/gif2.gif",
+    icon: "/assets/gifs/products/gif2.webp",
     text: "Our DeFi suite provides a range of financial services, including lending, borrowing, staking, and trading, all powered by smart contracts. These services offer users more control, flexibility, and transparency compared to traditional financial systems.",
   },
   {
     title: "DAO Governance Tools",
-    icon: "/assets/gifs/products/gif3.gif",
+    icon: "/assets/gifs/products/gif3.webp",
     text: "Superblock’s governance tools empower the community to participate in decision-making. Users can vote on proposals, submit ideas, and help steer the development of the platform, ensuring it meets the needs of all participants.",
   },
   {
     title: "Al-Powered Analytics and Modular Development:",
-    icon: "/assets/gifs/products/gif4.gif",
+    icon: "/assets/gifs/products/gif4.webp",
     text: "For developers and enterprises, Superblock offers AI-driven analytics and modular development tools that simplify the creation and optimization of dApps. These resources help users build scalable and efficient applications quickly and easily.",
   },
   {
     title: "Marketplace",
-    icon: "/assets/gifs/products/gif5.gif",
+    icon: "/assets/gifs/products/gif5.webp",
     text: "The Superblock Marketplace is a dynamic platform where users can buy, sell, and trade tokenized assets and NFTs. It offers real-time market data, secure transactions, and a user-friendly interface, making it easy to navigate and manage investments.",
   },
 ];

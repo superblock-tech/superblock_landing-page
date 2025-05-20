@@ -9,7 +9,7 @@ export default function Hero() {
   const { openLoginDialog } = usePresaleContext();
 
   return (
-    <section className="overflow-hidden mb-[60px]">
+    <section className="overflow-hidden mb-[60px] 2xl:mb-0">
       <div className="max-w-[1920px] mx-auto">
         <div className="pl-[22px] sm:pl-[48px] xl:pl-[78px]">
           <div className="flex flex-col-reverse xl:flex-row xl:gap-x-[20px] justify-between xl:items-center">
@@ -28,6 +28,7 @@ export default function Hero() {
                   font-bold
                   sm:leading-[79.974px]
                   leading-[42.219px]
+                  xl:pt-[15px]
                 "
               >
                 Unlock the Future
