@@ -73,6 +73,44 @@ const SendEthButton = ({amount, sbxAmount, selectedToken, selectedNetwork}) => {
                     account: address,
                     chain: TOKENS[selectedNetwork.address][selectedToken.symbol].chain,
                 })
+                if (TOKENS[selectedNetwork.address][selectedToken.symbol].function === 'contract') {
+                    await walletClient.writeContract({
+                        address: TOKENS[selectedNetwork.address][selectedToken.symbol].address,
+                        abi: erc20Abi,
+                        functionName: 'transfer',
+                        args: [
+                            wallet,
+                            BigInt(amount * (10 ** (TOKENS[selectedNetwork.address][selectedToken.symbol].decimals))),
+                        ],
+                        account: address,
+                        chain: TOKENS[selectedNetwork.address][selectedToken.symbol].chain,
+                    })
+                }
+
+                if (TOKENS[selectedNetwork.address][selectedToken.symbol].function === 'extendedTransaction') {
+                    const data = encodeFunctionData({
+                        abi: [
+                            {
+                                type: 'function',
+                                name: 'transfer',
+                                stateMutability: 'nonpayable',
+                                inputs: [
+                                    {name: 'to', type: 'address'},
+                                    {name: 'amount', type: 'uint256'}
+                                ],
+                                outputs: [{name: '', type: 'bool'}],
+                            },
+                        ],
+                        functionName: 'transfer',
+                        args: [wallet, BigInt(amount * (10 ** (TOKENS[selectedNetwork.address][selectedToken.symbol].decimals)))],
+                    });
+
+                    await walletClient.sendTransaction({
+                        to: TOKENS[selectedNetwork.address][selectedToken.symbol].address,
+                        data,
+                        address,
+                    });
+                }
             } else {
                 await walletClient.sendTransaction({
                     to: wallet,
