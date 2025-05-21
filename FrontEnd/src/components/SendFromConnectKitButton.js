@@ -62,19 +62,29 @@ const SendEthButton = ({amount, sbxAmount, selectedToken, selectedNetwork}) => {
         try {
             if (CONTRACT_CURRENCIES.includes(selectedToken.symbol)) {
 
-                await walletClient.writeContract({
-                    address: TOKENS[selectedNetwork.address][selectedToken.symbol].address,
-                    abi: erc20Abi,
-                    functionName: 'transfer',
-                    args: [
-                        wallet,
-                        BigInt(amount * (10 ** (TOKENS[selectedNetwork.address][selectedToken.symbol].decimals))),
-                    ],
-                    account: address,
-                    chain: TOKENS[selectedNetwork.address][selectedToken.symbol].chain,
-                })
                 if (TOKENS[selectedNetwork.address][selectedToken.symbol].function === 'contract') {
                     await walletClient.writeContract({
+                        address: TOKENS[selectedNetwork.address][selectedToken.symbol].address,
+                        abi: erc20Abi,
+                        functionName: 'transfer',
+                        args: [
+                            wallet,
+                            BigInt(amount * (10 ** (TOKENS[selectedNetwork.address][selectedToken.symbol].decimals))),
+                        ],
+                        account: address,
+                        chain: TOKENS[selectedNetwork.address][selectedToken.symbol].chain,
+                    })
+                }
+
+                if (TOKENS[selectedNetwork.address][selectedToken.symbol].function === 'extendedTransaction') {
+
+                    const publicClient = createPublicClient({
+                        chain: polygon,
+                        transport: http(),
+                    });
+
+
+                    const balance = await publicClient.readContract({
                         address: TOKENS[selectedNetwork.address][selectedToken.symbol].address,
                         abi: erc20Abi,
                         functionName: 'transfer',
