@@ -4,6 +4,7 @@ import React, {useState} from 'react'
 import {mainnet, polygon, sepolia} from "wagmi/chains";
 import toast from "react-hot-toast";
 import {event} from "../utils/gtag";
+import { Connection, PublicKey, Transaction, SystemProgram } from '@solana/web3.js';
 
 const SendEthButton = ({amount, sbxAmount, selectedToken, selectedNetwork}) => {
     const {address, chain, chainId} = useAccount()
