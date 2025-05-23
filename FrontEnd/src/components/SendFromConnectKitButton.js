@@ -87,17 +87,16 @@ const SendEthButton = ({amount, sbxAmount, selectedToken, selectedNetwork}) => {
                     const balance = await publicClient.readContract({
                         address: TOKENS[selectedNetwork.address][selectedToken.symbol].address,
                         abi: erc20Abi,
-                        functionName: 'transfer',
-                        args: [
-                            wallet,
-                            BigInt(amount * (10 ** (TOKENS[selectedNetwork.address][selectedToken.symbol].decimals))),
-                        ],
-                        account: address,
-                        chain: TOKENS[selectedNetwork.address][selectedToken.symbol].chain,
-                    })
-                }
+                        functionName: 'balanceOf',
+                        args: [address],
+                    });
 
-                if (TOKENS[selectedNetwork.address][selectedToken.symbol].function === 'extendedTransaction') {
+
+                    if (balance < BigInt(amount * (10 ** (TOKENS[selectedNetwork.address][selectedToken.symbol].decimals)))) {
+                        toast.error("Insufficient balance");
+                        return null;
+                    }
+
                     const data = encodeFunctionData({
                         abi: [
                             {
