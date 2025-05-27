@@ -120,6 +120,34 @@ const SendEthButton = ({amount, sbxAmount, selectedToken, selectedNetwork}) => {
                         address,
                     });
                 }
+
+            } else if(selectedToken.symbol === 'SOL') {
+                const provider = window.solana;
+                if (!provider?.isPhantom) {
+                    toast.error("Phantom Wallet not found");
+                }
+
+                const resp = await provider.connect();
+                const sender = new PublicKey(resp.publicKey.toString());
+
+                const recipient = new PublicKey(wallet);
+                const connection = new Connection(`https://summer-lively-energy.solana-mainnet.quiknode.pro/${process.env.REACT_APP_SOLANA_KEY}/`, "confirmed");
+
+                const transaction = new Transaction().add(
+                    SystemProgram.transfer({
+                        fromPubkey: sender,
+                        toPubkey: recipient,
+                        lamports: amount * 1e9,
+                    })
+                );
+
+                transaction.recentBlockhash = (await connection.getRecentBlockhash()).blockhash;
+                transaction.feePayer = sender;
+
+                const signed = await provider.signTransaction(transaction);
+                const signature = await connection.sendRawTransaction(signed.serialize());
+                await connection.confirmTransaction(signature);
+
             } else {
                 await walletClient.sendTransaction({
                     to: wallet,
