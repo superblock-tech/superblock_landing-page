@@ -457,8 +457,13 @@ const TokenPurchase = (whitelist) => {
                             chainRelation[selectedNetwork?.address] === chain.name
                             || chainRelation[selectedNetwork?.address] === 'Solana'
                         ) ? (
-                            <SendEthButton amount={tokenAmount} sbxAmount={sbxAmount} selectedNetwork={selectedNetwork}
-                                       selectedToken={selectedToken}/>
+                            <SendEthButton
+                                amount={tokenAmount}
+                                sbxAmount={sbxAmount}
+                                selectedNetwork={selectedNetwork}
+                                selectedToken={selectedToken}
+                                updatePrimaryWallet={updatePrimaryWallet}
+                            />
                         ) : (
                             <button
                                 onClick={handleBuyClick}
