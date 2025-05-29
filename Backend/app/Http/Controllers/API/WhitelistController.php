@@ -14,8 +14,8 @@ class WhitelistController extends APIController
     final public function index(): WhitelistResource
     {
         $whiteListContent = Whitelist::query()->where('is_active', '=', 1)->first();
-        $presaleTransactions = PresaleTransaction::query()->select('wallet_address')->groupBy('wallet_address')->get();
-        $transactionsCount = count($presaleTransactions->pluck('wallet_address')->toArray()) ?? 0;
+        $presaleTransactions = PresaleTransaction::query()->select('account_wallet_address')->groupBy('account_wallet_address')->get();
+        $transactionsCount = count($presaleTransactions->pluck('account_wallet_address')->toArray()) ?? 0;
 
         return new WhitelistResource($whiteListContent, $transactionsCount);
     }
