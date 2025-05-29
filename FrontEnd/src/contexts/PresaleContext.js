@@ -158,11 +158,16 @@ export function PresaleContextProvider({children}) {
                                 />
 
                                 {/* Phone */}
-                                <div className="flex flex-col gap-[9px] lg:col-span-2">
+                                <div className="flex flex-col gap-[9px]">
+                                    <span
+                                        className="font-normal text-[15px] sm:text-[18px] leading-[29px] sm:leading-[34px]">
+                    What is your phone number?
+                    <span className="text-[#f00]">*</span>
+                  </span>
                                     <div
-                                        className="bg-gradient-to-b from-[#F2F2F2] to-[#c0c0e6] p-[1px] rounded-[10px]">
+                                        className="bg-gradient-to-b from-[#F2F2F2] to-[#c0c0e6] p-[1px] rounded-[10px] sm:h-[57px] h-[48px]">
                                         <div
-                                            className="p-[13px] w-full h-full bg-[#ebeaff] rounded-[10px] flex items-center gap-2">
+                                            className="p-[13px] w-full h-full bg-[#ebeaff] rounded-[10px] flex items-center">
 
                                             <PhoneInput
                                                 country={'us'}
