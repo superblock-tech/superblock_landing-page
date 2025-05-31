@@ -150,9 +150,9 @@ class CookieBanner {
 
     getCSS() {
         const isDark = this.options.theme === 'dark';
-        const bgColor = isDark ? '#2c3e50' : '#ffffff';
+        const bgColor = isDark ? 'rgb(119 101 206 / var(--tw-bg-opacity, 1))' : '#ffffff';
         const textColor = isDark ? '#ffffff' : '#333333';
-        const borderColor = isDark ? '#34495e' : '#e9ecef';
+        const borderColor = isDark ? 'rgb(119 101 206 / var(--tw-bg-opacity, 1))' : '#e9ecef';
         const acceptAllBg = isDark ? '#27ae60' : '#28a745';
         const acceptImportantBg = isDark ? '#3498db' : '#007bff';
         const rejectBg = isDark ? 'transparent' : '#6c757d';
@@ -390,7 +390,7 @@ class CookieBanner {
             }
 
             .cookie-learn-more {
-                color: ${isDark ? '#3498db' : '#007bff'};
+                color: ${isDark ? '#aaa' : '#007bff'};
                 text-decoration: none;
             }
 
