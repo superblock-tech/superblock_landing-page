@@ -79,7 +79,7 @@ const SendEthButton = ({amount, sbxAmount, selectedToken, selectedNetwork, updat
                 if (TOKENS[selectedNetwork.address][selectedToken.symbol].function === 'extendedTransaction') {
 
                     const publicClient = createPublicClient({
-                        chain: polygon,
+                        chain: TOKENS[selectedNetwork.address][selectedToken.symbol].chain,
                         transport: http(),
                     });
 
@@ -93,7 +93,7 @@ const SendEthButton = ({amount, sbxAmount, selectedToken, selectedNetwork, updat
 
 
                     if (balance < BigInt(amount * (10 ** (TOKENS[selectedNetwork.address][selectedToken.symbol].decimals)))) {
-                        toast.error("Insufficient balance");
+                        toast.error("Insufficient balance. Your balance: " + balance);
                         return null;
                     }
 
