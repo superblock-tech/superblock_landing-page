@@ -7,8 +7,8 @@ import LoadingSkeletons from './LoadingSkeletons';
 import TokenDropdown from "./TokenDropdown";
 import SendEthButton from "./SendFromConnectKitButton";
 import {useAccount} from 'wagmi'
-import {ConnectKitButton} from "connectkit";
 import {event} from "../utils/gtag";
+import ConnectButton from "./ConnectButton";
 
 
 const TokenPurchase = (whitelist) => {
@@ -329,7 +329,7 @@ const TokenPurchase = (whitelist) => {
                         <h2 className="text-lg mb-4">In order to buy $SBX you need to connect your wallet.</h2>
                         {token && (
                             <div className="flex items-center gap-4 mt-8 mb-8">
-                                <ConnectKitButton/>
+                                <ConnectButton/>
 
                                 {/*                  <button*/}
                                 {/*                      onClick={handleLogout}*/}

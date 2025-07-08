@@ -1,41 +1,25 @@
-import React from 'react';
-import {createConfig, http, WagmiProvider} from 'wagmi';
-import {arbitrum, mainnet, polygon, sepolia} from "wagmi/chains";
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import {ConnectKitProvider} from 'connectkit';
-import {injected, walletConnect} from '@wagmi/connectors'
+import { createConfig, http } from 'wagmi'
+import { mainnet, polygon, arbitrum, sepolia } from 'wagmi/chains'
+import { walletConnect, injected } from 'wagmi/connectors'
 
+export const projectId = process.env.REACT_APP_WALLETCONNECT_PROJECT_ID
 
-const config = createConfig({
-    chains: [mainnet, polygon, sepolia, arbitrum],
+if (!projectId) {
+    throw new Error('REACT_APP_WALLETCONNECT_PROJECT_ID is not defined')
+}
+
+export const chains = [mainnet, polygon, arbitrum, sepolia]
+
+export const wagmiConfig = createConfig({
+    chains,
     connectors: [
-        // injected(),
-        walletConnect({
-            projectId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
-            metadata: {
-                name: '$SBXToken',
-                description: 'SBX Token Application',
-                url: window.location.origin,
-                icons: [`${window.location.origin}/favicon.ico`]
-            },
-        }),
+        walletConnect({ projectId }),
+        injected(),
     ],
     transports: {
         [mainnet.id]: http(),
         [polygon.id]: http(),
-        [sepolia.id]: http(),
         [arbitrum.id]: http(),
+        [sepolia.id]: http(),
     },
 })
-
-const queryClient = new QueryClient();
-
-export const Web3Provider = ({children}) => {
-    return (
-        <WagmiProvider config={config}>
-            <QueryClientProvider client={queryClient}>
-                <ConnectKitProvider debugMode>{children}</ConnectKitProvider>
-            </QueryClientProvider>
-        </WagmiProvider>
-    );
-};
