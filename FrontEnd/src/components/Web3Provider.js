@@ -12,7 +12,6 @@ const config = createConfig({
         injected(),
         walletConnect({
             projectId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
-            showQrModal: false,
             metadata: {
                 name: '$SBXToken',
                 description: 'SBX Token Application',
