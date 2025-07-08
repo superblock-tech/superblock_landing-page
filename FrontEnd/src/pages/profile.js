@@ -171,7 +171,7 @@ export default function ProfilePage() {
                     <div className="flex flex-col gap-10 text-center">
                         <div>
                             <p className="text-lg mb-1 tracking-wide">Total USDT Amount Raised</p>
-                            <p className="text-3xl font-extrabold">{Number(whitelistContent?.usdtRaised).toLocaleString('en-US')}</p>
+                            <p className="text-xl lg:text-3xl font-extrabold">{Number(whitelistContent?.usdtRaised).toLocaleString('en-US')}</p>
                         </div>
                         <div>
                             <p className="text-lg mb-1 tracking-wide">
@@ -179,7 +179,7 @@ export default function ProfilePage() {
                                 <span className="mx-2">—</span>
                                 $SBX Allocated
                             </p>
-                            <p className="text-3xl font-extrabold">
+                            <p className="text-xl lg:text-3xl font-extrabold">
                             { Number(whitelistContent?.sbxAllocated).toLocaleString('en-US') }
                                 <span className="mx-2">/</span>
                                 { Number(whitelistContent?.sbxTotal).toLocaleString('en-US') }
@@ -187,7 +187,7 @@ export default function ProfilePage() {
                         </div>
                         <div>
                             <p className="text-lg mb-1 tracking-wide">Total Holders</p>
-                            <p className="text-3xl font-extrabold">{ whitelistContent?.holders }</p>
+                            <p className="text-xl lg:text-3xl font-extrabold">{ whitelistContent?.holders }</p>
                         </div>
                     </div>
                 </div>

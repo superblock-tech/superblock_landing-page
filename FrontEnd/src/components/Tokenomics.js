@@ -11,7 +11,7 @@ const Tokenomics = () => {
                 <div
                     className="max-w-[1596px] mx-auto lg:rounded-[60px] rounded-[20px] sm:py-[39px] py-[21px] pl-[12px] sm:pl-[69px] sm:pr-[57px] pr-[12px] overflow-hidden"
                 >
-                    <div className="p-8 rounded-xl mx-auto">
+                    <div className="p-1 rounded-xl mx-auto">
                         {/* Header */}
                         <div className="text-center mb-10">
                             <h1 className="text-center text-gray-800 text-[36px] sm:text-[40px] font-bold lg:leading-[59px] leading-[36px] font-sans mb-[22px] sm:mb-[36px]">
