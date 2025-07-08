@@ -85,7 +85,7 @@
                                 <td>{{ $transaction->crypto?->name }}</td>
                                 <td>{{ $transaction->amount }}</td>
                                 <td>{{ $transaction->usdt_amount }}</td>
-                                <td>{{ $transaction->usdt_amount / $transaction->sbx_price }}</td>
+                                <td>{{ ($transaction->usdt_amount / $transaction->sbx_price) ?? 0 }}</td>
                                 <td>{{ $transaction->sbx_price }}</td>
                                 <td class="break-all">{{ $transaction->system_wallet }}</td>
                                 <td class="break-all">{{ $transaction->transaction_confirmation }}</td>

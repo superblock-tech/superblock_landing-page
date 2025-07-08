@@ -22,7 +22,7 @@ class PresaleTransactionsExport implements FromCollection, WithHeadings
                 'amount' => $transaction->amount,
                 'crypto' => $transaction->crypto?->name,
                 'usdt_amount' => $transaction->usdt_amount,
-                'sbx_price' => $transaction->usdt_amount / $transaction->sbx_price,
+                'sbx_price' => ($transaction->usdt_amount / $transaction->sbx_price) ?? 0,
                 'tokens_allocated' => $transaction->sbx_price,
                 'transaction_confirmation' => $transaction->transaction_confirmation,
                 'txn_id' => $transaction->txn_id,
