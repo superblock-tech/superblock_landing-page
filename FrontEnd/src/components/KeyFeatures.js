@@ -90,7 +90,7 @@ export default function KeyFeatures() {
 
                             <img
                                 src="assets/images/key-features.png"
-                                className="w-[160px] absolute lg:top-1/3 right-0 "
+                                className="w-[160px] absolute lg:top-1/5 right-0 "
                                 alt=""
                                 loading="lazy"
                             />
