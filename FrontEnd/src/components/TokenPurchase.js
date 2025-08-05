@@ -357,16 +357,18 @@ const TokenPurchase = (whitelist) => {
 
         </div>
       ) : (
-          <div style={
-              !token
-                  ? {pointerEvents: 'none', filter: 'blur(4px)'}
-                  : {}
-          }>
+          <div
+          //     style={
+          //     !token
+          //         ? {pointerEvents: 'none', filter: 'blur(4px)'}
+          //         : {}
+          // }
+          >
               {/* Step 1 - Token Selection */}
               <div className="mb-8">
                   <h2 className="text-xl">Step 1 - Connect your wallet</h2>
                   <h2 className="text-lg mb-4">In order to buy $SBX you need to connect your wallet.</h2>
-                  {token && (
+                  { (
                       <div className="flex items-center gap-4 mt-8 mb-8">
                                 <ConnectButton/>
 
