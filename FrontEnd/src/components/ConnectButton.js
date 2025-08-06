@@ -27,12 +27,12 @@ function ConnectButton() {
         <span className="text-sm flex gap-2">
             <button
                 onClick={() => handleClick()}
-                className="px-4 py-2 bg-gray-700 text-white size-22 rounded-2xl hover:bg-gray-600">
+                className="px-4 py-2 bg-gradient-to-br from-purple-500 via-purple-600 to-blue-600 text-white size-22 rounded-xl hover:bg-gray-600">
                 {address?.slice(0, 6)}...{address?.slice(-4)}
             </button>
             <button
                 onClick={() => disconnect()}
-                className="px-4 py-2 bg-red-400 text-white size-22 rounded-2xl hover:bg-red-500"
+                className="px-4 py-2 bg-red-400 text-white size-22 rounded-xl hover:bg-red-500"
             >
                     Disconnect
                 </button>
@@ -45,7 +45,7 @@ function ConnectButton() {
     return (
         <button
             onClick={() => handleClick()}
-            className="text-sm px-4 py-2 bg-indigo-500 text-white size-22 rounded-2xl hover:bg-indigo-600"
+            className="text-sm px-4 py-2 bg-gradient-to-br from-purple-500 via-purple-600 to-blue-600 text-white size-22 rounded-xl hover:bg-indigo-600"
         >
             Connect Wallet
         </button>
