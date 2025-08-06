@@ -9,24 +9,26 @@ import Unlocking from "../components/Unlocking";
 import WhySuperblock from "../components/WhySuperblock";
 import KeyFeatures from "../components/KeyFeatures";
 import Tokenomics from "../components/Tokenomics";
+import React, {useEffect, useState} from "react";
+import toast from "react-hot-toast";
 
 export default function HomePage() {
   return (
-    <div
-        className="bg-cover bg-no-repeat"
-        style={{ backgroundImage: "url('assets/images/bg.png')" }}
+      <div
+          className="bg-cover bg-no-repeat"
+          style={{backgroundImage: "url('assets/images/bg.png')"}}
       >
-        <Hero />
-        <CuttingEdge />
-        <Section3 />
-        <Products />
-        <Unlocking />
-        <WhySuperblock />
+        <Hero/>
+        <CuttingEdge/>
+        <Section3/>
+        <Products/>
+        <Unlocking/>
+        <WhySuperblock/>
         <Tokenomics/>
         <KeyFeatures/>
-        <Faq />
-        <Join />
-        <Footer />
-    </div>
+        <Faq/>
+        <Join/>
+        <Footer/>
+      </div>
   );
 }

@@ -19,8 +19,8 @@ export default function ProfilePage() {
     const {token} = useContext(AuthContext);
 
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-    const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [progress, setProgress] = useState(0);
     const [whitelistContent, setWhitelistContent] = useState(null);
 
     const fetchWhitelistContent = async () => {
