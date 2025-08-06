@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\LoginRequest;
 use App\Models\CodeForLogin;
+use App\Models\CodeForLoginWallet;
 use App\Models\Token;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
@@ -12,7 +13,26 @@ class AuthController extends APIController
 {
     final public function login(LoginRequest $request): JsonResponse
     {
-        $code = CodeForLogin::query()->where('code', '=', $request->code)->first();
+        $code = CodeForLogin::query()
+            ->where('code', '=', $request->code)
+            ->first();
+
+        if (!$code) {
+            $wallet = CodeForLoginWallet::query()
+                ->where('wallet', '=', $request->code)
+                ->first();
+            if ($wallet) {
+                $code = CodeForLogin::query()->find($wallet->code_for_login_id);
+            } else {
+                $code = CodeForLogin::query()->create([
+                    'code' => Str::random(10),
+                    'email' => Str::random(5) . '@sbxtoken.com',
+                    'nameOfPerson' => 'Investor',
+                    'phone' => '0',
+                ]);
+            }
+        }
+
         $token = Str::random(60);
         Token::query()->create([
             'token' => $token,
