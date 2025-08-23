@@ -265,7 +265,7 @@
             const usdtAmount = parseFloat(this.value);
             const sbxPriceInput = document.getElementById('sbx_price');
             if (!isNaN(usdtAmount)) {
-                sbxPriceInput.value = (usdtAmount / 0.22).toFixed(6);
+                sbxPriceInput.value = (usdtAmount / 0.31).toFixed(6);
             } else {
                 sbxPriceInput.value = '';
             }
