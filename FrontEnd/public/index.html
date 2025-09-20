@@ -38,10 +38,72 @@
   <script>
     new CookieBanner({  position: 'bottom-right',layout: 'window' });
   </script>
+  <!-- Add this to the <head> section of your index.html -->
+  <script type="text/javascript">
+    // This function initializes the Google Translate widget
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement(
+              {
+                pageLanguage: 'en', // Default language of your website
+                includedLanguages: 'en,ar,de', // Languages to support (English, Arabic, German)
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE, // Dropdown layout
+              },
+              'google_translate_element' // Where to inject the widget (div id)
+      );
+    }
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    /* Make the Translate Widget very small */
+    #google_translate_element {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+    }
+
+    /* Style the Google Translate dropdown button to make it very small */
+    .goog-te-menu-value {
+      font-size: 10px !important;  /* Reduce font size */
+      padding: 2px 4px !important; /* Reduce padding */
+    }
+
+    .goog-te-menu-value span {
+      font-size: 10px !important;  /* Ensure the text inside is small */
+    }
+
+    .goog-te-gadget-icon {
+      /*width: 18px !important;  !* Icon size *!*/
+      /*height: 18px !important; !* Icon size *!*/
+    }
+
+    /* Make the dropdown button itself smaller */
+    .goog-te-button {
+      height: 24px !important; /* Button height */
+      width: 24px !important;  /* Button width */
+      padding: 0 !important;   /* No padding */
+      background-color: #f1f1f1; /* Light background */
+      border-radius: 50%; /* Round button */
+    }
+
+    /* Make the dropdown options smaller too */
+    .goog-te-menu2 {
+      font-size: 10px !important;  /* Reduce font size for the dropdown options */
+    }
+
+    .goog-te-menu2-item div {
+      padding: 2px 4px !important; /* Small padding for items */
+    }
+
+    .goog-te-gadget-simple span {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="google_translate_element"></div>
   <div id="root"></div>
   <!--
       This HTML file is a template.
