@@ -28,17 +28,18 @@ class CreateTransaction extends Command
     public function handle()
     {
         $this->info('Started new transaction');
-        $amount = rand(2000, 8000);
+        $amount = rand(500, 2500);
         $cryptoId = array_rand([6,13]);
         $transaction = new PresaleTransaction();
+        $uuid = Str::uuid();
         $transaction->query()->create([
-            'wallet_address' => '',
+            'wallet_address' => substr($uuid, 0, 6),
             'amount' => $amount,
             'crypto_id' => $cryptoId,
             'usdt_amount' => $amount,
             'sbx_price' => $amount / 0.31,
             'transaction_confirmation' => 'Confirmed by platform [SYSTEM]',
-            'txn_id' => Str::uuid(),
+            'txn_id' => $uuid,
         ]);
         $this->info('Created new transaction');
     }
