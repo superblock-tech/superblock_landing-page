@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { AroundIcon, ArrowBottom, RightArrow } from "../Icons";
 import {AuthContext} from "../contexts/AuthContext";
 import {usePresaleContext} from "../contexts/PresaleContext";
@@ -9,6 +9,14 @@ export default function Header() {
   const { token } = useContext(AuthContext);
   //scroll event
   const [scrollPosition, setScrollPosition] = useState(0);
+  const navigate = useNavigate();
+
+  const translations = {
+    en: "Translate",
+    ar: "ترجمة",
+    de: "Übersetzen"
+  };
+
 
   // Function to handle scroll event
   const handleScroll = () => {
@@ -46,28 +54,31 @@ export default function Header() {
               />
             </Link>
 
-            <button className="flex items-center ">
-              <AroundIcon />
-              <span className="-mr-2 ">
-                <ArrowBottom />
-              </span>
-            </button>
+            {/*<button className="flex items-center ">*/}
+            {/*  <AroundIcon />*/}
+            {/*  <span className="-mr-2 ">*/}
+            {/*    <ArrowBottom />*/}
+            {/*  </span>*/}
+            {/*</button>*/}
           </div>
 
           <div className="flex items-center gap-[24px]">
             <nav className="hidden xl:flex items-center gap-[29.41px]">
               {navItems.map((it, i) => (
-                <Link
+                <button
                   key={i}
-                  onClick={() => {
-                    document.getElementById(it.to).scrollIntoView()
+                  onClick={async () => {
+                    if (!document.getElementById(it.to)) {
+                      await navigate("/");
+                    }
+                    document.getElementById(it.to)?.scrollIntoView()
                     window.scrollTo(0, window.scrollY - 150)
                   }
                 }
                   className="text-black text-[20.906px] font-normal leading-[39.199px] "
                 >
                   {it.title}
-                </Link>
+                </button>
               ))}
             </nav>
 
@@ -94,8 +105,10 @@ export default function Header() {
   );
 }
 
+
 const MobileMenu = ({ setIsOpen, isOpen }) => {
   const { token } = useContext(AuthContext);
+  const navigate = useNavigate();
   const { openLoginDialog } = usePresaleContext();
 
   const toggleDrawer = () => {
@@ -123,7 +136,10 @@ const MobileMenu = ({ setIsOpen, isOpen }) => {
                 <button
                     key={i}
                     className="text-black text-[20.906px] font-normal leading-[39.199px] "
-                    onClick={() => {
+                    onClick={async () => {
+                      if (!document.getElementById(it.to)) {
+                        await navigate("/");
+                      }
                       document.getElementById(it.to).scrollIntoView()
                       window.scrollTo(0, window.scrollY - 80)
                     }
