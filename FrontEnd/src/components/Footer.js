@@ -1,6 +1,5 @@
 import React from "react";
 import { ArrowRightBlack } from "../Icons";
-import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
