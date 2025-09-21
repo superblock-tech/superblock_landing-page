@@ -58,7 +58,7 @@ export default function CuttingEdge() {
 
   return (
     <section className="xl:mb-[80px] mb-[60px]">
-      <div id="technology" className="container">
+      <div className="container">
         <div className="max-w-[1596px] mx-auto">
           <div className="col-span-12 md:col-span-6 lg:col-span-8">
             <div
@@ -127,6 +127,7 @@ export default function CuttingEdge() {
             </div>
           </div>
           <div
+              id="technology"
               className="2xl:px-[84px] xl:px-[50px] px-[26px] lg:py-[52px] py-[45px] sm:rounded-[60px] rounded-[20px] flex flex-col xl:flex-row justify-between items-center gap-[34px]"
               style={{
                 background: "linear-gradient(107deg, #7B36B6 0%, #1BA3FF 100%)",
