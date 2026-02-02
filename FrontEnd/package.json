@@ -10,6 +10,8 @@
     "@tanstack/react-query": "^5.51.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@wagmi/connectors": "^7.1.6",
+    "@walletconnect/ethereum-provider": "^2.23.4",
     "@web3modal/ui": "^5.1.11",
     "@web3modal/wagmi": "^5.1.11",
     "clsx": "^2.1.1",
@@ -37,8 +39,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "serve": "serve -s build -l 3000",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "patch-package"
   },
   "browserslist": {
     "production": [
@@ -53,12 +57,14 @@
     ]
   },
   "devDependencies": {
+    "serve": "^14.2.4",
     "@types/node": "18.7.18",
     "@types/react": "^18.0.6",
     "@types/react-dom": "^18.0.2",
     "eslint": "8.56.0",
     "eslint-config-next": "14.0.4",
     "eslint-config-react-app": "^7.0.1",
+    "patch-package": "^8.0.1",
     "tailwindcss": "^3.4.11"
   },
   "packageManager": "yarn@1.22.22"
