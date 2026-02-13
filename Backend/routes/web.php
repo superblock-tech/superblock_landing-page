@@ -63,6 +63,9 @@ Route::middleware(['admin'])->group(function () {
 
     Route::get('presale-transactions/export', [PresaleTransactionsController::class, 'export'])->name('presale_transactions.export');
     Route::post('presale-transactions/import', [PresaleTransactionsController::class, 'import'])->name('presale_transactions.import');
+    Route::post('presale-transactions/rescan', [PresaleTransactionsController::class, 'rescan'])->name('presale_transactions.rescan');
+    Route::post('presale-transactions/delete-without-chain-name', [PresaleTransactionsController::class, 'deleteWithoutChainName'])->name('presale_transactions.delete_without_chain_name');
+    Route::get('presale-transactions/check-endpoints', [PresaleTransactionsController::class, 'checkEndpoints'])->name('presale_transactions.check_endpoints');
     Route::post('presale-transactions/{id}/confirm', [PresaleTransactionsController::class, 'confirm'])->name('presale_transactions.confirm');
 
 });

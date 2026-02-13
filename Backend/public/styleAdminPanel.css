@@ -26,13 +26,55 @@ body {
     bottom: 0;
     left: 0;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+/* Desktop: collapsed sidebar */
+.sideBar.collapsed {
+    transform: translateX(-100%);
+    width: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.mainContainer.sidebar-collapsed .content {
+    margin-left: 0;
+    width: 100%;
+}
+
+/* Show hamburger when sidebar is collapsed on desktop */
+.mainContainer.sidebar-collapsed .hamburger-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Sidebar header */
 .sideBar .sidebar-header {
     text-align: center;
     margin-bottom: 20px;
+}
+
+/* Sidebar hide button - top right */
+.sidebar-toggle-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
 }
 
 .sideBar .sidebar-header h4 {
@@ -78,7 +120,7 @@ body {
     background-color: #ffffff;
     box-sizing: border-box;
     overflow-y: auto;
-    transition: margin-left 0.3s ease;
+    transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
 /* Make sure the content area takes full height and has scroll if needed */

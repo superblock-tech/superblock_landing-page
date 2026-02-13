@@ -36,8 +36,15 @@
 <!-- Add the toggle functionality script -->
 <script>
     $(document).ready(function() {
-        $('.hamburger-btn').click(function() {
-            $('.sideBar').toggleClass('active');
+        // Hide button (in sidebar): hide sidebar
+        $('.sidebar-toggle-btn').on('click', function() {
+            $('.sideBar').addClass('collapsed').removeClass('active');
+            $('.mainContainer').addClass('sidebar-collapsed');
+        });
+        // Hamburger: toggle sidebar visibility
+        $('.hamburger-btn').on('click', function() {
+            $('.sideBar').toggleClass('active collapsed');
+            $('.mainContainer').toggleClass('sidebar-collapsed');
         });
     });
 </script>

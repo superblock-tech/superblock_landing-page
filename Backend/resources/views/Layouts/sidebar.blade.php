@@ -1,4 +1,7 @@
 <div class="sidebar">
+    <button type="button" class="sidebar-toggle-btn" title="Hide sidebar" aria-label="Hide sidebar">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
     <div class="sidebar-header">
         <img class="logo" src="Logo/logo.png" style="width: 100%">
     </div>

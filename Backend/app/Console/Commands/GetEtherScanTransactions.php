@@ -18,32 +18,330 @@ class GetEtherScanTransactions extends Command
      *
      * @var string
      */
-    protected $signature = 'app:get-ether-scan-transactions';
+    protected $signature = 'app:get-ether-scan-transactions {--crypto_id= : Only sync wallets for this crypto ID} {--trace : Log each request and response}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Fetch blockchain transactions for presale wallets and sync to database';
+
+    private bool $verbose = false;
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
+        set_time_limit(300); // 5 min — verification + sync can be slow (rate-limited APIs)
+        $this->verbose = $this->option('trace');
+        $this->logVerbose('=== Rescan START ===');
         try {
-            $wallets = Wallet::all()->groupBy('address');
+            $cryptoId = $this->option('crypto_id');
+            $query = Wallet::query()->with('crypto');
+
+            if ($cryptoId !== null && $cryptoId !== '') {
+                $query->where('crypto_id', $cryptoId);
+            }
+
+            $wallets = $query->get()->groupBy('address');
+            $this->logVerbose("Wallets to sync: " . $wallets->count());
+            if ($cryptoId) {
+                $this->logVerbose('Phase 1: Reconcile existing txns');
+                $this->reconcileAllTransactionsForCrypto((int) $cryptoId);
+            }
+            $this->logVerbose('Phase 2: Sync from chain');
             foreach ($wallets as $walletGroup) {
                 $wallet = $walletGroup->first();
-                $this->info($wallet->address);
+                if (!$wallet->crypto) {
+                    $this->warn("Skipping wallet {$wallet->address}: no crypto assigned");
+                    continue;
+                }
+                $this->info($wallet->address . ' (' . $wallet->crypto->symbol . ')');
                 $this->handleTransactions($wallet);
             }
-        }catch (\Throwable $exception){
+        } catch (\Throwable $exception) {
             $this->warn($exception->getMessage());
+            $this->logVerbose('EXCEPTION: ' . $exception->getMessage());
+        }
+        $this->logVerbose('=== Rescan END ===');
+        return 0;
+    }
+
+    /**
+     * For each blockchain transaction: verify TX hash exists on chain.
+     * If not found, clear txn_id → becomes manual (no TX hash = manual).
+     */
+    private function reconcileAllTransactionsForCrypto(int $cryptoId): void
+    {
+        $crypto = Crypto::find($cryptoId);
+        if (!$crypto) {
+            return;
         }
 
-        return 0;
+        $txns = PresaleTransaction::query()
+            ->where('crypto_id', $cryptoId)
+            ->whereNotNull('txn_id')
+            ->where('txn_id', '!=', '')
+            ->with('crypto')
+            ->get();
+
+        $this->logVerbose("Reconciling " . $txns->count() . " tx(s) for crypto_id={$cryptoId} ({$crypto->symbol})");
+
+        foreach ($txns as $i => $tx) {
+            $this->logVerbose("Verify tx #" . ($i + 1) . "/" . $txns->count() . " id={$tx->id} txn_id=" . substr($tx->txn_id ?? '', 0, 18) . '...');
+            usleep(150000);
+            if (!$this->verifyTxExistsOnChain($tx)) {
+                $oldTxnId = $tx->txn_id;
+                $tx->update([
+                    'txn_id' => null,
+                    'transaction_confirmation' => ($tx->transaction_confirmation ? $tx->transaction_confirmation . ' | ' : '') .
+                        'Moved to manual: TX hash not found on chain',
+                ]);
+                $this->info("Moved to manual: PresaleTransaction id {$tx->id} (txn_id not on chain: " . substr($oldTxnId, 0, 16) . '...)');
+            }
+        }
+        $this->deduplicateByTxnId($cryptoId);
+    }
+
+    private function deduplicateByTxnId(int $cryptoId): void
+    {
+        $duplicates = PresaleTransaction::query()
+            ->where('crypto_id', $cryptoId)
+            ->whereNotNull('txn_id')
+            ->whereRaw("TRIM(txn_id) != ''")
+            ->get()
+            ->groupBy('txn_id')
+            ->filter(fn ($g) => $g->count() > 1);
+
+        foreach ($duplicates as $txnId => $group) {
+            $keep = $group->sortBy('id')->first();
+            foreach ($group->where('id', '!=', $keep->id) as $extra) {
+                $extra->update([
+                    'txn_id' => null,
+                    'transaction_confirmation' => ($extra->transaction_confirmation ? $extra->transaction_confirmation . ' | ' : '') .
+                        'Moved to manual: duplicate TX hash',
+                ]);
+                $this->info("Moved duplicate to manual: txn_id " . substr($txnId, 0, 16) . '...');
+            }
+        }
+    }
+
+    /**
+     * Verify a transaction's txn_id exists on the blockchain. Returns true if found.
+     */
+    private function verifyTxExistsOnChain(PresaleTransaction $tx): bool
+    {
+        $txnId = trim($tx->txn_id ?? '');
+        if ($txnId === '') {
+            return false;
+        }
+
+        $symbol = $tx->crypto?->symbol ?? '';
+        return match (strtoupper($symbol)) {
+            'BTC' => $this->verifyBitcoinTxExists($txnId),
+            'ETH', 'USDT', 'USDC' => $this->verifyEthereumTxExists($txnId),
+            'MATIC' => $this->verifyPolygonTxExists($txnId),
+            'SOL' => $this->verifySolanaTxExists($txnId),
+            'TRX' => $this->verifyTronTxExists($txnId),
+            'XRP' => $this->verifyXrpTxExists($txnId),
+            default => $this->verifyEthereumTxExists($txnId) || $this->verifyPolygonTxExists($txnId) || $this->verifyBitcoinTxExists($txnId),
+        };
+    }
+
+    private function logVerbose(string $msg): void
+    {
+        if ($this->verbose) {
+            $this->line('[VERBOSE] ' . $msg);
+        }
+    }
+
+    private function verifyBitcoinTxExists(string $txnId): bool
+    {
+        $url = "https://blockstream.info/api/tx/" . substr($txnId, 0, 16) . '...';
+        $this->logVerbose("GET {$url}");
+        $response = Http::timeout(30)->get("https://blockstream.info/api/tx/{$txnId}");
+        $this->logVerbose("  -> HTTP {$response->status()}, ok=" . ($response->successful() ? 'yes' : 'no'));
+        return $response->successful();
+    }
+
+    private function verifyEthereumTxExists(string $txnId): bool
+    {
+        $url = 'https://api.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash=' . substr($txnId, 0, 18) . '...';
+        $this->logVerbose("GET {$url}");
+        $response = Http::timeout(30)->get('https://api.etherscan.io/api', [
+            'module' => 'proxy', 'action' => 'eth_getTransactionByHash',
+            'txhash' => $txnId, 'apikey' => env('ETHERSCAN_API_TOKEN'),
+        ]);
+        $result = $response->json()['result'] ?? null;
+        $found = $result !== null && $result !== false;
+        $this->logVerbose("  -> HTTP {$response->status()}, result=" . ($found ? 'tx' : (is_null($result) ? 'null' : 'false')));
+        return $found;
+    }
+
+    private function verifyPolygonTxExists(string $txnId): bool
+    {
+        $this->logVerbose('GET https://api.polygonscan.com/api (txhash=' . substr($txnId, 0, 18) . '...)');
+        $response = Http::timeout(30)->get('https://api.polygonscan.com/api', [
+            'module' => 'proxy', 'action' => 'eth_getTransactionByHash',
+            'txhash' => $txnId, 'apikey' => env('POLYSCAN_API_TOKEN'),
+        ]);
+        $result = $response->json()['result'] ?? null;
+        $found = $result !== null && $result !== false;
+        $this->logVerbose("  -> HTTP {$response->status()}, result=" . ($found ? 'tx' : (is_null($result) ? 'null' : 'false')));
+        return $found;
+    }
+
+    private function verifySolanaTxExists(string $txnId): bool
+    {
+        $this->logVerbose('POST https://api.mainnet-beta.solana.com getTransaction ' . substr($txnId, 0, 16) . '...');
+        $response = Http::timeout(30)->post('https://api.mainnet-beta.solana.com', [
+            'jsonrpc' => '2.0', 'id' => 1, 'method' => 'getTransaction',
+            'params' => [$txnId, 'jsonParsed'],
+        ]);
+        $result = $response->json()['result'] ?? null;
+        $found = $result !== null;
+        $this->logVerbose("  -> HTTP {$response->status()}, result=" . ($found ? 'tx' : 'null'));
+        return $found;
+    }
+
+    private function verifyTronTxExists(string $txnId): bool
+    {
+        $url = "https://api.trongrid.io/v1/transactions/" . substr($txnId, 0, 16) . '...';
+        $this->logVerbose("GET {$url}");
+        $response = Http::timeout(30)->get("https://api.trongrid.io/v1/transactions/{$txnId}");
+        $data = $response->json()['data'] ?? [];
+        $found = !empty($data);
+        $this->logVerbose("  -> HTTP {$response->status()}, data=" . (empty($data) ? 'empty' : 'ok'));
+        return $found;
+    }
+
+    private function verifyXrpTxExists(string $txnId): bool
+    {
+        $this->logVerbose('POST https://s2.ripple.com:51234 method=tx ' . substr($txnId, 0, 16) . '...');
+        $response = Http::timeout(30)->post('https://s2.ripple.com:51234', [
+            'method' => 'tx', 'params' => [['transaction' => $txnId]],
+        ]);
+        $result = $response->json()['result'] ?? [];
+        $found = ($result['validated'] ?? false) === true || isset($result['hash']);
+        $this->logVerbose("  -> HTTP {$response->status()}, validated=" . ($result['validated'] ?? '?'));
+        return $found;
+    }
+
+    private function getOnChainTransactionIds(Wallet $wallet): array
+    {
+        $symbol = $wallet->crypto?->symbol ?? '';
+        return match ($symbol) {
+            'BTC' => $this->getBitcoinOnChainTxnIds($wallet->address),
+            'SOL' => $this->getSolanaOnChainTxnIds($wallet->address),
+            'XRP' => $this->getXrpOnChainTxnIds($wallet->address),
+            'TRX' => $this->getTronOnChainTxnIds($wallet->address),
+            default => $this->getEthereumOnChainTxnIds($wallet),
+        };
+    }
+
+    private function getBitcoinOnChainTxnIds(string $walletAddress): array
+    {
+        $txnIds = [];
+        $lastSeen = null;
+        $txs = [];
+        do {
+            $url = $lastSeen
+                ? "https://blockstream.info/api/address/{$walletAddress}/txs/chain/{$lastSeen}"
+                : "https://blockstream.info/api/address/{$walletAddress}/txs";
+            $response = Http::get($url);
+            if (!$response->successful()) {
+                break;
+            }
+            $txs = $response->json() ?? [];
+            foreach ($txs as $tx) {
+                if (isset($tx['status']['confirmed']) && $tx['status']['confirmed']) {
+                    $txnIds[] = $tx['txid'];
+                }
+            }
+            $lastSeen = !empty($txs) ? end($txs)['txid'] : null;
+        } while (count($txs) >= 25);
+
+        return $txnIds;
+    }
+
+    private function getSolanaOnChainTxnIds(string $walletAddress): array
+    {
+        $txnIds = [];
+        $rpcUrl = 'https://api.mainnet-beta.solana.com';
+        $response = Http::post($rpcUrl, [
+            'jsonrpc' => '2.0', 'id' => 1,
+            'method' => 'getSignaturesForAddress',
+            'params' => [$walletAddress, ['limit' => 100]],
+        ]);
+        if ($response->successful() && isset($response['result'])) {
+            foreach ($response['result'] as $tx) {
+                $txnIds[] = $tx['signature'];
+            }
+        }
+        return $txnIds;
+    }
+
+    private function getXrpOnChainTxnIds(string $walletAddress): array
+    {
+        $txnIds = [];
+        $response = Http::post('https://s2.ripple.com:51234', [
+            'method' => 'account_tx',
+            'params' => [[
+                'account' => $walletAddress,
+                'ledger_index_min' => -1, 'ledger_index_max' => -1,
+                'limit' => 100,
+            ]],
+        ]);
+        if ($response->successful()) {
+            $txs = $response->json()['result']['transactions'] ?? [];
+            foreach ($txs as $data) {
+                $txnIds[] = $data['tx']['hash'] ?? '';
+            }
+        }
+        return array_filter($txnIds);
+    }
+
+    private function getTronOnChainTxnIds(string $walletAddress): array
+    {
+        $txnIds = [];
+        $response = Http::get("https://api.trongrid.io/v1/accounts/{$walletAddress}/transactions");
+        if ($response->successful()) {
+            $txs = $response->json()['data'] ?? [];
+            foreach ($txs as $tx) {
+                if (isset($tx['ret'][0]['contractRet']) && $tx['ret'][0]['contractRet'] === 'SUCCESS') {
+                    $txnIds[] = $tx['txID'] ?? '';
+                }
+            }
+        }
+        return array_filter($txnIds);
+    }
+
+    private function getEthereumOnChainTxnIds(Wallet $wallet): array
+    {
+        $walletAddress = $wallet->address;
+        $txnIds = [];
+        $apiUrls = [
+            ['url' => 'https://api.polygonscan.com/api', 'token' => env('POLYSCAN_API_TOKEN')],
+            ['url' => 'https://api.etherscan.io/api', 'token' => env('ETHERSCAN_API_TOKEN')],
+        ];
+        foreach ($apiUrls as $item) {
+            foreach (['txlist', 'tokentx'] as $action) {
+                $response = Http::get($item['url'], [
+                    'module' => 'account', 'action' => $action,
+                    'address' => $walletAddress,
+                    'startblock' => 0, 'endblock' => 99999999,
+                    'sort' => 'desc', 'apikey' => $item['token'],
+                ]);
+                if ($response->successful() && is_array($response->json()['result'] ?? null)) {
+                    foreach ($response->json()['result'] as $tx) {
+                        $txnIds[] = $tx['hash'] ?? '';
+                    }
+                }
+            }
+        }
+        return array_filter(array_unique($txnIds));
     }
 
     public function getBitcoinTransactions(Wallet $wallet)
@@ -51,7 +349,9 @@ class GetEtherScanTransactions extends Command
         $walletAddress = $wallet->address;
         $crypto = Crypto::query()->find($wallet->crypto_id);
         $sbxWhitelist = Whitelist::query()->where('is_active', '=', 1)->first();
-        $response = Http::get("https://blockstream.info/api/address/{$walletAddress}/txs");
+        $this->logVerbose("GET blockstream.info/api/address/{$walletAddress}/txs");
+        $response = Http::timeout(30)->get("https://blockstream.info/api/address/{$walletAddress}/txs");
+        $this->logVerbose("  -> HTTP {$response->status()}");
         $result  = [];
 
         if ($response->successful()) {
@@ -123,18 +423,21 @@ class GetEtherScanTransactions extends Command
         $result  = [];
         $rpcUrl = 'https://api.mainnet-beta.solana.com';
 
-        $response = Http::post($rpcUrl, [
+        $this->logVerbose("POST {$rpcUrl} getSignaturesForAddress");
+        $response = Http::timeout(30)->post($rpcUrl, [
             'jsonrpc' => '2.0',
             'id' => 1,
             'method' => 'getSignaturesForAddress',
             'params' => [$walletAddress, ['limit' => 10]],
         ]);
+        $this->logVerbose("  -> HTTP {$response->status()}, result=" . (isset($response['result']) ? count($response['result']) . ' sigs' : 'null'));
 
         if ($response->successful() && isset($response['result'])) {
-            foreach ($response['result'] as $txMeta) {
+            foreach ($response['result'] as $idx => $txMeta) {
                 $signature = $txMeta['signature'];
+                $this->logVerbose("  getTransaction sig #" . ($idx + 1) . " " . substr($signature, 0, 16) . '...');
 
-                $txResponse = Http::post($rpcUrl, [
+                $txResponse = Http::timeout(30)->post($rpcUrl, [
                     'jsonrpc' => '2.0',
                     'id' => 1,
                     'method' => 'getTransaction',
@@ -196,7 +499,8 @@ class GetEtherScanTransactions extends Command
         $result = [];
         $rpcUrl = 'https://s2.ripple.com:51234';
 
-        $response = Http::post($rpcUrl, [
+        $this->logVerbose("POST s2.ripple.com:51234 account_tx");
+        $response = Http::timeout(30)->post($rpcUrl, [
             'method' => 'account_tx',
             'params' => [[
                 'account' => $walletAddress,
@@ -205,6 +509,7 @@ class GetEtherScanTransactions extends Command
                 'limit' => 10,
             ]],
         ]);
+        $this->logVerbose("  -> HTTP {$response->status()}");
 
         if ($response->successful()) {
             $txs = $response->json()['result']['transactions'] ?? [];
@@ -245,7 +550,9 @@ class GetEtherScanTransactions extends Command
         $walletAddress = $wallet->address;
         $crypto = Crypto::query()->find($wallet->crypto_id);
         $sbxWhitelist = Whitelist::query()->where('is_active', '=', 1)->first();
-        $response = Http::get("https://api.trongrid.io/v1/accounts/{$walletAddress}/transactions");
+        $this->logVerbose("GET api.trongrid.io/v1/accounts/{$walletAddress}/transactions");
+        $response = Http::timeout(30)->get("https://api.trongrid.io/v1/accounts/{$walletAddress}/transactions");
+        $this->logVerbose("  -> HTTP {$response->status()}");
 
         if ($response->successful()) {
             $txs = $response->json()['data'] ?? [];
@@ -318,9 +625,10 @@ class GetEtherScanTransactions extends Command
             'tokentx' => 1e6,
         ];
 
-        foreach ($apiUrls as $item) {
+        foreach ($apiUrls as $network => $item) {
             foreach ($item['actions'] as $action) {
-                $response = Http::get($item['url'], [
+                $this->logVerbose("GET {$item['url']} action={$action} (network={$network})");
+                $response = Http::timeout(30)->get($item['url'], [
                     'module' => 'account',
                     'action' => $action,
                     'address' => $walletAddress,
@@ -329,12 +637,14 @@ class GetEtherScanTransactions extends Command
                     'sort' => 'desc',
                     'apikey' => $item['token'],
                 ]);
+                $result = $response->json()['result'] ?? null;
+                $this->logVerbose("  -> HTTP {$response->status()}, result=" . (is_array($result) ? count($result) . ' tx(s)' : json_encode($result)));
 
-                if (!is_array($response->json()['result'])) {
+                if (!is_array($result)) {
                     Log::warning(json_encode($response->json()));
                 }
 
-                foreach ($response->json()['result'] as $tx) {
+                foreach ($result ?? [] as $tx) {
 
                     if ($action === 'tokentx' || (isset($tx['txreceipt_status']) && $tx['txreceipt_status'] === "1")) {
                         if ($action === 'tokentx') {
@@ -373,6 +683,7 @@ class GetEtherScanTransactions extends Command
 
     public function handleTransactions(Wallet $wallet)
     {
+                $this->logVerbose("handleTransactions: wallet " . substr($wallet->address, 0, 10) . '... (' . ($wallet->crypto?->symbol ?? '?') . ')');
                 if ($wallet->crypto?->symbol === 'BTC') {
                     $this->getBitcoinTransactions($wallet);
                 } else if ($wallet->crypto?->symbol === 'SOL') {
