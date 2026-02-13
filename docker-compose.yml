@@ -1,0 +1,27 @@
+# Isolated MySQL 8 for local development
+# DB dump is imported automatically on first run
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: sbxtoken-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: sbxtoken_local
+      MYSQL_DATABASE: sbxtoken
+      MYSQL_USER: sbxtoken
+      MYSQL_PASSWORD: sbxtoken_local
+    ports:
+      - "3307:3306"  # Use 3307 to avoid conflict with any local MySQL
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql-init:/docker-entrypoint-initdb.d
+      # Mount dump - path relative to docker-compose.yml
+      - ../sbxtoken_backup.sql:/init-dump/sbxtoken_backup.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-psbxtoken_local"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql_data:

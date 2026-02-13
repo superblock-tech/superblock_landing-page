@@ -34,6 +34,7 @@
                         </tr>
                         </thead>
                         <tbody>
+                        @if($whiteListContent)
                         <tr>
                             <td>{{ number_format($whiteListContent['usdtRaised'], 3) }} USD</td>
                             <td>{{ $whiteListContent['holders'] }}</td>
@@ -54,6 +55,11 @@
                                 </button>
                             </td>
                         </tr>
+                        @else
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">No whitelist record found. Please run the database seeder: <code>php artisan db:seed --class=WhitelistSeeder</code></td>
+                        </tr>
+                        @endif
                         </tbody>
                     </table>
                 </div>

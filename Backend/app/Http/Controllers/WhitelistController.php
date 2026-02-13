@@ -24,6 +24,9 @@ class WhitelistController extends Controller
     {
         $whiteListContent = Whitelist::find($id);
 
+        if ($whiteListContent === null) {
+            return redirect()->route('whitelist')->with('error', 'Whitelist record not found.');
+        }
 
         if($whiteListContent->update($request->all())){
             return redirect()->route('whitelist')->with('success', 'Whitelist updated successfully');
