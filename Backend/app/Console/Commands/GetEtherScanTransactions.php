@@ -168,10 +168,10 @@ class GetEtherScanTransactions extends Command
 
     private function verifyEthereumTxExists(string $txnId): bool
     {
-        $url = 'https://api.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash=' . substr($txnId, 0, 18) . '...';
+        $url = 'https://api.etherscan.io/v2/api?chainid=1&module=proxy&action=eth_getTransactionByHash&txhash=' . substr($txnId, 0, 18) . '...';
         $this->logVerbose("GET {$url}");
-        $response = Http::timeout(30)->get('https://api.etherscan.io/api', [
-            'module' => 'proxy', 'action' => 'eth_getTransactionByHash',
+        $response = Http::timeout(30)->get('https://api.etherscan.io/v2/api', [
+            'chainid' => 1, 'module' => 'proxy', 'action' => 'eth_getTransactionByHash',
             'txhash' => $txnId, 'apikey' => env('ETHERSCAN_API_TOKEN'),
         ]);
         $result = $response->json()['result'] ?? null;
@@ -182,10 +182,10 @@ class GetEtherScanTransactions extends Command
 
     private function verifyPolygonTxExists(string $txnId): bool
     {
-        $this->logVerbose('GET https://api.polygonscan.com/api (txhash=' . substr($txnId, 0, 18) . '...)');
-        $response = Http::timeout(30)->get('https://api.polygonscan.com/api', [
-            'module' => 'proxy', 'action' => 'eth_getTransactionByHash',
-            'txhash' => $txnId, 'apikey' => env('POLYSCAN_API_TOKEN'),
+        $this->logVerbose('GET https://api.etherscan.io/v2/api (chainid=137, txhash=' . substr($txnId, 0, 18) . '...)');
+        $response = Http::timeout(30)->get('https://api.etherscan.io/v2/api', [
+            'chainid' => 137, 'module' => 'proxy', 'action' => 'eth_getTransactionByHash',
+            'txhash' => $txnId, 'apikey' => env('ETHERSCAN_API_TOKEN'),
         ]);
         $result = $response->json()['result'] ?? null;
         $found = $result !== null && $result !== false;
@@ -322,20 +322,24 @@ class GetEtherScanTransactions extends Command
     {
         $walletAddress = $wallet->address;
         $txnIds = [];
-        $apiUrls = [
-            ['url' => 'https://api.polygonscan.com/api', 'token' => env('POLYSCAN_API_TOKEN')],
-            ['url' => 'https://api.etherscan.io/api', 'token' => env('ETHERSCAN_API_TOKEN')],
+        $baseUrl = 'https://api.etherscan.io/v2/api';
+        $token = env('ETHERSCAN_API_TOKEN');
+        $chains = [
+            ['chainid' => 1],
+            ['chainid' => 137],
         ];
-        foreach ($apiUrls as $item) {
+        foreach ($chains as $chain) {
             foreach (['txlist', 'tokentx'] as $action) {
-                $response = Http::get($item['url'], [
+                $response = Http::get($baseUrl, [
+                    'chainid' => $chain['chainid'],
                     'module' => 'account', 'action' => $action,
                     'address' => $walletAddress,
                     'startblock' => 0, 'endblock' => 99999999,
-                    'sort' => 'desc', 'apikey' => $item['token'],
+                    'sort' => 'desc', 'apikey' => $token,
                 ]);
-                if ($response->successful() && is_array($response->json()['result'] ?? null)) {
-                    foreach ($response->json()['result'] as $tx) {
+                $result = $response->json()['result'] ?? null;
+                if ($response->successful() && is_array($result)) {
+                    foreach ($result as $tx) {
                         $txnIds[] = $tx['hash'] ?? '';
                     }
                 }
@@ -594,30 +598,33 @@ class GetEtherScanTransactions extends Command
     {
         $walletAddress = $wallet->address;
         $sbxWhitelist = Whitelist::query()->where('is_active', '=', 1)->first();
+        $etherscanV2Url = 'https://api.etherscan.io/v2/api';
+        $apiToken = env('ETHERSCAN_API_TOKEN');
         $apiUrls = [
-            'polygon' => [
-                'url' => 'https://api.polygonscan.com/api',
-                'token' => env('POLYSCAN_API_TOKEN'),
-                'actions' => [
-                    'txlist',
-                    'tokentx'
-                ],
-                'crypto_id' => 10,
-                'crypto_network_id' => 4,
-                'chain_id' => 137,
-                'chain_name' => 'Polygon'
-            ],
             'mainnet' => [
-                'url' => 'https://api.etherscan.io/api',
-                'token' => env('ETHERSCAN_API_TOKEN'),
+                'url' => $etherscanV2Url,
+                'chainid' => 1,
+                'token' => $apiToken,
                 'actions' => ['txlist', 'tokentx'],
                 'crypto_id' => 2,
                 'crypto_network_id' => 1,
                 'chain_id' => 1,
-                'chain_name' => 'Ethereum'
-
+                'chain_name' => 'Ethereum',
             ],
-//            'sepolia' => 'https://api-sepolia.etherscan.io/api',
+            'polygon' => [
+                'url' => $etherscanV2Url,
+                'chainid' => 137,
+                'token' => $apiToken,
+                'actions' => [
+                    'txlist',
+                    'tokentx',
+                ],
+                'crypto_id' => 10,
+                'crypto_network_id' => 4,
+                'chain_id' => 137,
+                'chain_name' => 'Polygon',
+            ],
+//            'sepolia' => chainid 11155111
         ];
 
         $delimeter = [
@@ -629,6 +636,7 @@ class GetEtherScanTransactions extends Command
             foreach ($item['actions'] as $action) {
                 $this->logVerbose("GET {$item['url']} action={$action} (network={$network})");
                 $response = Http::timeout(30)->get($item['url'], [
+                    'chainid' => $item['chainid'],
                     'module' => 'account',
                     'action' => $action,
                     'address' => $walletAddress,
@@ -641,10 +649,11 @@ class GetEtherScanTransactions extends Command
                 $this->logVerbose("  -> HTTP {$response->status()}, result=" . (is_array($result) ? count($result) . ' tx(s)' : json_encode($result)));
 
                 if (!is_array($result)) {
-                    Log::warning(json_encode($response->json()));
+                    Log::warning('Blockchain API returned non-array result: ' . json_encode($response->json()));
+                    continue;
                 }
 
-                foreach ($result ?? [] as $tx) {
+                foreach ($result as $tx) {
 
                     if ($action === 'tokentx' || (isset($tx['txreceipt_status']) && $tx['txreceipt_status'] === "1")) {
                         if ($action === 'tokentx') {

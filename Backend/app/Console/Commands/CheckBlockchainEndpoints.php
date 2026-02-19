@@ -78,9 +78,10 @@ class CheckBlockchainEndpoints extends Command
     private function checkEthereum(): array
     {
         $txnId = self::TEST_TX_IDS['ETH'];
-        $url = 'https://api.etherscan.io/api';
+        $url = 'https://api.etherscan.io/v2/api';
         try {
             $response = Http::timeout(15)->get($url, [
+                'chainid' => 1,
                 'module' => 'proxy',
                 'action' => 'eth_getTransactionByHash',
                 'txhash' => $txnId,
@@ -100,13 +101,14 @@ class CheckBlockchainEndpoints extends Command
     private function checkPolygon(): array
     {
         $txnId = self::TEST_TX_IDS['MATIC'];
-        $url = 'https://api.polygonscan.com/api';
+        $url = 'https://api.etherscan.io/v2/api';
         try {
             $response = Http::timeout(15)->get($url, [
+                'chainid' => 137,
                 'module' => 'proxy',
                 'action' => 'eth_getTransactionByHash',
                 'txhash' => $txnId,
-                'apikey' => env('POLYSCAN_API_TOKEN'),
+                'apikey' => env('ETHERSCAN_API_TOKEN'),
             ]);
             $result = $response->json()['result'] ?? null;
             $ok = $response->successful() && $result !== null && $result !== false;
